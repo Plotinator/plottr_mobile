@@ -3,18 +3,18 @@
 ## To release
 
 1. In project properties, Increment Build number and Version
-1. Info.plist -> App Transport Security -> localhost -> NO
-1. Product -> Scheme -> RELEASE
-1. Change Scheme Destination to Any iOS Device
-1. Product -> Build
-1. Product -> Archive
+1. Info.plist > App Transport Security > localhost > NO
+1. Scheme -> RELEASE
+1. Destination -> Any iOS Device
+1. Product > Build
+1. Product > Archive
 1. Organizer -> Validate, Upload
 
 ### Change back after release:
 
-1. Product -> Scheme -> plottr_mobile
-1. Change Scheme Destination to iPad (8th generation)
-1. Info.plist -> App Transport Security -> localhost -> YES
+1. Scheme -> plottr_mobile
+1. Scheme Destination -> iPad (8th generation)
+1. Info.plist > App Transport Security > localhost > YES
 
 
 # Android

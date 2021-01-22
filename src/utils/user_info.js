@@ -32,7 +32,11 @@ export async function reset () {
 }
 
 export async function checkForActiveLicense (email) {
-  if (email == TESTR_EMAIL) return [true, newUserInfoTemplate(TESTR_EMAIL, [], TESTR_CODE)]
+  if (email == TESTR_EMAIL) {
+    const testerInfo = newUserInfoTemplate(TESTR_EMAIL, [], TESTR_CODE)
+    AsyncStorage.setItem(USER_KEY, JSON.stringify(testerInfo))
+    return [true, testerInfo]
+  }
   const url = salesURL(email)
   try {
     let response = await fetch(url)

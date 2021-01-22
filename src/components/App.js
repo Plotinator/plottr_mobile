@@ -8,6 +8,7 @@ import Main from './Main'
 import { sendVerificationEmail } from '../utils/api'
 import AppErrorBoundary from './AppErrorBoundary'
 import t from 'format-message'
+import { TESTR_EMAIL } from '../utils/constants'
 
 const App = () => {
   const [userInfo, setUserInfo] = useState(null)
@@ -22,6 +23,8 @@ const App = () => {
       // DEV: use the following to reset user info/verification
       // await reset()
       const fetchedInfo = await getUserVerification()
+
+      // console.log('FETchED', fetchedInfo)
       // if (fetchedInfo) {
       //   console.log('USER_INFO', fetchedInfo)
       // }
@@ -74,12 +77,19 @@ const App = () => {
     if (email == '') return
     setVerifying(true)
     const [success, userInfo] = await checkForActiveLicense(email)
+    console.log('verified', userInfo)
     if (success) {
       Toast.show({
         text: t('Success!'),
         duration: 3000,
         type: 'success',
       })
+      // test user
+      if (email == TESTR_EMAIL) {
+        setVerifying(false)
+        setUserInfo(userInfo)
+        return
+      }
       sendVerificationEmail(email, userInfo.idToVerify, error => {
         setVerifying(false)
         if (error) {
@@ -116,7 +126,6 @@ const App = () => {
         // console.log('newUserInfo', newUserInfo)
         setUserInfo({ ...newUserInfo }) // create a new object to force a re-render
       } else {
-        console.log('FAIL', newUserInfo)
         setUserInfo(null)
         // newUserInfo is the license verification response
         let text = ''
@@ -148,7 +157,7 @@ const App = () => {
       <Container>
         <Content style={styles.content}>
           <H1 style={styles.header}>{t('Welcome to Plottr!')}</H1>
-          <H2 style={styles.header}>{t("Let's verify your license")}</H2>
+          <H2 style={styles.header}>{t("Let's verify your account")}</H2>
           <Form style={styles.form}>
             <Item inlineLabel last regular style={styles.label}>
               <Label>{t('Email')}</Label>
@@ -166,16 +175,16 @@ const App = () => {
             </Button>
           </Form>
           <Text>{t('This will send you an email with a code')}</Text>
-          <View style={styles.centeredTextWrapper}>
-            <Text style={styles.centeredText}>{t("Don't have a license? Go to our website to learn more")}</Text>
-            <Button transparent large onPress={() => Linking.openURL('https://getplottr.com')} style={styles.ourWebsiteButton}>
-              <Text>getplottr.com</Text>
-            </Button>
-          </View>
         </Content>
       </Container>
     )
   }
+          // <View style={styles.centeredTextWrapper}>
+          //   <Text style={styles.centeredText}>{t("Don't have a license? Go to our website to learn more")}</Text>
+          //   <Button transparent large onPress={() => Linking.openURL('https://getplottr.com')} style={styles.ourWebsiteButton}>
+          //     <Text>getplottr.com</Text>
+          //   </Button>
+          // </View>
 
   const renderVerification = () => {
     return (
@@ -201,7 +210,8 @@ const App = () => {
           </Form>
           <Text>{t('You should have received an email with a code')}</Text>
           <View style={styles.centeredTextWrapper}>
-            <Text style={styles.centeredText}>{t('Verifying with email: {email}', {email: userInfo.email})}</Text>
+            <Text style={[styles.centeredText, styles.secondaryText]}>{t('Verifying with email:')}</Text>
+            <Text style={styles.centeredText}>{userInfo.email}</Text>
             <Button transparent large onPress={() => setUserInfo(null)} style={styles.ourWebsiteButton} >
               <Text>{t('Use a different email')}</Text>
             </Button>
@@ -269,6 +279,9 @@ const styles = StyleSheet.create({
   centeredText: {
     fontSize: 20,
   },
+  secondaryText: {
+    color: 'hsl(209, 23%, 60%)', //gray-5
+  }
 })
 
 export default App
