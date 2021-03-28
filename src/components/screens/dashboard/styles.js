@@ -60,6 +60,6 @@ export default ScaledSheet.create({
     marginBottom: doubleBaseMargin
   },
   logout: {
-    paddingTop: doubleSection
+    paddingTop: doubleBaseMargin
   }
 })
