@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     color: Colors.textBlack
   },
   text: {
-    fontSize: fontSizes.small
+    fontSize: fontSizes.tiny
   }
 })
 

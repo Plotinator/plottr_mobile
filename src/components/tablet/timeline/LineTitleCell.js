@@ -4,6 +4,7 @@ import { StyleSheet, View, PanResponder } from 'react-native'
 import Cell from '../shared/Cell'
 import { LEFT_COLUMN_WIDTH, CELL_HEIGHT } from '../../../utils/constants'
 import { Text, Button, Input } from '../../shared/common'
+import Fonts from '../../../fonts'
 
 export default class LineTitleCell extends PureComponent {
   state = {
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   lineTitle: {
     paddingVertical: 10,
     backgroundColor: 'hsl(210, 36%, 96%)',
-    fontSize: 18
+    fontSize: Fonts.size.tiny
   }
 })
 

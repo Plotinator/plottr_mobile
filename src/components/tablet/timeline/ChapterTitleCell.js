@@ -10,6 +10,7 @@ import Cell from '../shared/Cell'
 import { showAlert, showInputAlert } from '../../shared/common/AlertDialog'
 import { Text, ShellButton } from '../../shared/common'
 import { CELL_WIDTH } from '../../../utils/constants'
+import Fonts from '../../../fonts'
 
 class ChapterTitleCell extends PureComponent {
   state = {
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: Fonts.size.tiny,
     paddingHorizontal: 10,
     backgroundColor: 'hsl(210, 36%, 96%)'
   },
