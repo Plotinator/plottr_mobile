@@ -1,8 +1,10 @@
 import Text from './Text'
+import Icon from './Icon'
 import Input from './Input'
 import Button from './Button'
 import ModalBox from './ModalBox'
 import AddButton from './AddButton'
+import IconButton from './IconButton'
 import RichEditor from './RichEditor'
 import ShellButton from './ShellButton'
 import AlertDialog from './AlertDialog'
@@ -14,11 +16,13 @@ import GoToPlottrDotCom from './GoToPlottrDotCom'
 
 export {
   Text,
+  Icon,
   Input,
   Title,
   Button,
   ModalBox,
   AddButton,
+  IconButton,
   RichEditor,
   AlertDialog,
   Attachments,
