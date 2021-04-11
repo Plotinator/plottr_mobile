@@ -19,9 +19,10 @@ import SeriesPicker from '../shared/SeriesPicker'
 import MiniChapter from './MiniChapter'
 import Chapter from '../../shared/outline/Chapter'
 import DrawerButton from '../../ui/DrawerButton'
+import { MainList } from '../../shared/common'
 
 class Outline extends Component {
-  state = { linesById: {}, currentLine: null }
+  state = { linesById: {}, currentLine: null, selectedLine: null }
   outlineListRef = null
 
   static getDerivedStateFromProps (props, state) {
@@ -49,6 +50,13 @@ class Outline extends Component {
 
   scrollToChapter = (index) => {
     this.outlineListRef.scrollToIndex({ index })
+  }
+
+  handleSelectOutline = ({ listIndex, id }) => {
+    this.setState({
+      selectedLineId: id
+    })
+    this.outlineListRef.scrollToIndex({ index: listIndex })
   }
 
   renderMiniChapter (chapter, index, cardMap) {
@@ -125,12 +133,17 @@ class Outline extends Component {
 
   render () {
     const { chapters, lines, card2Dmap } = this.props
+    const { linesById, currentLine, selectedLineId } = this.state
     const cardMap = helpers.card.cardMapping(
       chapters,
       lines,
       card2Dmap,
       this.state.currentLine
     )
+    const outlines = chapters.map(chapter => ({
+      ...chapter,
+      colors: cardMap[chapter.id].map(({ lineId }) => linesById[lineId].color)
+    }))
     return (
       <View style={{ flex: 1 }}>
         <Toolbar>
@@ -138,7 +151,18 @@ class Outline extends Component {
           <SeriesPicker />
         </Toolbar>
         <Grid>
-          <Col size={3}>{this.renderChapterList(cardMap)}</Col>
+          <Col size={4}>
+            {/*this.renderChapterList(cardMap)*/}
+            <MainList
+              numbered
+              list={outlines}
+              title={t('Outline')}
+              type={t('Outline')}
+              activeKey='id'
+              activeValue={selectedLineId || chapters[0]?.id}
+              onPressItem={this.handleSelectOutline}
+            />
+          </Col>
           <Col size={9}>{this.renderOutline(cardMap)}</Col>
         </Grid>
       </View>
@@ -161,7 +185,8 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   chapter: {
-    padding: 16
+    padding: 10,
+    paddingLeft: 0
   },
   chapterTitle: {
     paddingLeft: 13,

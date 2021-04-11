@@ -67,11 +67,33 @@ export default ScaledSheet.create({
     color: textDarkGrayTone,
     fontSize: size.size9
   },
+  number: {
+    height: '100%'
+  },
+  itemNumber: {
+    ...style.bold,
+    color: textDarkGrayTone,
+    fontSize: size.size9
+  },
   textActive: {
     color: white
   },
   trashButton: {
     marginLeft: baseMargin / 2,
     // marginRight: -baseMargin / 4
+  },
+  colors: {
+    flexDirection: 'row',
+    position: 'absolute',
+    right: baseMargin / 1.5,
+    bottom: baseMargin / 1.8
+  },
+  colorDot: {
+    width: 8,
+    height: 8,
+    marginLeft: 1,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: whiteTone
   }
 })

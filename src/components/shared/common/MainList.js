@@ -11,6 +11,7 @@ import IconButton from './IconButton'
 import ScrollerView from './ScrollerView'
 import styles from './MainListStyles'
 import PropTypes from 'prop-types'
+import tinycolor from 'tinycolor2'
 
 const DefaultList = [
   {
@@ -78,23 +79,34 @@ class MainList extends Component {
     const {
       type = t('Item'),
       onPressItem,
+      fontSize,
+      numbered,
       activeKey,
       activeValue,
       alwaysShowDelete,
       onPressDelete
     } = this.props
-    const { title, name } = item
+    const { title, name, colors } = item
     const itemName = title || name || `${t('New')} ${type} ${i+1}`
     const isActive = activeValue && item[activeKey] === activeValue
-    console.log('activeKey', activeKey)
-    console.log('activeValue', activeValue)
-    console.log('isActive', isActive)
+    const textStyles = [
+      styles.itemText,
+      isActive && styles.textActive,
+      fontSize && { fontSize }
+    ]
     return (
       <ShellButton
-        data={item}
+        data={{ ...item, listIndex: i }}
         style={[styles.item, isActive && styles.itemActive]}
         onPress={onPressItem}>
-        <Text style={[styles.itemText, isActive && styles.textActive]}>
+        {numbered && (
+          <View style={styles.number}>
+            <Text style={[styles.itemNumber, isActive && styles.textActive]}>
+              {`${i + 1}. `}
+            </Text>
+          </View>
+        )}
+        <Text style={textStyles}>
           {itemName}
         </Text>
         {onPressDelete && (alwaysShowDelete || isActive) && (
@@ -106,9 +118,23 @@ class MainList extends Component {
             onPress={onPressDelete}
             buttonStyle={styles.trashButton} />
         )}
+        {colors && (
+          <View style={styles.colors}>
+            {colors.map(this.renderColor)}
+          </View>
+        )}
       </ShellButton>
     )
   }
+
+  renderColor = (color) => (
+    color && (
+      <View style={[styles.colorDot, {
+          backgroundColor: tinycolor(color).toHexString()
+        }]}
+      />
+    )
+  )
 
   render () {
     const { isGroup } = this.props
@@ -129,6 +155,7 @@ MainList.propTypes = {
   onPressDelete: PropTypes.funct,
   onPressItem: PropTypes.funct,
   isGroup: PropTypes.bool,
+  numbered: PropTypes.bool,
   alwaysShowDelete: PropTypes.bool,
   list: PropTypes.array
 }
