@@ -2,6 +2,7 @@ import Text from './Text'
 import Input from './Input'
 import Button from './Button'
 import ModalBox from './ModalBox'
+import AddButton from './AddButton'
 import RichEditor from './RichEditor'
 import ShellButton from './ShellButton'
 import AlertDialog from './AlertDialog'
@@ -17,6 +18,7 @@ export {
   Title,
   Button,
   ModalBox,
+  AddButton,
   RichEditor,
   AlertDialog,
   Attachments,
