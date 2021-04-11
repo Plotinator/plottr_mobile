@@ -100,12 +100,6 @@ class Characters extends Component {
     this.props.actions.editCharacter(id, attributes)
   }
 
-  deleteCharacter = (character) => {
-    askToDelete(character.name || t('New Character'), () =>
-      this.props.actions.deleteCharacter(character.id)
-    )
-  }
-
   handleAddCharacter = ({ id: categoryId }) => {
     const id = newIds.nextId(this.props.characters)
     if (categoryId) {
@@ -130,49 +124,6 @@ class Characters extends Component {
 
   handleSelectCharacter = ({ id }) => {
     this.setState({ activeCharacterId: id })
-  }
-
-  renderCharacterItem = ({ item }) => {
-    const isActive = item.id == this.state.activeCharacterId
-    const { images = [] } = this.props
-    const foundImage = images[item.imageId]
-    return (
-      <SideButton
-        onPress={() => this.setState({ activeCharacterId: item.id })}
-        onDelete={() => this.deleteCharacter(item)}
-        image={foundImage && foundImage.data}
-        title={item.name || t('New Character')}
-        isActive={isActive}
-      />
-    )
-  }
-
-  renderSectionHeader = ({ section }) => {
-    if (!section.data.length) return null
-
-    return <H3 style={styles.sectionHeader}>{section.title}</H3>
-  }
-
-  renderCharacterList () {
-    const {
-      visibleCharactersByCategory,
-      categories,
-      filterIsEmpty
-    } = this.props
-    return (
-      <View style={styles.characterList}>
-        <Text style={styles.title} fontSize='h5' fontStyle='semiBold'>
-          {t('Characters')}
-        </Text>
-        <SectionList
-          sections={this.state.data}
-          renderSectionHeader={this.renderSectionHeader}
-          renderItem={this.renderCharacterItem}
-          extraData={{ visibleCharactersByCategory, categories, filterIsEmpty }}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
-    )
   }
 
   renderCharacterDetail () {
@@ -202,8 +153,6 @@ class Characters extends Component {
   }
 
   render () {
-    console.log('SECTION DATA', this.state.data)
-
     return (
       <View style={{ flex: 1 }}>
         <Toolbar>
@@ -217,7 +166,7 @@ class Characters extends Component {
               isGroup
               list={this.state.data}
               title={t('Characters')}
-              type='Character'
+              type={t('Character')}
               activeKey='id'
               activeValue={this.state.activeCharacterId}
               onPressItem={this.handleSelectCharacter}

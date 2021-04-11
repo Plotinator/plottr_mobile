@@ -24,15 +24,15 @@ const DefaultList = [
 ]
 
 class MainList extends Component {
-    
+
   renderTitleHead () {
     const { title, onPressAdd } = this.props
     return (
       title && (
         <View style={styles.titleHead}>
-          <Text style={styles.titleText}>Characters </Text>
+          <Text style={styles.titleText}>{title} </Text>
           {onPressAdd && (
-            <AddButton onPress={onPressAdd} />
+            <AddButton data={{}} onPress={onPressAdd} />
           )}
         </View>
       )
@@ -86,6 +86,9 @@ class MainList extends Component {
     const { title, name } = item
     const itemName = title || name || `${t('New')} ${type} ${i+1}`
     const isActive = activeValue && item[activeKey] === activeValue
+    console.log('activeKey', activeKey)
+    console.log('activeValue', activeValue)
+    console.log('isActive', isActive)
     return (
       <ShellButton
         data={item}
@@ -100,7 +103,8 @@ class MainList extends Component {
             name='trash'
             color='white'
             size={10}
-            onPress={onPressDelete} />
+            onPress={onPressDelete}
+            buttonStyle={styles.trashButton} />
         )}
       </ShellButton>
     )

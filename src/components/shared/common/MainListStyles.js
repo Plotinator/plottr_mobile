@@ -54,18 +54,24 @@ export default ScaledSheet.create({
     alignItems: 'center',
     backgroundColor: whiteTone,
     borderRadius: cornerRadius,
-    padding: baseMargin,
-    paddingTop: baseMargin * .9,
+    padding: baseMargin * 1.25,
+    paddingTop: baseMargin * 1.15,
     marginBottom: 3
   },
   itemActive: {
     backgroundColor: orange
   },
   itemText: {
+    flex: 1,
     ...style.bold,
+    color: textDarkGrayTone,
     fontSize: size.size9
   },
   textActive: {
     color: white
+  },
+  trashButton: {
+    marginLeft: baseMargin / 2,
+    // marginRight: -baseMargin / 4
   }
 })

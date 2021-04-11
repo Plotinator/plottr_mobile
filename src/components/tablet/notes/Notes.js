@@ -16,7 +16,7 @@ import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
-import { Text } from '../../shared/common'
+import { Text, MainList } from '../../shared/common'
 
 class Notes extends Component {
   state = {
@@ -108,7 +108,17 @@ class Notes extends Component {
     this.props.actions.editNote(id, { title, content })
   }
 
-  deleteNote = (note) => {
+  handleSelectNote = ({ id }) => {
+    this.setState({ activeNoteId: id })
+  }
+
+  handleAddNote = () => {
+    const id = newIds.nextId(this.props.notes)
+    this.props.actions.addNote()
+    this.setState({ activeNoteId: id })
+  }
+
+  handleDeleteNote = (note) => {
     askToDelete(note.title || t('New Note'), () =>
       this.props.actions.deleteNote(note.id)
     )
@@ -164,6 +174,7 @@ class Notes extends Component {
   }
 
   render () {
+    const { activeNoteId, viewableNotes } = this.state
     return (
       <View style={{ flex: 1 }}>
         <Toolbar>
@@ -171,7 +182,19 @@ class Notes extends Component {
           <NewButton onPress={this.createNewNote} />
         </Toolbar>
         <Grid style={{ flex: 1 }}>
-          <Col size={4}>{this.renderNoteList()}</Col>
+          <Col size={4}>
+            {/*this.renderNoteList()*/}
+            <MainList
+              list={viewableNotes}
+              title={t('Notes')}
+              type={t('Note')}
+              activeKey='id'
+              activeValue={activeNoteId}
+              onPressItem={this.handleSelectNote}
+              onPressAdd={this.handleAddNote}
+              onPressDelete={this.handleDeleteNote}
+            />
+          </Col>
           <Col size={10}>{this.renderNoteDetail()}</Col>
         </Grid>
       </View>
