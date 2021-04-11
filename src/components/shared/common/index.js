@@ -9,6 +9,7 @@ import RichEditor from './RichEditor'
 import ShellButton from './ShellButton'
 import AlertDialog from './AlertDialog'
 import Attachments from './Attachments'
+import ScrollerView from './ScrollerView'
 import FloatingInput from './FloatingInput'
 import Title, { RenderTitle } from './Title'
 import WelcomeToPlottr from './WelcomeToPlottr'
@@ -28,6 +29,7 @@ export {
   Attachments,
   ShellButton,
   RenderTitle,
+  ScrollerView,
   FloatingInput,
   WelcomeToPlottr,
   GoToPlottrDotCom
