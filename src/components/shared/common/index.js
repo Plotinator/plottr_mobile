@@ -2,6 +2,7 @@ import Text from './Text'
 import Icon from './Icon'
 import Input from './Input'
 import Button from './Button'
+import MainList from './MainList'
 import ModalBox from './ModalBox'
 import AddButton from './AddButton'
 import IconButton from './IconButton'
@@ -21,6 +22,7 @@ export {
   Input,
   Title,
   Button,
+  MainList,
   ModalBox,
   AddButton,
   IconButton,

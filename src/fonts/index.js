@@ -27,8 +27,11 @@ export const size = {
   large: moderateScale(20),
   medium: moderateScale(18),
   regular: moderateVerticalScale(16),
+  size13: moderateScale(13),
   small: moderateScale(12),
+  size11: moderateScale(11),
   tiny: moderateScale(10),
+  size9: moderateScale(9),
   micro: moderateScale(8),
   nano: moderateScale(7)
 }

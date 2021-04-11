@@ -23,7 +23,17 @@ const Colors = {
   textLightGray: '#A8A8A8',
   lightGray: '#9F9F9F',
   lightenGray: '#b3b3b3',
-  lighterGray: '#CBCBCB'
+  lighterGray: '#CBCBCB',
+  // new tones
+  whiteTone: '#ffffff',
+  grayTone: '#efefef',
+  lightGrayTone: '#f8f8f8',
+  textLightGrayTone: '#a8a8a8',
+  textGrayTone: '#7d7d7d',
+  textDarkGrayTone: '#666666',
+  textDarkerGrayTone: '#545454'
 }
+
+Colors.backgroundTone = Colors.lightGrayTone
 
 export default Colors

@@ -16,7 +16,7 @@ import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
-import { Text } from '../../shared/common'
+import { Text, MainList } from '../../shared/common'
 
 class Characters extends Component {
   state = {
@@ -42,8 +42,9 @@ class Characters extends Component {
         characters = props.visibleCharactersByCategory[`${cat.id}`]
       }
       return {
+        id: cat.id,
         title: cat.name,
-        data: characters
+        data: sortBy(characters, 'id')
       }
     })
 
@@ -105,6 +106,32 @@ class Characters extends Component {
     )
   }
 
+  handleAddCharacter = ({ id: categoryId }) => {
+    const id = newIds.nextId(this.props.characters)
+    if (categoryId) {
+      this.props.actions.addCharacterWithValues({
+        categoryId
+      })
+    } else {
+      this.props.actions.addCharacter()
+    }
+    this.setState({ activeCharacterId: id })
+  }
+
+  handleDeleteCharacter = (character) => {
+    askToDelete(character.name || t('New Character'),
+      () => {
+        const { data } = this.state
+        this.setState({ activeCharacterId: data[0] })
+        this.props.actions.deleteCharacter(character.id)
+      }
+    )
+  }
+
+  handleSelectCharacter = ({ id }) => {
+    this.setState({ activeCharacterId: id })
+  }
+
   renderCharacterItem = ({ item }) => {
     const isActive = item.id == this.state.activeCharacterId
     const { images = [] } = this.props
@@ -132,7 +159,6 @@ class Characters extends Component {
       categories,
       filterIsEmpty
     } = this.props
-
     return (
       <View style={styles.characterList}>
         <Text style={styles.title} fontSize='h5' fontStyle='semiBold'>
@@ -176,6 +202,8 @@ class Characters extends Component {
   }
 
   render () {
+    console.log('SECTION DATA', this.state.data)
+
     return (
       <View style={{ flex: 1 }}>
         <Toolbar>
@@ -183,7 +211,20 @@ class Characters extends Component {
           <NewButton onPress={this.createNewCharacter} />
         </Toolbar>
         <Grid style={{ flex: 1 }}>
-          <Col size={4}>{this.renderCharacterList()}</Col>
+          <Col size={4}>
+            {/*this.renderCharacterList()*/}
+            <MainList
+              isGroup
+              list={this.state.data}
+              title={t('Characters')}
+              type='Character'
+              activeKey='id'
+              activeValue={this.state.activeCharacterId}
+              onPressItem={this.handleSelectCharacter}
+              onPressAdd={this.handleAddCharacter}
+              onPressDelete={this.handleDeleteCharacter}
+            />
+          </Col>
           <Col size={10}>{this.renderCharacterDetail()}</Col>
         </Grid>
         <Button full info onPress={this.navigateToCustomAttributes}>
