@@ -15,6 +15,7 @@ import FloatingInput from './FloatingInput'
 import Title, { RenderTitle } from './Title'
 import WelcomeToPlottr from './WelcomeToPlottr'
 import GoToPlottrDotCom from './GoToPlottrDotCom'
+import AttributesButton from './AttributesButton'
 
 export {
   Text,
@@ -34,5 +35,6 @@ export {
   ScrollerView,
   FloatingInput,
   WelcomeToPlottr,
-  GoToPlottrDotCom
+  GoToPlottrDotCom,
+  AttributesButton
 }
