@@ -21,9 +21,10 @@ const Colors = {
   darkGray: '#303030',
   textGray: '#888888',
   textLightGray: '#A8A8A8',
-  lightGray: '#9F9F9F',
   lightenGray: '#b3b3b3',
-  lighterGray: '#CBCBCB'
+  lighterGray: '#CBCBCB',
+  deactivated: '#9F9F9F',
+  tagColors: ['#6cace4', '#78be20', '#e5554f', '#ff7f32', '#ffc72c'] // Same as the timeline colors
 }
 
 export default Colors

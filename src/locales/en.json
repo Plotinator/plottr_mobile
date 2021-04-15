@@ -59,6 +59,9 @@
   "Cancel": {
     "message": "Cancel"
   },
+  "Confirm": {
+    "message": "Confirm"
+  },
   "Category": {
     "message": "Category"
   },
@@ -598,5 +601,11 @@
   },
   "Please verify your license in": {
     "message": "Please verify your license in "
+  },
+  "Delete tag?": {
+    "message": "Delete tag?"
+  },
+  "Do you want to delete tag": {
+    "message": "Do you want to delete tag"
   }
 }
