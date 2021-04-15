@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import { View, Icon } from 'native-base'
 import { selectors, actions, helpers, initialState } from 'pltr/v2'
 import { Modal, ScrollView, KeyboardAvoidingView } from 'react-native'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import {
   Input,
   Text,

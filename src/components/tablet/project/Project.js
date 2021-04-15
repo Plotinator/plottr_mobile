@@ -6,12 +6,13 @@ import { ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { View } from 'native-base'
 import { actions } from 'pltr/v2'
 import Toolbar from '../shared/Toolbar'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { Text, Input, Button } from '../../shared/common'
 import Book from '../../shared/project/Book'
 import DrawerButton from '../../ui/DrawerButton'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
+import Collapsible from 'react-native-collapsible'
 
 const { baseMargin } = Metrics
 
@@ -134,17 +135,19 @@ class Project extends Component {
                 />
               </View>
             </View>
-            <View style={styles.row}>
-              <View style={styles.centerColumn}>
-                <Button
-                  tight
-                  disabled={!changes}
-                  onPress={this.saveChanges}
-                  style={styles.saveButton}>
-                  {t('Save')}
-                </Button>
+            <Collapsible collapsed={!changes}>
+              <View style={styles.row}>
+                <View style={styles.centerColumn}>
+                  <Button
+                    tight
+                    disabled={!changes}
+                    onPress={this.saveChanges}
+                    style={styles.saveButton}>
+                    {t('Save')}
+                  </Button>
+                </View>
               </View>
-            </View>
+            </Collapsible>
           </View>
         </View>
         <View style={styles.booksWrapper}>
@@ -185,6 +188,7 @@ const styles = StyleSheet.create({
   },
   booksWrapper: {
     flex: 2,
+    marginTop: 5,
     paddingLeft: baseMargin * 1.5
   },
   subTitle: {

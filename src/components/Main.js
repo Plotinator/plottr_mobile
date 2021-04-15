@@ -6,7 +6,7 @@ import DocumentRoot from './DocumentRoot'
 import AuthenticatorRoot from './AuthenticatorRoot'
 import { configureStore } from '../store/configureStore'
 import MainErrorBoundary from './MainErrorBoundary'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import Metrics from '../utils/Metrics'
 import Dashboard from './screens/dashboard'
 import DocumentPicker from 'react-native-document-picker'
@@ -248,7 +248,7 @@ export default class Main extends Component {
     // let finalURL = rnfs.DocumentDirectoryPath + '/' + name.replace(/ /g,"_") + '.pltr';
     this.readDocumentFile(filePath);
   }
-  
+
   // selectDocument = () => {
   //   try {
   //     DocumentPicker.pick({
@@ -404,8 +404,7 @@ export default class Main extends Component {
       skipVerification,
       skipVerificationStartTime
     } = skipVerificationDetails
-    // const bypassForDevs = __DEV__ // false
-    const bypassForDevs = false
+    const bypassForDevs = __DEV__ // false
 
     // if the user is verified and valid
     // or has a valid subscription

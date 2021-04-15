@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Icon } from 'native-base'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import Metrics from '../../utils/Metrics'
 import Colors from '../../utils/Colors'
 import Fonts from '../../fonts'
@@ -32,6 +32,14 @@ const styles = StyleSheet.create({
     // backgroundColor: 'white',
     backgroundColor: Colors.orange,
     alignSelf: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2
   },
   text: {
     ...fontStyles.bold,
