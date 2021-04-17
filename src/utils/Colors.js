@@ -21,7 +21,6 @@ const Colors = {
   darkGray: '#303030',
   textGray: '#888888',
   textLightGray: '#A8A8A8',
-  lightGray: '#9F9F9F',
   lightenGray: '#b3b3b3',
   lighterGray: '#CBCBCB',
   // new tones
@@ -31,7 +30,9 @@ const Colors = {
   textLightGrayTone: '#a8a8a8',
   textGrayTone: '#7d7d7d',
   textDarkGrayTone: '#666666',
-  textDarkerGrayTone: '#545454'
+  textDarkerGrayTone: '#545454',
+  deactivated: '#9F9F9F',
+  tagColors: ['#6cace4', '#78be20', '#e5554f', '#ff7f32', '#ffc72c'] // Same as the timeline colors
 }
 
 Colors.backgroundTone = Colors.lightGrayTone
