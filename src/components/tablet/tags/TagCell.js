@@ -1,268 +1,193 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Text } from 'react-native'
-import { Colors, Metrics } from '../../../utils'
-import tinycolor from 'tinycolor2';
+import {
+  View,
+  TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native'
+import { Icon } from 'native-base'
+import { ShellButton, Input, Text } from '../../shared/common'
+import tinycolor from 'tinycolor2'
+import styles from './TagsCellStyles'
+import PropTypes from 'react-proptypes'
 
 class TagCell extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tag: this.props.tag,
-        }
+  constructor(props) {
+    super(props)
+    const { tag } = props
+    this.state = {
+      tag
     }
+  }
 
-    onChangeTitle = (newTitle) => {
-        let newTag = this.state.tag;
-        newTag['title'] = newTitle;
-        this.setState({
-            tag: newTag
-        })
+  static getDerivedStateFromProps (nextProps, nextState) {
+
+    // update the color if changed
+    if (nextProps.tag.color !== nextState.tag.color)
+      nextState.tag.color = nextProps.tag.color
+
+    return nextState
+  }
+
+  componentDidMount() {
+    const { tag, editId, editing } = this.props
+    if (editing && tag.id === editId) {
+      this.handleFocusInput()
     }
-    componentDidMount() {
-        const { tag, editId, editing } = this.props;
-        if (editing && tag.id === editId) {
-            this.textInputRef.focus();
-        }
-    }
+  }
 
-    render() {
-        const { topRightIcon, topRightOnPress, bottomRightIcon, bottomRightOnPress, bottomLeftIcon, bottomLeftOnPress, editId, editing } = this.props;
-        const { tag } = this.state;
-        const isEditable = editing && tag.id === editId;
+  handleTitleChange = (title) => {
+    const { tag } = this.state
+    this.setState({
+      tag: { ...tag, title }
+    })
+  }
 
-        let cellColor = tag.color ? tag.color : Colors.tagColors[Math.floor(Math.random() * 5)];
-        cellColor = editing ? (tag.id === editId ? cellColor : Colors.deactivated) : cellColor;
-        const colorObj = tinycolor(cellColor);
-        const cellColorHex = colorObj.toHexString();
+  handleFocusInput = () => {
+    this.input && this.input.focus()
+  }
 
-        const borderColor = { borderColor: cellColorHex }
+  handleEdit = () => {
+    const { onEdit, tag } = this.props
+    setTimeout(this.handleFocusInput, 100)
+    onEdit && onEdit(tag, this)
+  }
 
-        return (
-            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
-                keyboardVerticalOffset={40}>
+  handleCancel = () => {
+    const { onCancel, tag } = this.props
+    this.setState({ tag })
+    onCancel && onCancel(tag)
+  }
+
+  handleColor = () => {
+    const { onColor, tag } = this.props
+    Keyboard.dismiss()
+    onColor && onColor(tag)
+  }
+
+  handleInputRef = (ref) => (this.input = ref)
+
+  render() {
+    const {
+      onDelete,
+      onSave,
+      isEditing
+    } = this.props
+    const { tag, tag: { color, title } } = this.state
+    const hexColor = tinycolor(color).toHexString()
+    const borderColor = { borderColor: hexColor }
+    const colorStyle = [{
+      borderTopColor: hexColor,
+      borderBottomColor: hexColor
+    }]
+    const hitArea = { top: 5, bottom: 5, left: 5, right: 5 }
+    return (
+      <TouchableWithoutFeedback onPress={this.handleFocusInput}>
+        <View style={[styles.tag, borderColor, isEditing && styles.focused]}>
+          {!isEditing && <View style={styles.blocker} />}
+          <View style={styles.tagInner}>
+            <TextInput
+              autoFocus={isEditing}
+              // selectTextOnFocus
+              editable={isEditing}
+              placeholder='New Tag'
+              ref={this.handleInputRef}
+              style={[ styles.tagTextInput, {/* color: hexColor */} ]}
+              onChangeText={this.handleTitleChange}
+              value={title}
+              multiline={true}
+              numberOfLines={3}
+            />
+          </View>
+          {/* Top right button */}
+          {isEditing && (
+            <React.Fragment>
+              <ShellButton
+                data={tag}
+                onPress={this.handleColor}
+                style={styles.topLeftButton}
+                hitSlop={hitArea}
+                disabled={!isEditing}>
+                <View
+                  style={[
+                    styles.topLeftShape,
+                    ...colorStyle
+                  ]}
+                />
+                <Icon
+                  type='FontAwesome5'
+                  name='paint-brush'
+                  style={styles.topLeftIcon}
+                />
+              </ShellButton>
+              <ShellButton
+                data={tag}
+                onPress={this.handleCancel}
+                style={styles.topRightButton}
+                hitSlop={hitArea}
+                disabled={!isEditing}>
+                <View
+                  style={[
+                    styles.topRightShape,
+                    ...colorStyle
+                  ]}
+                />
+                <Icon
+                  type='FontAwesome5'
+                  name='times'
+                  style={styles.topRightIcon}
+                />
+              </ShellButton>
+            </React.Fragment>
+          )}
+          <ShellButton
+            data={tag}
+            onPress={onDelete}
+            hitSlop={hitArea}
+            style={styles.bottomLeftButton}>
             <View
-                style={[styles.cardBox, borderColor]}
-                elevation={5}>
-                <View style={styles.cardInner}>
-                    {isEditable ?
-                        (<TextInput
-                            ref={(input) => { this.textInputRef = input; }}
-                            style={styles.cardText}
-                            onChangeText={(this.onChangeTitle)}
-                            value={tag.title}
-                            placeholder="New Tag"
-                            multiline={true}
-                            editable={isEditable}
-                            autoFocus={isEditable}
-                        // maxHeight={60}
-                        />) :
-                        (<Text style={styles.cardText}>
-                            {tag.title}
-                        </Text>)
-                    }
-                </View>
-                {/* Top right button */}
-                {isEditable &&
-                    <TouchableOpacity
-                        onPress={() => { topRightOnPress(tag) }}
-                        style={styles.topRightButton}
-                        hitSlop={{ top: 20, bottom: 25, left: 25, right: 25 }}
-                        disabled={!(isEditable)}
-                    >
-                        <View style={styles.topRightButtonColor}>
-                            <View
-                                style={[styles.topRightButtonShape, { borderBottomColor: cellColorHex }]}
-                            />
-                        </View>
-                        <View style={styles.topRightIconStyle}>
-                            {topRightIcon()}
-                        </View>
-                    </TouchableOpacity>
-                }
-                {/* Bottom left button */}
-                {isEditable &&
-                    <TouchableOpacity
-                        onPress={() => { bottomLeftOnPress(tag) }}
-                        style={styles.bottomLeftButton}
-                        hitSlop={{ top: 20, bottom: 25, left: 25, right: 25 }}
-                        disabled={!(isEditable)}
-                    >
-                        <View style={styles.bottomLeftButtonColor}>
-                            <View
-                                style={[styles.bottomLeftButtonShape, { borderBottomColor: cellColorHex }]}
-                            />
-                        </View>
-                        <View style={styles.bottomLeftIconStyle}>
-                            {bottomLeftIcon()}
-                        </View>
-                    </TouchableOpacity>
-                }
-                {/* Bottom right button */}
-                <TouchableOpacity
-                    onPress={() => {
-                        bottomRightOnPress(tag);
-                    }}
-                    style={styles.bottomRightButton}
-                    hitSlop={{ top: 10, bottom: 25, left: 25, right: 25 }}>
-                    <View style={styles.bottomRightButtonColor}>
-                        <View
-                            style={[styles.bottomRightButtonShape, { borderTopColor: cellColorHex }]}
-                        />
-                    </View>
-                    <View style={styles.bottomRightIconStyle}>
-                        {bottomRightIcon()}
-                    </View>
-                </TouchableOpacity>
-            </View>
-            </KeyboardAvoidingView>
-
-        )
-    }
+              style={[
+                styles.bottomLeftShape,
+                ...colorStyle
+              ]}
+            />
+            <Icon
+              type='FontAwesome5'
+              name='trash'
+              style={styles.bottomLeftIcon}
+            />
+          </ShellButton>
+          <ShellButton
+            data={tag}
+            hitSlop={hitArea}
+            onPress={isEditing ? onSave : this.handleEdit}
+            style={styles.bottomRightButton}>
+            <View
+              style={[
+                styles.bottomRightShape,
+                ...colorStyle
+              ]}
+            />
+            <Icon
+              type='FontAwesome5'
+              name={isEditing ? 'check' : 'pen'}
+              style={styles.bottomRightIcon}
+            />
+          </ShellButton>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
 }
-
-const styles = StyleSheet.create({
-    cell: {
-        justifyContent: 'center'
-    },
-    coloredLine: {
-        width: '100%',
-        borderWidth: 1,
-        position: 'absolute',
-        top: 45.5
-    },
-    cardBox: {
-        position: 'absolute',
-        left: 26, // 25 +1
-        width: 150,
-        height: 80,
-        backgroundColor: 'hsl(210, 36%, 96%)', // gray-9
-        borderWidth: 3,
-        borderRadius: Metrics.cornerRadius,
-        padding: 4,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        overflow: 'hidden',
-
-    },
-    cardInner: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        paddingHorizontal: Metrics.baseMargin / 2,
-        paddingVertical: Metrics.baseMargin / 6,
-    },
-    cardText: {
-        flex: 1,
-        flexWrap: 'wrap',
-        fontSize: 16,
-        textAlign: 'center',
-        height: 60
-
-    },
-    /* Bottom right button */
-    bottomRightButton: {
-        marginTop: 'auto',
-        alignSelf: 'flex-end'
-    },
-    bottomRightButtonColor: {
-        position: 'absolute',
-        bottom: -4,
-        right: -4,
-        transform: [{ rotate: '180deg' }]
-    },
-    bottomRightButtonShape: {
-        width: 0,
-        height: 0,
-        backgroundColor: 'transparent',
-        borderStyle: 'solid',
-        borderRightWidth: 30,
-        borderTopWidth: 30,
-        borderRightColor: 'transparent',
-        borderTopColor: 'red'
-    },
-    bottomRightIconStyle: {
-    },
-
-    /* Top right button */
-    topRightButton: {
-        position: 'absolute',
-        marginTop: 'auto',
-        alignSelf: 'flex-end',
-    },
-    topRightButtonColor: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        transform: [{ rotate: '180deg' }]
-    },
-    topRightButtonShape: {
-        width: 0,
-        height: 0,
-        backgroundColor: 'transparent',
-        borderStyle: 'solid',
-        borderRightWidth: 30,
-        borderBottomWidth: 30,
-        borderRightColor: 'transparent',
-        borderTopColor: 'red',
-        borderBottomColor: 'red'
-    },
-    topRightIconStyle: {
-        bottom: -4,
-        right: 4
-    },
-    /* Bottom left button */
-    bottomLeftButton: {
-        marginTop: 'auto',
-        alignSelf: 'flex-start',
-    },
-    bottomLeftButtonColor: {
-        position: 'absolute',
-        top: -13,
-        left: -4,
-        transform: [{ rotate: '90deg' }]
-    },
-    bottomLeftButtonShape: {
-        width: 0,
-        height: 0,
-        backgroundColor: 'transparent',
-        borderStyle: 'solid',
-        borderLeftWidth: 30,
-        borderBottomWidth: 30,
-        borderLeftColor: 'transparent',
-        borderTopColor: 'red',
-        borderBottomColor: 'red'
-    },
-    bottomLeftIconStyle: {
-        bottom: -1,
-        left: -1,
-    }
-})
 
 TagCell.propTypes = {
-    // tags: PropTypes.array.isRequired,
-    // actions: PropTypes.object.isRequired,
-    // navigation: PropTypes.object.isRequired,
+  tag: PropTypes.object.isRequired,
+  onColor: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool
 }
 
-function mapStateToProps(state) {
-    return {
-        // tags: selectors.sortedTagsSelector(state),
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        //         actions: bindActionCreators(actions.tag, dispatch)
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(TagCell)
+export default TagCell
