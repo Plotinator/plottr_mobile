@@ -88,7 +88,7 @@ export default class Input extends Component {
             <View style={[styles.label, labelStyle]}>
               <Text
                 fontSize='small'
-                color='lightGray'
+                color='lightenGray'
                 style={[styles.labelText, labelTextStyle]}>
                 {label}
               </Text>
