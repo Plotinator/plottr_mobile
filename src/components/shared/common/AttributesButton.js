@@ -24,7 +24,7 @@ const styles = {
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: Metrics.baseMargin * .8,
+    padding: Metrics.baseMargin * .73,
     paddingHorizontal: Metrics.baseMargin,
     borderRadius: Metrics.cornerRadius / 2,
     backgroundColor: 'white',
