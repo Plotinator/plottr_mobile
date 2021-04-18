@@ -15,7 +15,7 @@ import { selectors, actions, newIds } from 'pltr/v2'
 import Toolbar from '../shared/Toolbar'
 import NewButton from '../../ui/NewButton'
 import DrawerButton from '../../ui/DrawerButton'
-import { Text } from '../../shared/common'
+import { Text, AddButton, MainList } from '../../shared/common'
 import { Colors, Metrics } from '../../../utils'
 import TagCell from './TagCell'
 import ColorPickerModal from '../shared/ColorPickerModal'
@@ -140,25 +140,24 @@ class Tags extends Component {
   }
 
   render () {
+    const { openDrawer } = this.props
     return (
       <View style={styles.container}>
         <View style={styles.container}>
-          <Toolbar>
-            <DrawerButton openDrawer={this.props.openDrawer} />
+          <Toolbar onPressDrawer={openDrawer}>
             <NewButton onPress={this.handleCreateNewTag} />
           </Toolbar>
           <View style={styles.titleContainer}>
-            <Text fontSize='h5' fontStyle='semiBold' style={styles.title}>
-              {t('Tags')}
-            </Text>
+            <Text style={styles.titleText}>{t('Tags')}</Text>
+            <AddButton onPress={this.handleCreateNewTag} />
           </View>
-            <ScrollView
-              style={styles.scroller}
-              keyboardShouldPersistTaps='always'>
-              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.tags}>{this.renderTagList()}</View>
-              </TouchableWithoutFeedback>
-            </ScrollView>
+          <ScrollView
+            style={styles.scroller}
+            keyboardShouldPersistTaps='always'>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.tags}>{this.renderTagList()}</View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
           {this.renderColorPicker()}
         </View>
       </View>

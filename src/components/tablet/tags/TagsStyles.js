@@ -3,22 +3,29 @@ import { Colors, Metrics } from '../../../utils'
 import Fonts from '../../../fonts'
 
 const { baseMargin, doubleBaseMargin } = Metrics
+const { textGrayTone } = Colors
+const { size, style } = Fonts
 
 export default ScaledSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.warmBG
   },
   scroller: {
     // flex: 1
   },
   titleContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: baseMargin,
-    paddingBottom: baseMargin
+    paddingHorizontal: doubleBaseMargin,
+    paddingVertical: baseMargin,
+    color: textGrayTone
   },
-  title: {
-    textAlign: 'center'
+  titleText: {
+    fontSize: size.h5,
+    ...style.bold,
+    marginRight: baseMargin,
+    color: textGrayTone
   },
   tags: {
     flex: 1,
@@ -27,5 +34,5 @@ export default ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: doubleBaseMargin
-  }
+  },
 })

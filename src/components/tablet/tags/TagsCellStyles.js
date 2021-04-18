@@ -10,7 +10,7 @@ export default ScaledSheet.create({
     justifyContent: 'center',
     width: 150,
     height: 95,
-    backgroundColor: 'hsl(210, 36%, 96%)', // gray-9
+    backgroundColor: Colors.warmWhite,
     borderWidth: 3,
     borderRadius: Metrics.cornerRadius,
     padding: baseMargin / 2,
@@ -29,7 +29,7 @@ export default ScaledSheet.create({
   focused: {
     borderWidth: 3,
     zIndex: 9,
-    backgroundColor: 'white'
+    backgroundColor: Colors.warmWhiteBG
   },
   blocker: {
     zIndex: 9,
@@ -48,13 +48,13 @@ export default ScaledSheet.create({
     paddingVertical: baseMargin / 4
   },
   tagTextInput: {
-    ...Fonts.style.semiBold,
+    ...Fonts.style.bold,
     fontSize: Fonts.size.h8 * 1.1,
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    color: Colors.darkGray,
+    color: Colors.warmTextDarkGray,
     paddingTop: 0,
     paddingBottom: 0,
     paddingLeft: 0,
