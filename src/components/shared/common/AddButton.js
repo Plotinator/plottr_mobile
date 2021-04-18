@@ -9,6 +9,7 @@ export default class AddButton extends Component {
     const {
       style,
       data,
+      icon = 'plus',
       color = 'orange',
       size = 26,
       hitSize = 5,
@@ -52,7 +53,7 @@ export default class AddButton extends Component {
         style={buttonStyles}
         hitSlop={hitArea}
         animation={animated ? animation : null}>
-        <Icon type='FontAwesome5' name='plus' style={iconStyles} />
+        <Icon type='FontAwesome5' name={icon} style={iconStyles} />
       </ShellButton>
     )
   }

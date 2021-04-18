@@ -12,6 +12,8 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: '1@ms',
+    borderColor: orange,
     borderRadius: buttonRadius,
     backgroundColor: orange
   },
@@ -27,9 +29,10 @@ export default ScaledSheet.create({
     paddingHorizontal: baseMargin * 1.5,
     paddingVertical: baseMargin
   },
-  bordered: {
-    borderWidth: '1@ms',
-    borderColor: 'lightgray'
+  smallWrapper: {
+    paddingHorizontal: baseMargin * 1.5,
+    paddingTop: baseMargin / 2,
+    paddingBottom: baseMargin / 1.5
   },
   faded: {
     opacity: 0.5

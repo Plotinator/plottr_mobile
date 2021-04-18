@@ -17,6 +17,7 @@ const Colors = {
   inputBorderWhite: '#D6D6D6',
   gray: '#E0E0E0',
   grayBlack: '#353535',
+  lightGray: '#A8A8A8',
   textBlack: '#505050',
   darkGray: '#303030',
   textGray: '#888888',
@@ -32,7 +33,15 @@ const Colors = {
   textDarkGrayTone: '#666666',
   textDarkerGrayTone: '#545454',
   deactivated: '#9F9F9F',
-  tagColors: ['#6cace4', '#78be20', '#e5554f', '#ff7f32', '#ffc72c'] // Same as the timeline colors
+  tagColors: ['#6cace4', '#78be20', '#e5554f', '#ff7f32', '#ffc72c'], // Same as the timeline colors
+  // warm tones
+  warmWhite: '#f5f4f0',
+  warmWhiter: '#f6f5f3',
+  warmBG: '#eeebe6',
+  warmGray: '#e0ddd8',
+  warmTextGray: '#7d7d7b', //7f7e7d
+  warmTextDarkGray: '#656462'
+
 }
 
 Colors.backgroundTone = Colors.lightGrayTone

@@ -1,6 +1,7 @@
 import { ScaledSheet } from 'react-native-size-matters'
 import Fonts from '../../../fonts'
 import Metrics from '../../../utils/Metrics'
+import Colors from '../../../utils/Colors'
 import { isTablet } from 'react-native-device-info'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 
@@ -10,6 +11,7 @@ const { size, style } = Fonts
 
 export default ScaledSheet.create({
   tabContainer: {
+    backgroundColor: Colors.warmWhite,
     height: footerHeight,
     paddingBottom: isTablet() ? baseMargin / (IS_IOS ? 1 : 2) : 0
   },

@@ -76,6 +76,7 @@ class Project extends Component {
       <View style={[styles.bookWrapper, isLast && styles.lastBook]}>
         <Book
           editable
+          noTimeline
           book={item}
           navigateToOutline={this.navigateToOutline}
           navigateToDetails={this.navigateToDetails}

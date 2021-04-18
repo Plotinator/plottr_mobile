@@ -75,6 +75,15 @@ export default ScaledSheet.create({
     ...style.semiBold,
     paddingBottom: 1
   },
+  reset: {
+    borderBottomWidth: 0,
+    paddingTop: 0
+  },
+  resetInput: {
+    paddingVertical: 0,
+    paddingTop: 0,
+    minHeight: 0
+  },
   inset: {
     backgroundColor: white,
     borderColor: inputBorderWhite,

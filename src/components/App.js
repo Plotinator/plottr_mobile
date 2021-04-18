@@ -21,6 +21,7 @@ import AppErrorBoundary from './AppErrorBoundary'
 import { t } from 'plottr_locales'
 import AlertDialog, { showAlert } from './shared/common/AlertDialog'
 import Metrics from '../utils/Metrics'
+import Colors from '../utils/Colors'
 import Main from './Main'
 import { cloneDeep } from 'lodash'
 import { TESTR_EMAIL } from '../utils/constants'
@@ -192,7 +193,7 @@ export default class App extends Component {
 
     console.log('userInfo', userInfo)
     return (
-      <SafeAreaProvider>
+      <SafeAreaProvider style={{ backgroundColor: Colors.warmBG }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
             enabled
