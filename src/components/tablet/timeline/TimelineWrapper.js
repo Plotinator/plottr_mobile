@@ -14,10 +14,10 @@ import DrawerButton from '../../ui/DrawerButton'
 
 class TimelineWrapper extends Component {
   render () {
+    const { openDrawer } = this.props
     return (
       <View style={styles.container}>
-        <Toolbar>
-          <DrawerButton openDrawer={this.props.openDrawer} />
+        <Toolbar onPressDrawer={openDrawer}>
           <SeriesPicker />
         </Toolbar>
         <ErrorBoundary>
