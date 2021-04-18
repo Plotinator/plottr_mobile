@@ -132,7 +132,7 @@ class Outline extends Component {
   }
 
   render () {
-    const { chapters, lines, card2Dmap } = this.props
+    const { chapters, lines, card2Dmap, openDrawer } = this.props
     const { linesById, currentLine, selectedLineId } = this.state
     const cardMap = helpers.card.cardMapping(
       chapters,
@@ -146,8 +146,7 @@ class Outline extends Component {
     }))
     return (
       <View style={{ flex: 1 }}>
-        <Toolbar>
-          <DrawerButton openDrawer={this.props.openDrawer} />
+        <Toolbar onPressDrawer={openDrawer}>
           <SeriesPicker />
         </Toolbar>
         <Grid>

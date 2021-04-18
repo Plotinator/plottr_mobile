@@ -98,13 +98,12 @@ class Places extends Component {
   }
 
   render () {
-    const { visiblePlaces } = this.props
+    const { visiblePlaces, openDrawer } = this.props
     const { activePlaceId } = this.state
 
     return (
       <View style={{ flex: 1 }}>
-        <Toolbar>
-          <DrawerButton openDrawer={this.props.openDrawer} />
+        <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewPlace} />
           <View style={styles.additionals}>
             <AttributesButton onPress={this.navigateToCustomAttributes} />
