@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actions, selectors } from 'pltr/v2'
 import { t } from 'plottr_locales'
-import { View } from 'react-native'
+import { View, TouchableWithoutFeedback } from 'react-native'
 import Text from './Text'
 import ShellButton from './ShellButton'
 import AddButton from './AddButton'
@@ -25,6 +25,23 @@ const DefaultList = [
 ]
 
 class MainList extends Component {
+  state = {
+    focusGroup: null
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.groupInterval)
+  }
+
+  handleFocusGroup = (focusGroup) => {
+    this.setState({ focusGroup })
+    clearInterval(this.groupInterval)
+    this.groupInterval = setTimeout(this.handleClearFocused, 5e3)
+  }
+
+  handleClearFocused = () => {
+    this.setState({ focusGroup: null })
+  }
 
   renderTitleHead () {
     const { title, onPressAdd } = this.props
@@ -42,9 +59,9 @@ class MainList extends Component {
 
   renderGroupList () {
     const { list = DefaultList } = this.props
-    return list.map(group => {
+    return list.map((group, i) => {
       return (
-        <React.Fragment>
+        <React.Fragment key={i}>
           {this.renderGroupItem(group)}
           {this.renderList(group.data)}
         </React.Fragment>
@@ -53,15 +70,29 @@ class MainList extends Component {
   }
 
   renderGroupItem = (group, i) => {
+    const { focusGroup } = this.state
     const { onPressAdd } = this.props
     const { title } = group
+    const isFocused = focusGroup && focusGroup.id === group.id
     return (
-      <View style={styles.groupLabel} key={i}>
-        <Text style={styles.groupText}>{title}</Text>
-        {onPressAdd && (
-          <AddButton data={group} outlined onPress={onPressAdd} />
-        )}
-      </View>
+      <ShellButton
+        key={i}
+        faded={!isFocused}
+        noFeedback
+        data={group}
+        onPress={this.handleFocusGroup}>
+        <View style={styles.groupLabel}>
+          <Text style={styles.groupText}>{title}</Text>
+          {onPressAdd && (
+            <AddButton
+              animated
+              outlined
+              data={group}
+              animation={isFocused ? 'fadeIn' : 'fadeOut'}
+              onPress={onPressAdd} />
+          )}
+        </View>
+      </ShellButton>
     )
   }
 
@@ -96,6 +127,7 @@ class MainList extends Component {
     ]
     return (
       <ShellButton
+        key={i}
         data={{ ...item, listIndex: i }}
         style={[styles.item, isActive && styles.itemActive]}
         onPress={onPressItem}>
@@ -127,9 +159,9 @@ class MainList extends Component {
     )
   }
 
-  renderColor = (color) => (
+  renderColor = (color, i) => (
     color && (
-      <View style={[styles.colorDot, {
+      <View key={i} style={[styles.colorDot, {
           backgroundColor: tinycolor(color).toHexString()
         }]}
       />
@@ -151,9 +183,9 @@ class MainList extends Component {
 
 MainList.propTypes = {
   title: PropTypes.string,
-  onPressAdd: PropTypes.funct,
-  onPressDelete: PropTypes.funct,
-  onPressItem: PropTypes.funct,
+  // onPressAdd: PropTypes.funct,
+  // onPressDelete: PropTypes.funct,
+  // onPressItem: PropTypes.funct,
   isGroup: PropTypes.bool,
   numbered: PropTypes.bool,
   alwaysShowDelete: PropTypes.bool,

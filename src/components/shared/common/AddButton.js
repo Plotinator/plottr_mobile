@@ -13,7 +13,9 @@ export default class AddButton extends Component {
       size = 26,
       hitSize = 5,
       outlined,
-      onPress
+      onPress,
+      animated,
+      animation
     } = this.props
     const buttonStyles = [styles.plusButton]
     const iconStyles = [styles.plusIcon]
@@ -48,7 +50,8 @@ export default class AddButton extends Component {
         data={data}
         onPress={onPress}
         style={buttonStyles}
-        hitSlop={hitArea}>
+        hitSlop={hitArea}
+        animation={animated ? animation : null}>
         <Icon type='FontAwesome5' name='plus' style={iconStyles} />
       </ShellButton>
     )
