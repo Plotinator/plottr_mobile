@@ -37,8 +37,9 @@ const Colors = {
   // warm tones
   warmWhite: '#f5f4f0',
   warmWhiter: '#f6f5f3',
-  warmBG: '#eeebe6',
-  warmGray: '#e0ddd8',
+  warmBG: '#efece7',
+  warmWhiteBG: '#fffcf7',
+  warmGray: '#e1ded9',
   warmTextGray: '#7d7d7b', //7f7e7d
   warmTextDarkGray: '#656462'
 
