@@ -5,12 +5,24 @@ import Colors from '../../../utils/Colors'
 
 const { baseMargin, doubleBaseMargin, cornerRadius } = Metrics
 const { style, size } = Fonts
-const { orange, white, whiteTone, grayTone, backgroundTone, lightGrayTone, textLightGrayTone, textGrayTone, textDarkGrayTone, textDarkerGrayTone } = Colors
+const {
+  orange,
+  white,
+  whiteTone,
+  grayTone,
+  backgroundTone,
+  lightGrayTone,
+  textLightGrayTone,
+  textGrayTone,
+  textDarkGrayTone,
+  textDarkerGrayTone,
+  warmBG
+} = Colors
 
 export default ScaledSheet.create({
   container: {
     flex: 1,
-    backgroundColor: backgroundTone
+    backgroundColor: warmBG // backgroundTone
   },
   scroller: {
     paddingRight: baseMargin
@@ -33,7 +45,7 @@ export default ScaledSheet.create({
     borderBottomRightRadius: 999,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: grayTone,
+    backgroundColor: Colors.warmGray, // grayTone,
     paddingVertical: baseMargin / 1.5,
     paddingLeft: doubleBaseMargin,
     paddingRight: baseMargin / 1.5,
@@ -41,18 +53,18 @@ export default ScaledSheet.create({
   },
   groupText: {
     ...style.bold,
-    color: textLightGrayTone,
+    color: Colors.warmTextGray,// textLightGrayTone,
     fontSize: size.h7
   },
   items: {
     paddingLeft: baseMargin,
-    paddingBottom: baseMargin,
+    paddingBottom: baseMargin
   },
   item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: whiteTone,
+    backgroundColor: Colors.warmWhiteBG,// whiteTone,
     borderRadius: cornerRadius,
     padding: baseMargin * 1.25,
     paddingTop: baseMargin * 1.15,
@@ -79,7 +91,7 @@ export default ScaledSheet.create({
     color: white
   },
   trashButton: {
-    marginLeft: baseMargin / 2,
+    marginLeft: baseMargin / 2
     // marginRight: -baseMargin / 4
   },
   colors: {

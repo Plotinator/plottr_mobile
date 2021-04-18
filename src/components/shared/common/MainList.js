@@ -169,13 +169,16 @@ class MainList extends Component {
   )
 
   render () {
-    const { isGroup } = this.props
+    const { isGroup, list } = this.props
+    const noEmpty = list && list.length > 0
     return (
       <View style={styles.container}>
         {this.renderTitleHead()}
-        <ScrollerView scrollerProps={styles.scroller}>
-          {isGroup ? this.renderGroupList() : this.renderList()}
-        </ScrollerView>
+        {noEmpty && (
+          <ScrollerView scrollerProps={styles.scroller}>
+            {isGroup ? this.renderGroupList() : this.renderList()}
+          </ScrollerView>
+        )}
       </View>
     )
   }
