@@ -57,14 +57,14 @@ export default class BookModal extends Component {
   handleClose = () => {
     const { onCloseBook } = this.props
     onCloseBook && onCloseBook()
-    this.setState({ visible: false })
+    this.setState({ visible: false, changes: false })
   }
 
   handleSaveChanges = () => {
     const { onSaveBook } = this.props
     const { id, title, premise, genre, theme } = this.state
     onSaveBook && onSaveBook({ id, title, premise, genre, theme })
-    this.setState({ visible: false })
+    this.setState({ visible: false, changes: false })
   }
 
   render () {
