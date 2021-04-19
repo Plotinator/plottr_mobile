@@ -204,17 +204,17 @@ class CardModal extends Component {
               </View>
               <View style={styles.form}>
                 <View style={styles.row}>
-                  <Text style={styles.label}>Title</Text>
+                  <Text style={styles.label}>{t('Title')}</Text>
                   <Input
                     value={title}
                     style={styles.input}
-                    inputStyle={styles.inputText}
+                    inputStyle={styles.inputBoldText}
                     onChangeText={this.handleSetTitle}
                     inset
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.label}>Description</Text>
+                  <Text style={styles.label}>{t('Description')}</Text>
                   <RichEditor
                     style={styles.multiInput}
                     initialValue={description}
@@ -223,7 +223,7 @@ class CardModal extends Component {
                 </View>
                 <View style={styles.row}>
                   <View style={styles.labels}>
-                    <Text style={styles.label}>Characters</Text>
+                    <Text style={styles.label}>{t('Characters')}</Text>
                     <View style={styles.count}>
                       <Text style={styles.countText}>{characters.length}</Text>
                     </View>
@@ -231,7 +231,7 @@ class CardModal extends Component {
                       style={styles.collapseButton}
                       onPress={this.toggleCollapse('showCharacters')}>
                       <Text style={styles.collapseText}>
-                        See {showCharacters ? 'More' : 'Less'}
+                        {t(`See ${showCharacters ? 'More' : 'Less'}`)}
                       </Text>
                       <Icon
                         style={[
@@ -254,7 +254,7 @@ class CardModal extends Component {
                 </View>
                 <View style={styles.row}>
                   <View style={styles.labels}>
-                    <Text style={styles.label}>Places</Text>
+                    <Text style={styles.label}>{t('Places')}</Text>
                     <View style={styles.count}>
                       <Text style={styles.countText}>{places.length}</Text>
                     </View>
@@ -262,7 +262,7 @@ class CardModal extends Component {
                       style={styles.collapseButton}
                       onPress={this.toggleCollapse('showPlaces')}>
                       <Text style={styles.collapseText}>
-                        See {showPlaces ? 'More' : 'Less'}
+                        {t(`See ${showPlaces ? 'More' : 'Less'}`)}
                       </Text>
                       <Icon
                         style={[
@@ -285,7 +285,7 @@ class CardModal extends Component {
                 </View>
                 <View style={styles.row}>
                   <View style={styles.labels}>
-                    <Text style={styles.label}>Tags</Text>
+                    <Text style={styles.label}>{t('Tags')}</Text>
                     <View style={styles.count}>
                       <Text style={styles.countText}>{tags.length}</Text>
                     </View>
@@ -293,7 +293,7 @@ class CardModal extends Component {
                       style={styles.collapseButton}
                       onPress={this.toggleCollapse('showTags')}>
                       <Text style={styles.collapseText}>
-                        See {showTags ? 'More' : 'Less'}
+                        {t(`See ${showTags ? 'More' : 'Less'}`)}
                       </Text>
                       <Icon
                         style={[
@@ -321,7 +321,7 @@ class CardModal extends Component {
                 tight
                 style={styles.action}
                 onPress={this.handleSaveChanges}>
-                Save
+                {t('Save')}
               </Button>
             </Collapsible>
           </View>
