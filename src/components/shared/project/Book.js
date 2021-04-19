@@ -13,6 +13,7 @@ export default function Book(props) {
     style,
     editable,
     noTimeline,
+    book,
     book: { id, title },
     navigateToOutline,
     navigateToDetails,
@@ -27,7 +28,7 @@ export default function Book(props) {
     !navigateToTimeline && navigateToDetails && navigateToDetails(id)
   }
   const goToEditBook = () => {
-    navigateToDetails(id)
+    navigateToDetails(book)
   }
   const deleteBook = () => {
     onDeleteBook(id, bookTitle)

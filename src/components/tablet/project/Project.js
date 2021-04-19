@@ -12,6 +12,7 @@ import Book from '../../shared/project/Book'
 import Collapsible from 'react-native-collapsible'
 import styles from './ProjectStyles'
 import { showAlert } from '../../shared/common/AlertDialog'
+import BookModal from './BookModal'
 
 const { objectId } = newIds
 
@@ -114,9 +115,16 @@ class Project extends Component {
     })
   }
 
-  openEditModal = (id) => {
-    this.props.navigation.push('SeriesDetails', { id })
+  handleEditBook = (book) => {
+    this.BookModal.editBook(book)
   }
+
+  handleSaveBook = ({ id, title, premise, genre, theme }) => {
+    const { actions } = this.props
+    actions.editBook(id, { title, premise, genre, theme })
+  }
+
+  handleBookModalRef = ref => this.BookModal = ref
 
   navigateToTimeline = (id) => {
     this.props.uiActions.changeCurrentTimeline(id)
@@ -131,7 +139,6 @@ class Project extends Component {
   renderBooks() {
     const { books } = this.props
     if (!books.allIds) return null
-
     return books.allIds.map((id) => {
       return (
         <Book
@@ -141,7 +148,7 @@ class Project extends Component {
           book={books[`${id}`]}
           navigateToOutline={this.navigateToOutline}
           navigateToTimeline={this.navigateToTimeline}
-          navigateToDetails={this.openEditModal}
+          navigateToDetails={this.handleEditBook}
           onDeleteBook={this.handleDeleteBook}
           style={styles.book}
         />
@@ -185,7 +192,7 @@ class Project extends Component {
               editable={editMode === true}
               value={series.premise}
               onChangeText={this.handleSeriesPremise}
-              autoCapitalize='words'
+              autoCapitalize='sentences'
               numberOfLines={4}
               inputStyle={styles.seriesDescription}
             />
@@ -197,7 +204,7 @@ class Project extends Component {
               editable={editMode === true}
               value={series.theme}
               onChangeText={this.handleSeriesTheme}
-              autoCapitalize='words'
+              autoCapitalize='sentences'
               numberOfLines={4}
               inputStyle={styles.seriesTheme}
             />
@@ -248,6 +255,10 @@ class Project extends Component {
             </TouchableWithoutFeedback>
           </ScrollView>
         </View>
+        <BookModal
+          ref={this.handleBookModalRef}
+          onSaveBook={this.handleSaveBook}
+        />
       </View>
     )
   }

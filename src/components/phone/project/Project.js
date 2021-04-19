@@ -25,7 +25,7 @@ class Project extends Component {
     this.props.book.deleteBook(id)
   }
 
-  navigateToDetails = (id) => {
+  navigateToDetails = ({ id }) => {
     this.props.navigation.push('SeriesDetails', { id })
   }
 
