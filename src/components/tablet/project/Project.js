@@ -92,7 +92,7 @@ class Project extends Component {
     // add a beat
     beatActions.addBeat(newBookId)
 
-    this.scroller.scrollToEnd()
+    setTimeout(this.scroller.scrollToEnd)
   }
 
   handleDeleteBook = (id, title) => {
