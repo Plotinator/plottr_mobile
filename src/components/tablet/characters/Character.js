@@ -6,6 +6,7 @@ import AttachmentList from '../../shared/attachments/AttachmentList'
 import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
 import { RichEditor } from '../../shared/common'
 import DetailImage from '../shared/DetailImage'
+import DetailPreview from '../shared/DetailView/Preview'
 
 export default function Character (props) {
   const { character, customAttributes } = props
@@ -122,56 +123,112 @@ export default function Character (props) {
     )
   }
 
+  let details = {
+    title: {
+      content: workingCopy.name
+    },
+    description: {
+      content: workingCopy.description,
+      type:'line'
+    },
+    attributes: [
+      {
+        title: 'Notes',
+        key: 'notes',
+        type: 'paragraph',
+        titleStyle: { fontStyle: 'italic' },
+        itemStyle: null,
+      },
+      {
+        title: 'Books',
+        key: 'bookIds',
+        type: 'attachment',
+        attachmentType: 'bookId',
+        attachmentSourceType: 'place',
+        titleStyle: null,
+        itemStyle: null,
+      },
+      {
+        title: 'Tags',
+        key: 'tags',
+        type: 'attachment',
+        attachmentType: 'tag',
+        attachmentSourceType: 'place',
+        titleStyle: null,
+        itemStyle: styles.tagStyle,
+      },
+    ]
+  };
+  const addCustomAttributes = () => {
+    return customAttributes.map((attr, idx) => {
+      const { name, type } = attr
+      let newAttr = {
+        title: name,
+        key: name,
+        type: type == 'paragraph'? 'paragraph': 'line'
+      }
+      details.attributes.push(newAttr);
+    })
+  }
+
+  addCustomAttributes();
+
   return (
-    <DetailsWrapper>
-      <DetailsLeft>
-        <DetailImage image={character.image && character.image.data} />
-        <Item inlineLabel style={styles.label}>
-          <Label>{t('Name')}</Label>
-          <Input
-            value={workingCopy.name}
-            onChangeText={text => {
-              setWorkingCopy({ ...workingCopy, name: text })
-              makeChanges(true)
-            }}
-            autoCapitalize='words'
-          />
-        </Item>
-        <Item inlineLabel style={styles.label}>
-          <Label>{t('Description')}</Label>
-          <Input
-            value={workingCopy.description}
-            onChangeText={text => {
-              setWorkingCopy({ ...workingCopy, description: text })
-              makeChanges(true)
-            }}
-            autoCapitalize='sentences'
-          />
-        </Item>
-        <View style={[styles.afterList, styles.rceView]}>
-          <Label>{t('Notes')}</Label>
-          <RichEditor
-            initialValue={character.notes}
-            onChange={val => {
-              setWorkingCopy({ ...workingCopy, notes: val })
-              makeChanges(true)
-            }}
-          />
-        </View>
-        {renderTemplates()}
-        {renderCustomAttributes()}
-      </DetailsLeft>
-      <DetailsRight>
-        <View>
-          <View style={styles.detailsRightItems}>{renderAttachments()}</View>
-        </View>
-        <View style={styles.buttonFooter}>
-          <Button block success disabled={!changes} onPress={saveChanges}>
-            <Text>{t('Save')}</Text>
-          </Button>
-        </View>
-      </DetailsRight>
-    </DetailsWrapper>
+  <>
+      <DetailPreview
+        object={workingCopy}
+        details={details}
+      />
+    </>
+    // <DetailsWrapper>
+    //   <DetailsLeft>
+    //     <DetailImage image={character.image && character.image.data} />
+    //     <Item inlineLabel style={styles.label}>
+    //       <Label>{t('Name')}</Label>
+    //       <Input
+    //         value={workingCopy.name}
+    //         onChangeText={text => {
+    //           setWorkingCopy({ ...workingCopy, name: text })
+    //           makeChanges(true)
+    //         }}
+    //         autoCapitalize='words'
+    //       />
+    //     </Item>
+    //     <Item inlineLabel style={styles.label}>
+    //       <Label>{t('Description')}</Label>
+    //       <Input
+    //         value={workingCopy.description}
+    //         onChangeText={text => {
+    //           setWorkingCopy({ ...workingCopy, description: text })
+    //           makeChanges(true)
+    //         }}
+    //         autoCapitalize='sentences'
+    //       />
+    //     </Item>
+    //     <View style={[styles.afterList, styles.rceView]}>
+    //       <Label>{t('Notes')}</Label>
+    //       <RichEditor
+    //         initialValue={character.notes}
+    //         onChange={val => {
+    //           setWorkingCopy({ ...workingCopy, notes: val })
+    //           makeChanges(true)
+    //         }}
+    //       />
+    //     </View>
+    //     {renderTemplates()}
+    //     {renderCustomAttributes()}
+    //   </DetailsLeft>
+    //   <DetailsRight>
+    //     <View>
+    //       <View style={styles.detailsRightItems}>{renderAttachments()}</View>
+    //     </View>
+    //     <View style={styles.buttonFooter}>
+    //       <Button block success disabled={!changes} onPress={saveChanges}>
+    //         <Text>{t('Save')}</Text>
+    //       </Button>
+    //     </View>
+    //   </DetailsRight>
+    // </DetailsWrapper>
   )
 }
 
@@ -192,5 +249,8 @@ const styles = StyleSheet.create({
   },
   rceView: {
     marginBottom: 16
+  },
+  tagStyle:{
+    
   }
 })

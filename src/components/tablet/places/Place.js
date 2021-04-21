@@ -6,6 +6,7 @@ import AttachmentList from '../../shared/attachments/AttachmentList'
 import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
 import { RichEditor } from '../../shared/common'
 import DetailImage from '../shared/DetailImage'
+// import DetailPreview from '../shared/DetailView/Preview'
 
 export default function Place (props) {
   const { place, customAttributes } = props
@@ -73,7 +74,36 @@ export default function Place (props) {
     )
   }
 
+  let attributes = [
+    {
+      title: 'Notes',
+      key: 'notes',
+      type: 'richEditor',
+      titleStyle: { fontStyle: 'italic' }
+    },
+    {
+      title: 'Tags',
+      key: 'tags',
+      type: 'attachment',
+      attachmentType: 'tag',
+      attachmentSourceType: 'place'
+    },
+    {
+      title: 'Books',
+      key: 'bookIds',
+      type: 'attachment',
+      attachmentType: 'bookId',
+      attachmentSourceType: 'place'
+    },
+  ]
+  console.log("Working copy ---------------", workingCopy);
   return (
+    // <>
+    //   <DetailPreview 
+    //     object={workingCopy}
+    //     attributes={attributes}
+    //   />
+    // </>
     <DetailsWrapper>
       <DetailsLeft>
         <DetailImage image={place.image && place.image.data} />

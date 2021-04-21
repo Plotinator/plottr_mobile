@@ -10,6 +10,7 @@ import RichEditor from './RichEditor'
 import ShellButton from './ShellButton'
 import AlertDialog from './AlertDialog'
 import Attachments from './Attachments'
+import AttachmentsPreview from './AttachmentsPreview'
 import ScrollerView from './ScrollerView'
 import FloatingInput from './FloatingInput'
 import Title, { RenderTitle } from './Title'
@@ -30,6 +31,7 @@ export {
   RichEditor,
   AlertDialog,
   Attachments,
+  AttachmentsPreview,
   ShellButton,
   RenderTitle,
   ScrollerView,

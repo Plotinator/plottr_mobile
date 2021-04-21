@@ -150,7 +150,7 @@ Attachments.propTypes = {
 
 function mapStateToProps (state) {
   const { books = [] } = state
-  const bookIds = {}
+  const bookIds = []
   Object.keys(books).map((key, index) => {
     bookIds[index] = { ...books[key] }
   })
@@ -158,7 +158,7 @@ function mapStateToProps (state) {
     characters: selectors.charactersSortedAtoZSelector(state),
     places: selectors.placesSortedAtoZSelector(state),
     tags: selectors.sortedTagsSelector(state),
-    books: state.books,
+    books: [state.books],
     bookIds
   }
 }
