@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { t } from 'plottr_locales'
-import { View, Input, Label, Item, Text, Button } from 'native-base'
-import { StyleSheet } from 'react-native'
+import { Input, Label, Item, Text, Button } from 'native-base'
+import { View, StyleSheet, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import AttachmentList from '../../shared/attachments/AttachmentList'
 import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
 import { RichEditor } from '../../shared/common'
 import DetailImage from '../shared/DetailImage'
-// import DetailPreview from '../shared/DetailView/Preview'
+import DetailPreview from '../shared/DetailView/Preview'
 
-export default function Place (props) {
+export default function Place(props) {
   const { place, customAttributes } = props
   const [changes, makeChanges] = useState(false)
   const [workingCopy, setWorkingCopy] = useState(place)
@@ -96,62 +96,119 @@ export default function Place (props) {
       attachmentSourceType: 'place'
     },
   ]
-  console.log("Working copy ---------------", workingCopy);
+
+  let objectMeta = {
+    title: {
+      content: workingCopy.name
+    },
+    description: {
+      content: workingCopy.description,
+      type: 'line'
+    },
+    image: {
+      displayStyle: 'fullWidth',
+    },
+    attributes: [
+      {
+        title: 'Notes',
+        key: 'notes',
+        type: 'paragraph',
+        titleStyle: { fontStyle: 'italic' },
+        itemStyle: null,
+      },
+      {
+        title: 'Books',
+        key: 'bookIds',
+        type: 'attachment',
+        attachmentType: 'bookId',
+        attachmentSourceType: 'place',
+        titleStyle: null,
+        itemStyle: null,
+      },
+      {
+        title: 'Tags',
+        key: 'tags',
+        type: 'attachment',
+        attachmentType: 'tag',
+        attachmentSourceType: 'place',
+        titleStyle: null,
+        itemStyle: styles.tagStyle,
+      },
+    ]
+  };
+  const addCustomAttributes = () => {
+    return customAttributes.map((attr, idx) => {
+      const { name, type } = attr
+      let newAttr = {
+        title: name,
+        key: name,
+        type: type == 'paragraph' ? 'paragraph' : 'line'
+      }
+      objectMeta.attributes.push(newAttr);
+    })
+  }
+
+  addCustomAttributes();
+  // console.log("Working copy ---------------", workingCopy);
   return (
-    // <>
-    //   <DetailPreview 
-    //     object={workingCopy}
-    //     attributes={attributes}
-    //   />
-    // </>
-    <DetailsWrapper>
-      <DetailsLeft>
-        <DetailImage image={place.image && place.image.data} />
-        <Item inlineLabel style={styles.label}>
-          <Label>{t('Name')}</Label>
-          <Input
-            value={workingCopy.name}
-            onChangeText={text => {
-              setWorkingCopy({ ...workingCopy, name: text })
-              makeChanges(true)
-            }}
-            autoCapitalize='words'
-          />
-        </Item>
-        <Item inlineLabel style={styles.label}>
-          <Label>{t('Description')}</Label>
-          <Input
-            value={workingCopy.description}
-            onChangeText={text => {
-              setWorkingCopy({ ...workingCopy, description: text })
-              makeChanges(true)
-            }}
-            autoCapitalize='sentences'
-          />
-        </Item>
-        <View style={[styles.afterList, styles.rceView]}>
-          <Label>{t('Notes')}</Label>
-          <RichEditor
-            initialValue={workingCopy.notes}
-            onChange={val => {
-              setWorkingCopy({ ...workingCopy, notes: val })
-              makeChanges(true)
-            }}
-          />
-        </View>
-        {renderCustomAttributes()}
-      </DetailsLeft>
-      <DetailsRight>
+    <ScrollView style={{ flex: 1 }}>
+      <TouchableWithoutFeedback>
         <View>
-          <View style={styles.detailsRightItems}>{renderAttachments()}</View>
+          <DetailPreview
+            object={workingCopy}
+            objectMeta={objectMeta}
+          />
         </View>
-        <View style={styles.buttonFooter}>
-          <Button block success disabled={!changes} onPress={saveChanges}>
-            <Text>{t('Save')}</Text>
-          </Button>
-        </View>
-      </DetailsRight>
-    </DetailsWrapper>
+      </TouchableWithoutFeedback>
+    </ScrollView>
+    // <DetailsWrapper>
+    //   <DetailsLeft>
+    //     <DetailImage image={place.image && place.image.data} />
+    //     <Item inlineLabel style={styles.label}>
+    //       <Label>{t('Name')}</Label>
+    //       <Input
+    //         value={workingCopy.name}
+    //         onChangeText={text => {
+    //           setWorkingCopy({ ...workingCopy, name: text })
+    //           makeChanges(true)
+    //         }}
+    //         autoCapitalize='words'
+    //       />
+    //     </Item>
+    //     <Item inlineLabel style={styles.label}>
+    //       <Label>{t('Description')}</Label>
+    //       <Input
+    //         value={workingCopy.description}
+    //         onChangeText={text => {
+    //           setWorkingCopy({ ...workingCopy, description: text })
+    //           makeChanges(true)
+    //         }}
+    //         autoCapitalize='sentences'
+    //       />
+    //     </Item>
+    //     <View style={[styles.afterList, styles.rceView]}>
+    //       <Label>{t('Notes')}</Label>
+    //       <RichEditor
+    //         initialValue={workingCopy.notes}
+    //         onChange={val => {
+    //           setWorkingCopy({ ...workingCopy, notes: val })
+    //           makeChanges(true)
+    //         }}
+    //       />
+    //     </View>
+    //     {renderCustomAttributes()}
+    //   </DetailsLeft>
+    //   <DetailsRight>
+    //     <View>
+    //       <View style={styles.detailsRightItems}>{renderAttachments()}</View>
+    //     </View>
+    //     <View style={styles.buttonFooter}>
+    //       <Button block success disabled={!changes} onPress={saveChanges}>
+    //         <Text>{t('Save')}</Text>
+    //       </Button>
+    //     </View>
+    //   </DetailsRight>
+    // </DetailsWrapper>
   )
 }
 

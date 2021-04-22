@@ -5,6 +5,7 @@ import { View } from 'react-native'
 import Text from './Text'
 import styles from './AttachmentPreviewStyles'
 import PropTypes from 'prop-types'
+import tinycolor from 'tinycolor2'
 
 class AttachmentsPreview extends Component {
 
@@ -21,10 +22,12 @@ class AttachmentsPreview extends Component {
     const length = theArray.length;
     const { color } = attachment;
     const { style } = this.props;
+    const hexColor = tinycolor(color).toHexString()
+
     return (
-      <View key={i} style={[styles.tabCell, color && { borderColor: color }, style]}>
+      <View key={i} style={[styles.tabCell, hexColor && { borderColor: hexColor }, style]}>
         {style ?
-          <Text color={color} fontSize='tiny' fontStyle='italic'>{`#${titleDisplay}`}</Text> :
+          <Text color={hexColor} fontSize='tiny' fontStyle='italic'>{`#${titleDisplay}`}</Text> :
           <Text fontSize='tiny' fontStyle='italic'>{`"${titleDisplay}"${i < length - 1 ? ',' : ''}`}</Text>
         }
       </View>
@@ -66,6 +69,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AttachmentsPreview)

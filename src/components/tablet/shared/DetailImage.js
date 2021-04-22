@@ -4,12 +4,23 @@ import { Image, StyleSheet } from 'react-native'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
-export default function DetailImage ({ image }) {
-  return image ? <Image style={styles.image} source={{ uri: image }} /> : null
+export default function DetailImage({ image, displayStyle }) {
+  let imageStyle = styles.default;
+  switch (displayStyle) {
+    case 'circular':
+      imageStyle = styles.circular;
+      break;
+    case 'fullWidth':
+      imageStyle = styles.fullWidth;
+      break;
+    default:
+        imageStyle = styles.default;
+  }
+  return image ? <Image style={imageStyle} source={{ uri: image }} /> : null
 }
 
 const styles = StyleSheet.create({
-  image: {
+  default: {
     resizeMode: 'contain',
     alignSelf: 'center',
     overflow: 'hidden',
@@ -17,6 +28,26 @@ const styles = StyleSheet.create({
     marginTop: Metrics.doubleBaseMargin,
     width: 120,
     height: 120,
+    borderWidth: 1,
+    borderColor: Colors.borderGray
+  },
+  circular: {
+    resizeMode: 'cover',
+    alignSelf: 'center',
+    overflow: 'hidden',
+    borderRadius: 150,
+    width: 200,
+    height: 200,
+    borderWidth: 1,
+    borderColor: Colors.borderGray
+  },
+  fullWidth: {
+    resizeMode: 'cover',
+    alignSelf: 'center',
+    overflow: 'hidden',
+    borderRadius: Metrics.cornerRadius,
+    width: '100%',
+    height: 200,
     borderWidth: 1,
     borderColor: Colors.borderGray
   }

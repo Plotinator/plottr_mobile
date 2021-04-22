@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { t } from 'plottr_locales'
-import { View, Input, Label, Item, Text, Button } from 'native-base'
-import { StyleSheet, ScrollView, Image } from 'react-native'
+import { Input, Label, Item, Text, Button } from 'native-base'
+import { View, StyleSheet, ScrollView, Image, TouchableWithoutFeedback } from 'react-native'
 import AttachmentList from '../../shared/attachments/AttachmentList'
 import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
 import { RichEditor } from '../../shared/common'
 import DetailImage from '../shared/DetailImage'
 import DetailPreview from '../shared/DetailView/Preview'
 
-export default function Character (props) {
+export default function Character(props) {
   const { character, customAttributes } = props
   const [changes, makeChanges] = useState(false)
   const [workingCopy, setWorkingCopy] = useState(character)
@@ -47,89 +47,92 @@ export default function Character (props) {
     makeChanges(true)
   }
 
-  const renderTemplates = () => {
-    return workingCopy.templates.flatMap(t => {
-      return t.attributes.map(attr => {
-        if (attr.type == 'paragraph') {
-          return (
-            <View key={attr.name} style={[styles.afterList, styles.rceView]}>
-              <Label>{attr.name}</Label>
-              <RichEditor
-                initialValue={attr.value}
-                onChange={val => updateTemplateValue(t.id, attr.name, val)}
-              />
-            </View>
-          )
-        } else {
-          return (
-            <Item key={attr.name} inlineLabel style={styles.label}>
-              <Label>{attr.name}</Label>
-              <Input
-                value={attr.value}
-                onChangeText={text =>
-                  updateTemplateValue(t.id, attr.name, text)
-                }
-                autoCapitalize='sentences'
-              />
-            </Item>
-          )
-        }
-      })
-    })
-  }
+  // const renderTemplates = () => {
+  //   return workingCopy.templates.flatMap(t => {
+  //     return t.attributes.map(attr => {
+  //       if (attr.type == 'paragraph') {
+  //         return (
+  //           <View key={attr.name} style={[styles.afterList, styles.rceView]}>
+  //             <Label>{attr.name}</Label>
+  //             <RichEditor
+  //               initialValue={attr.value}
+  //               onChange={val => updateTemplateValue(t.id, attr.name, val)}
+  //             />
+  //           </View>
+  //         )
+  //       } else {
+  //         return (
+  //           <Item key={attr.name} inlineLabel style={styles.label}>
+  //             <Label>{attr.name}</Label>
+  //             <Input
+  //               value={attr.value}
+  //               onChangeText={text =>
+  //                 updateTemplateValue(t.id, attr.name, text)
+  //               }
+  //               autoCapitalize='sentences'
+  //             />
+  //           </Item>
+  //         )
+  //       }
+  //     })
+  //   })
+  // }
 
-  const renderCustomAttributes = () => {
-    return customAttributes.map((attr, idx) => {
-      const { name, type } = attr
-      if (type == 'paragraph') {
-        return (
-          <View key={idx} style={[styles.afterList, styles.rceView]}>
-            <Label>{name}</Label>
-            <RichEditor
-              initialValue={workingCA[name]}
-              onChange={val => {
-                setWorkingCA({ ...workingCA, [name]: val })
-                makeChanges(true)
-              }}
-            />
-          </View>
-        )
-      } else {
-        return (
-          <Item key={idx} inlineLabel style={styles.label}>
-            <Label>{name}</Label>
-            <Input
-              value={workingCA[name]}
-              onChangeText={text => {
-                setWorkingCA({ ...workingCA, [name]: text })
-                makeChanges(true)
-              }}
-              autoCapitalize='sentences'
-            />
-          </Item>
-        )
-      }
-    })
-  }
+  // const renderCustomAttributes = () => {
+  //   return customAttributes.map((attr, idx) => {
+  //     const { name, type } = attr
+  //     if (type == 'paragraph') {
+  //       return (
+  //         <View key={idx} style={[styles.afterList, styles.rceView]}>
+  //           <Label>{name}</Label>
+  //           <RichEditor
+  //             initialValue={workingCA[name]}
+  //             onChange={val => {
+  //               setWorkingCA({ ...workingCA, [name]: val })
+  //               makeChanges(true)
+  //             }}
+  //           />
+  //         </View>
+  //       )
+  //     } else {
+  //       return (
+  //         <Item key={idx} inlineLabel style={styles.label}>
+  //           <Label>{name}</Label>
+  //           <Input
+  //             value={workingCA[name]}
+  //             onChangeText={text => {
+  //               setWorkingCA({ ...workingCA, [name]: text })
+  //               makeChanges(true)
+  //             }}
+  //             autoCapitalize='sentences'
+  //           />
+  //         </Item>
+  //       )
+  //     }
+  //   })
+  // }
 
-  const renderAttachments = () => {
-    return (
-      <AttachmentList
-        itemType='character'
-        item={character}
-        navigate={props.navigation.navigate}
-        only={['bookIds', 'tags']}
-      />
-    )
-  }
+  // const renderAttachments = () => {
+  //   return (
+  //     <AttachmentList
+  //       itemType='character'
+  //       item={character}
+  //       navigate={props.navigation.navigate}
+  //       only={['bookIds', 'tags']}
+  //     />
+  //   )
+  // }
 
-  let details = {
+  let objectMeta = {
     title: {
       content: workingCopy.name
     },
     description: {
       content: workingCopy.description,
-      type:'line'
+      type: 'line'
+    },
+    image: {
+      displayStyle: 'circular',
     },
     attributes: [
       {
@@ -165,21 +168,26 @@ export default function Character (props) {
       let newAttr = {
         title: name,
         key: name,
-        type: type == 'paragraph'? 'paragraph': 'line'
+        type: type == 'paragraph' ? 'paragraph' : 'line'
       }
-      details.attributes.push(newAttr);
+      objectMeta.attributes.push(newAttr);
     })
   }
 
   addCustomAttributes();
 
+  // console.log("Working copy of character ------", workingCopy);
   return (
-  <>
-      <DetailPreview
-        object={workingCopy}
-        details={details}
-      />
-    </>
+    <ScrollView style={{ flex: 1 }}>
+      <TouchableWithoutFeedback>
+        <View>
+          <DetailPreview
+            object={workingCopy}
+            objectMeta={objectMeta}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </ScrollView>
     // <DetailsWrapper>
     //   <DetailsLeft>
     //     <DetailImage image={character.image && character.image.data} />
@@ -250,7 +258,7 @@ const styles = StyleSheet.create({
   rceView: {
     marginBottom: 16
   },
-  tagStyle:{
-    
+  tagStyle: {
+
   }
 })

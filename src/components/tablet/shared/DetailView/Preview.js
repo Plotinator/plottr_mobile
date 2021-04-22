@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { View, Icon } from 'native-base'
+import { Icon } from 'native-base'
 import { selectors, actions, helpers, initialState } from 'pltr/v2'
-import { Modal, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, Modal, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native'
 import { t } from 'plottr_locales'
 import {
   Input,
@@ -19,21 +19,23 @@ import {
 import styles from './styles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
+import DetailImage from '../DetailImage'
+import EditButton from '../../../shared/common/EditButton'
 
 class DetailPreview extends Component {
   constructor(props) {
     super(props)
     this.state = {
       object: null,
-      details: null
+      objectMeta: null
     }
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { object, attributes, details } = props;
+    const { object, objectMeta } = props;
     return {
       object: cloneDeep(object),
-      details: cloneDeep(details),
+      objectMeta: cloneDeep(objectMeta),
     }
   }
 
@@ -43,65 +45,73 @@ class DetailPreview extends Component {
     } = this.state;
     const { title, key, type, titleStyle, attachmentType, attachmentSourceType, itemStyle } = attribute;
     return (
-      <View key={i} style={styles.detailsBlock}>
-        <View style={styles.detailsBlockHeading}>
-          <Text fontSize='h6' fontStyle='bold' style={titleStyle ? titleStyle : {}}>
-            {title}
-          </Text>
-        </View>
-        <View style={styles.detailsBlockDetails}>
-          {type === 'line' &&
-            <Text fontSize='tiny' fontStyle='regular'>
-              {object[key]}
-            </Text>
-          }
-          {type === 'paragraph' &&
-            <RichEditor
-              initialValue={object[key]}
-              style={styles.richEditorStyle}
-              onChange={() => { }}
-              disabled
-            />
-          }
-          {type === 'attachment' &&
-            <Collapsible collapsed={false}>
-              <AttachmentsPreview
-                cardId={object.id}
-                attachments={object[key]}
-                type={attachmentType}
-                sourceType={attachmentSourceType}
-                style={itemStyle}
-              />
-            </Collapsible>
-          }
-        </View>
-      </View>
+      <>
+        {object[key] && object[key].length > 0 &&
+          <View key={i} style={styles.detailsBlock}>
+            <View style={styles.detailsBlockHeading}>
+              <Text fontSize='h6' fontStyle='bold' style={titleStyle ? titleStyle : {}}>
+                {title}
+              </Text>
+            </View>
+            <View style={styles.detailsBlockDetails}>
+              {type === 'line' &&
+                <Text fontSize='tiny' fontStyle='regular'>
+                  {object[key]}
+                </Text>
+              }
+              {type === 'paragraph' &&
+                <RichEditor
+                  initialValue={object[key]}
+                  style={styles.richEditorStyle}
+                  onChange={() => { }}
+                  disabled
+                />
+              }
+              {type === 'attachment' &&
+                <Collapsible collapsed={false}>
+                  <AttachmentsPreview
+                    cardId={object.id}
+                    attachments={object[key]}
+                    type={attachmentType}
+                    sourceType={attachmentSourceType}
+                    style={itemStyle}
+                  />
+                </Collapsible>
+              }
+            </View>
+          </View>
+        }
+      </>
     )
   }
 
   render() {
     const {
       object,
-      details
+      objectMeta
     } = this.state
+    // console.log("IMAGE----------", object.image);
     return (
-      <ScrollView style={styles.detailsWrapper}>
+      <View style={styles.detailsWrapper}>
+        {object.image &&
+          <DetailImage displayStyle={objectMeta.image.displayStyle} image={object.image && object.image.data} />
+        }
         <View style={styles.detailsBlock}>
           <View style={styles.detailsBlockHeading}>
             <Text fontSize='h6' fontStyle='bold'>
-              {details.title.content}
+              {objectMeta.title.content}
             </Text>
 
           </View>
           <View style={styles.detailsBlockDetails}>
-            {details.description.type === 'line' &&
+            {objectMeta.description.type === 'line' &&
               <Text fontSize='tiny' fontStyle='regular'>
-                {details.description.content}
+                {objectMeta.description.content}
               </Text>
             }
-            {details.description.type === 'paragraph' &&
+            {objectMeta.description.type === 'paragraph' &&
               <RichEditor
-                initialValue={details.description.content}
+                initialValue={objectMeta.description.content}
                 style={styles.richEditorStyle}
                 editorStyle={styles.richEditorStyle}
                 onChange={() => { }}
@@ -110,8 +120,11 @@ class DetailPreview extends Component {
             }
           </View>
         </View>
-        {object && details.attributes.map(this.renderAttribute)}
-      </ScrollView>
+        {objectMeta && objectMeta.attributes.map(this.renderAttribute)}
+        <View style={styles.editButtonContainerStyle}>
+          <EditButton data={{}} onPress={() => { }} />
+        </View>
+      </View>
     )
   }
 }

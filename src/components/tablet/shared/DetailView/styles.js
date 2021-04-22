@@ -35,7 +35,7 @@ export default ScaledSheet.create({
         minHeight: 50
     },
     detailsBlock:{
-      marginBottom: baseMargin
+      marginVertical: baseMargin,
     },
     detailsBlockHeading:{
       marginBottom: baseMargin / 2
@@ -45,5 +45,8 @@ export default ScaledSheet.create({
       padding:0,
       margin:0,
       borderWidth:0,
+    },
+    editButtonContainerStyle:{
+      alignItems:'flex-end'
     }
 })

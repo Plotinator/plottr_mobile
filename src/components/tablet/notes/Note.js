@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { t } from 'plottr_locales'
-import { View, Input, Label, Item, Text, Button } from 'native-base'
-import { StyleSheet } from 'react-native'
+import { Input, Label, Item, Text, Button } from 'native-base'
+import { View, StyleSheet, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import AttachmentList from '../../shared/attachments/AttachmentList'
 import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
 import { RichEditor } from '../../shared/common'
 import DetailImage from '../shared/DetailImage'
 import DetailPreview from '../shared/DetailView/Preview'
+// import { ScrollView } from 'react-native-gesture-handler'
 
 export default function Note(props) {
   const { note } = props
@@ -30,13 +31,16 @@ export default function Note(props) {
     )
   }
 
-  let details = {
+  let objectMeta = {
     title: {
       content: title
     },
     description: {
       content: content,
-      type:'paragraph'
+      type: 'paragraph'
+    },
+    image: {
+      displayStyle: 'fullWidth'
     },
     attributes: [
       {
@@ -78,14 +82,18 @@ export default function Note(props) {
     ]
   }
 
-  console.log("Working copy Notes - ------- ", note);
+  // console.log("Working copy Notes - ------- ", note);
   return (
-    <>
-      <DetailPreview
-        object={note}
-        details={details}
-      />
-    </>
+    <ScrollView style={{ flex: 1 }}>
+      <TouchableWithoutFeedback>
+        <View>
+          <DetailPreview
+            object={note}
+            objectMeta={objectMeta}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </ScrollView>
     // <DetailsWrapper>
     //   <DetailsLeft contentContainerStyle={{ flex: 1 }}>
     //     <DetailImage image={note.image && note.image.data} />
@@ -141,9 +149,9 @@ const styles = StyleSheet.create({
   rceView: {
     // flex: 1
   },
-  tagStyle:{
+  tagStyle: {
     paddingVertical: 5,
-    paddingHorizontal:15,
+    paddingHorizontal: 15,
     borderWidth: 1,
     borderRadius: 20
   }
