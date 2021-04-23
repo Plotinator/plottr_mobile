@@ -20,5 +20,10 @@ export default ScaledSheet.create({
   richEditor: {
     borderRadius: Metrics.cornerRadius,
     minHeight: 50
+  },
+  editorDisabled: {
+    marginTop: 0,
+    paddingTop: 0,
+    borderWidth: 0
   }
 })
