@@ -50,8 +50,7 @@ export default {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 10,
-
+    shadowRadius: 10
   },
   closeButton: {
     backgroundColor: white,
@@ -100,6 +99,7 @@ export default {
     color: textLightGray
   },
   input: {
+    backgroundColor: 'transparent',
     height: '40@mvs'
   },
   inputText: {
@@ -141,6 +141,7 @@ export default {
     flexDirection: 'row'
   },
   action: {
+    marginHorizontal: baseMargin / 2,
     borderRadius: cornerRadius,
     paddingHorizontal: doubleBaseMargin
   },

@@ -37,7 +37,8 @@ class DetailPreview extends Component {
     super(props)
     this.state = {
       object: null,
-      objectMeta: null
+      objectMeta: null,
+      editMode: false // test example
     }
   }
 
@@ -52,16 +53,25 @@ class DetailPreview extends Component {
   handleEdit = () => {
     const { onEdit, object } = this.props
     onEdit && onEdit(object, objectMeta)
+    this.setState({ editMode: true }) // test example
+  }
+
+  handleSave = () => {
+    const { onSave, objectMeta } = this.props
+    const { object } = this.state
+    onSave && onSave(object, objectMeta)
+    this.setState({ editMode: false }) // test example
   }
 
   renderAttribute = (attribute, i) => {
-    const { object } = this.state
+    const { object, editMode } = this.state
     const { title, key, type, titleStyle, attachmentType } = attribute
     const isAttachment = type === 'attachment'
     const shouldRender = object[key] && object[key].length > 0
     const renderComponent = shouldRender ? (
       isAttachment ? (
         <AttachmentsPreview
+          editMode={editMode} // test example
           title={title}
           cardId={object.id}
           attachments={object[key]}
@@ -69,6 +79,7 @@ class DetailPreview extends Component {
         />
       ) : (
         <DetailBlock
+          editMode={editMode}
           heading={title}
           headingStyle={titleStyle || 'bold'}
           details={object[key]}
@@ -80,7 +91,7 @@ class DetailPreview extends Component {
   }
 
   render() {
-    const { object, objectMeta = {} } = this.state
+    const { object, objectMeta = {}, editMode } = this.state
     const {
       title: { content: title },
       description: { content: description, type },
@@ -103,6 +114,7 @@ class DetailPreview extends Component {
                   ) : null}
                 </View>
                 <DetailBlock
+                  editMode={editMode}
                   heading={
                     <Text fontSize='h6' fontStyle='bold'>
                       {title}
@@ -112,12 +124,29 @@ class DetailPreview extends Component {
                   type={type}
                 />
                 {attributes.map(this.renderAttribute)}
+                <Collapsible style={styles.actions} collapsed={!editMode}>
+                  <Button
+                    small
+                    style={styles.action}
+                    onPress={this.handleSave}>
+                    {t('Save')}
+                  </Button>
+                  <Button
+                    small
+                    bordered
+                    style={styles.action}
+                    onPress={this.handleSave}>
+                    {t('Cancel')}
+                  </Button>
+                </Collapsible>
               </View>
             </TouchableWithoutFeedback>
           </ScrollView>
-          <View style={styles.editButtonContainer}>
-            <AddButton size={50} icon='pen' onPress={this.handleEdit} />
-          </View>
+          {!editMode && (
+            <View style={styles.editButtonContainer}>
+              <AddButton size={50} icon='pen' onPress={this.handleEdit} />
+            </View>
+          )}
         </View>
       </View>
     )
