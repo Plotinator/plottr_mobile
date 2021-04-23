@@ -39,6 +39,9 @@ export default class RichTextEditor extends Component {
   render () {
     const {
       style,
+      fontSize = 18,
+      color = Colors.textDarkGrayTone,
+      lineHeight = 1.75,
       value,
       onFocus,
       placeholder,
@@ -51,6 +54,7 @@ export default class RichTextEditor extends Component {
 
     const containerStyles = [styles.editorContainer]
     containerStyles.push(style)
+    disabled && containerStyles.push(styles.editorDisabled)
 
     const toolbarStyles = [styles.richToolbar]
     toolbarStyles.push(toolbarStyle)
@@ -61,7 +65,7 @@ export default class RichTextEditor extends Component {
     const placeholderText = placeholder || ''
     const html = initialHTMLText || initialValue
     const initialText = typeof html == 'object' ? SlateToHTML(html) : html
-    const contentCSSText = `font-family: "Open Sans" !important; font-size: 18px; padding: 5px 15px 15px;`
+    const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color}; line-height: ${lineHeight}em; padding: ${disabled ? '0' : '5px 15px 15px'};`
     const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; }`
     return (
       <View style={containerStyles}>
