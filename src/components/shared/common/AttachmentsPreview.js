@@ -8,7 +8,6 @@ import PropTypes from 'prop-types'
 import tinycolor from 'tinycolor2'
 
 class AttachmentsPreview extends Component {
-
   renderAttachmentName(attachment) {
     const { type } = this.props
     const { title, name } = attachment
@@ -18,18 +17,30 @@ class AttachmentsPreview extends Component {
   }
 
   renderTabCell = (attachment, i, theArray) => {
-    const titleDisplay = this.renderAttachmentName(attachment);
-    const length = theArray.length;
-    const { color } = attachment;
-    const { style } = this.props;
+    const titleDisplay = this.renderAttachmentName(attachment)
+    const { color } = attachment
+    const { style } = this.props
     const hexColor = tinycolor(color).toHexString()
-
+    const tagTextProps = {
+      color: hexColor,
+      fontSize: 'tiny',
+      fontStyle: 'italic'
+    }
+    const divider = i < theArray.length - 1 ? ',' : ''
     return (
-      <View key={i} style={[styles.tabCell, hexColor && { borderColor: hexColor }, style]}>
-        {style ?
-          <Text color={hexColor} fontSize='tiny' fontStyle='italic'>{`#${titleDisplay}`}</Text> :
-          <Text fontSize='tiny' fontStyle='italic'>{`"${titleDisplay}"${i < length - 1 ? ',' : ''}`}</Text>
-        }
+      <View
+        key={i}
+        style={[styles.tabCell, hexColor && { borderColor: hexColor }, style]}>
+        {style ? (
+          <Text {...tagTextProps}>
+            <Text {...tagTextProps} faded>#</Text>
+            {`${titleDisplay}`}
+          </Text>
+        ) : (
+          <Text fontSize='tiny' fontStyle='italic'>
+            {`"${titleDisplay}"${divider}`}
+          </Text>
+        )}
       </View>
     )
   }
@@ -37,11 +48,11 @@ class AttachmentsPreview extends Component {
   render() {
     const { attachments, type } = this.props
     const attachmentsList = this.props[`${type}s`]
-    const attached = attachmentsList.filter(({ id }) => attachments.indexOf(id) > -1)
+    const attached = attachmentsList.filter(
+      ({ id }) => attachments.indexOf(id) > -1
+    )
     return (
-      <View style={styles.tabsBase}>
-        {attached.map(this.renderTabCell)}
-      </View>
+      <View style={styles.tabsBase}>{attached.map(this.renderTabCell)}</View>
     )
   }
 }

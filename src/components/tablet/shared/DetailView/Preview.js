@@ -5,7 +5,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Icon } from 'native-base'
 import { selectors, actions, helpers, initialState } from 'pltr/v2'
-import { View, Image, Modal, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native'
+import {
+  View,
+  Image,
+  Modal,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback
+} from 'react-native'
 import { t } from 'plottr_locales'
 import {
   Input,
@@ -13,6 +20,7 @@ import {
   Button,
   RichEditor,
   ShellButton,
+  AddButton,
   AttachmentsPreview,
   Attachments
 } from '../../../shared/common'
@@ -21,6 +29,7 @@ import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
 import DetailImage from '../DetailImage'
 import EditButton from '../../../shared/common/EditButton'
+import Fonts from '../../../../fonts'
 
 class DetailPreview extends Component {
   constructor(props) {
@@ -32,42 +41,52 @@ class DetailPreview extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { object, objectMeta } = props;
+    const { object, objectMeta } = props
     return {
       object: cloneDeep(object),
-      objectMeta: cloneDeep(objectMeta),
+      objectMeta: cloneDeep(objectMeta)
     }
   }
 
+  handleEdit = () => {}
+
   renderAttribute = (attribute, i) => {
+    const { object } = this.state
     const {
-      object
-    } = this.state;
-    const { title, key, type, titleStyle, attachmentType, attachmentSourceType, itemStyle } = attribute;
+      title,
+      key,
+      type,
+      titleStyle,
+      attachmentType,
+      attachmentSourceType,
+      itemStyle
+    } = attribute
     return (
-      <>
-        {object[key] && object[key].length > 0 &&
+      <View style={styles.attributeContainer}>
+        {object[key] && object[key].length > 0 && (
           <View key={i} style={styles.detailsBlock}>
             <View style={styles.detailsBlockHeading}>
-              <Text fontSize='h6' fontStyle='bold' style={titleStyle ? titleStyle : {}}>
+              <Text
+                fontSize='h7'
+                fontStyle='bold'
+                style={titleStyle ? titleStyle : {}}>
                 {title}
               </Text>
             </View>
             <View style={styles.detailsBlockDetails}>
-              {type === 'line' &&
+              {type === 'line' && (
                 <Text fontSize='tiny' fontStyle='regular'>
                   {object[key]}
                 </Text>
-              }
-              {type === 'paragraph' &&
+              )}
+              {type === 'paragraph' && (
                 <RichEditor
+                  fontSize={Fonts.size.tiny}
                   initialValue={object[key]}
-                  style={styles.richEditorStyle}
-                  onChange={() => { }}
                   disabled
                 />
-              }
-              {type === 'attachment' &&
+              )}
+              {type === 'attachment' && (
                 <Collapsible collapsed={false}>
                   <AttachmentsPreview
                     cardId={object.id}
@@ -77,52 +96,61 @@ class DetailPreview extends Component {
                     style={itemStyle}
                   />
                 </Collapsible>
-              }
+              )}
             </View>
           </View>
-        }
-      </>
+        )}
+      </View>
     )
   }
 
   render() {
-    const {
-      object,
-      objectMeta
-    } = this.state
+    const { object, objectMeta } = this.state
     // console.log("IMAGE----------", object.image);
     return (
-      <View style={styles.detailsWrapper}>
-        {object.image &&
-          <DetailImage displayStyle={objectMeta.image.displayStyle} image={object.image && object.image.data} />
-        }
-        <View style={styles.detailsBlock}>
-          <View style={styles.detailsBlockHeading}>
-            <Text fontSize='h6' fontStyle='bold'>
-              {objectMeta.title.content}
-            </Text>
-
+      <View style={styles.container}>
+        <View style={styles.subContainer}>
+          <ScrollView
+            style={styles.scroller}
+            showsVerticalScrollIndicator={false}>
+            <TouchableWithoutFeedback>
+              <View style={styles.detailsWrapper}>
+                <View style={styles.detailsBlock}>
+                  {object.image && (
+                    <DetailImage
+                      displayStyle={objectMeta.image.displayStyle}
+                      image={object.image && object.image.data}
+                    />
+                  )}
+                </View>
+                <View style={styles.detailsBlock}>
+                  <View style={styles.detailsBlockHeading}>
+                    <Text fontSize='h7' fontStyle='bold'>
+                      {objectMeta.title.content}
+                    </Text>
+                  </View>
+                  <View style={styles.detailsBlockDetails}>
+                    {objectMeta.description.type === 'line' && (
+                      <Text fontSize='tiny' fontStyle='regular'>
+                        {objectMeta.description.content}
+                      </Text>
+                    )}
+                    {objectMeta.description.type === 'paragraph' && (
+                      <RichEditor
+                        disabled
+                        fontSize={Fonts.size.tiny}
+                        initialValue={objectMeta.description.content}
+                      />
+                    )}
+                  </View>
+                </View>
+                {objectMeta && objectMeta.attributes.map(this.renderAttribute)}
+              </View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+          <View style={styles.editButtonContainer}>
+            <AddButton size={50} icon='pen' onPress={this.handleEdit} />
           </View>
-          <View style={styles.detailsBlockDetails}>
-            {objectMeta.description.type === 'line' &&
-              <Text fontSize='tiny' fontStyle='regular'>
-                {objectMeta.description.content}
-              </Text>
-            }
-            {objectMeta.description.type === 'paragraph' &&
-              <RichEditor
-                initialValue={objectMeta.description.content}
-                style={styles.richEditorStyle}
-                editorStyle={styles.richEditorStyle}
-                onChange={() => { }}
-                disabled
-              />
-            }
-          </View>
-        </View>
-        {objectMeta && objectMeta.attributes.map(this.renderAttribute)}
-        <View style={styles.editButtonContainerStyle}>
-          <EditButton data={{}} onPress={() => { }} />
         </View>
       </View>
     )
@@ -131,7 +159,7 @@ class DetailPreview extends Component {
 
 DetailPreview.propTypes = {
   object: PropTypes.object.isRequired,
-  attributes: PropTypes.array.isRequired,
+  attributes: PropTypes.array.isRequired
 }
 
 function mapStateToProps(state) {
@@ -153,4 +181,3 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailPreview)
 // export default DetailPreview
-

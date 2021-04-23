@@ -12,11 +12,12 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   tabCell: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: baseMargin / 3
+    marginRight: baseMargin / 3,
+    marginBottom: baseMargin / 3
   }
 })

@@ -8,8 +8,11 @@ const {
   doubleBaseMargin,
   section,
   cornerRadius,
+  headerHeight,
+  footerHeight,
   screenHeight,
-  buttonRadius
+  buttonRadius,
+  doubleSection
 } = Metrics
 const { style, size } = Fonts
 const {
@@ -23,30 +26,47 @@ const {
   cloudWhite,
   borderGray,
   textBlack,
-  cloudGray
+  cloudGray,
+  warmBG,
+  warmWhiteBG
 } = Colors
 
 export default ScaledSheet.create({
-    detailsWrapper: {
-        backgroundColor: white,
-        margin: baseMargin,
-        padding: baseMargin * 1.5,
-        borderRadius: cornerRadius,
-        minHeight: 50
-    },
-    detailsBlock:{
-      marginVertical: baseMargin,
-    },
-    detailsBlockHeading:{
-      marginBottom: baseMargin / 2
-
-    },
-    richEditorStyle: {
-      padding:0,
-      margin:0,
-      borderWidth:0,
-    },
-    editButtonContainerStyle:{
-      alignItems:'flex-end'
-    }
+  container: {
+    flex: 1,
+    backgroundColor: warmBG,
+    padding: baseMargin,
+    paddingLeft: 0
+  },
+  subContainer: {
+    // dont remove subContainer
+    // editButtonContainer needs it
+    // for dynamic positioning
+  },
+  scroller: {
+    overflow: 'hidden',
+    borderRadius: cornerRadius
+  },
+  detailsWrapper: {
+    backgroundColor: warmWhiteBG,
+    padding: baseMargin * 1.5,
+    borderRadius: cornerRadius,
+    minHeight: 50,
+    paddingBottom: doubleSection
+  },
+  detailsBlock: {
+    marginBottom: baseMargin
+  },
+  detailsBlockHeading: {
+    marginBottom: baseMargin * 0.05
+  },
+  editButtonContainer: {
+    justifyContent: 'flex-end',
+    paddingBottom: doubleBaseMargin,
+    position: 'absolute',
+    height: '100%',
+    maxHeight: screenHeight - headerHeight - footerHeight - 35,
+    top: 0,
+    right: doubleBaseMargin * 1.25
+  }
 })

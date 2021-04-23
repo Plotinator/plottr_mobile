@@ -5,16 +5,16 @@ import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
 export default function DetailImage({ image, displayStyle }) {
-  let imageStyle = styles.default;
+  let imageStyle = styles.default
   switch (displayStyle) {
     case 'circular':
-      imageStyle = styles.circular;
-      break;
+      imageStyle = styles.circular
+      break
     case 'fullWidth':
-      imageStyle = styles.fullWidth;
-      break;
+      imageStyle = styles.fullWidth
+      break
     default:
-        imageStyle = styles.default;
+      imageStyle = styles.default
   }
   return image ? <Image style={imageStyle} source={{ uri: image }} /> : null
 }
@@ -39,15 +39,16 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderWidth: 1,
+    marginTop: Metrics.baseMargin / 2,
     borderColor: Colors.borderGray
   },
   fullWidth: {
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     alignSelf: 'center',
     overflow: 'hidden',
     borderRadius: Metrics.cornerRadius,
     width: '100%',
-    height: 200,
+    height: 400,
     borderWidth: 1,
     borderColor: Colors.borderGray
   }

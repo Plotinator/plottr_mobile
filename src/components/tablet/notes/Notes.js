@@ -182,7 +182,7 @@ class Notes extends Component {
           <NewButton onPress={this.createNewNote} />
         </Toolbar>
         <Grid style={{ flex: 1 }}>
-          <Col size={4}>
+          <Col size={5}>
             {/*this.renderNoteList()*/}
             <MainList
               list={viewableNotes}
@@ -195,7 +195,7 @@ class Notes extends Component {
               onPressDelete={this.handleDeleteNote}
             />
           </Col>
-          <Col size={10}>{this.renderNoteDetail()}</Col>
+            <Col size={10}>{this.renderNoteDetail()}</Col>
         </Grid>
       </View>
     )

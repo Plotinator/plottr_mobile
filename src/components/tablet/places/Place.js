@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import { t } from 'plottr_locales'
 import { Input, Label, Item, Text, Button } from 'native-base'
-import { View, StyleSheet, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableWithoutFeedback
+} from 'react-native'
 import AttachmentList from '../../shared/attachments/AttachmentList'
 import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
 import { RichEditor } from '../../shared/common'
@@ -38,7 +43,7 @@ export default function Place(props) {
             <Label>{name}</Label>
             <RichEditor
               initialValue={workingCA[name]}
-              onChange={val => {
+              onChange={(val) => {
                 setWorkingCA({ ...workingCA, [name]: val })
                 makeChanges(true)
               }}
@@ -51,7 +56,7 @@ export default function Place(props) {
             <Label>{name}</Label>
             <Input
               value={workingCA[name]}
-              onChangeText={text => {
+              onChangeText={(text) => {
                 setWorkingCA({ ...workingCA, [name]: text })
                 makeChanges(true)
               }}
@@ -94,7 +99,7 @@ export default function Place(props) {
       type: 'attachment',
       attachmentType: 'bookId',
       attachmentSourceType: 'place'
-    },
+    }
   ]
 
   let objectMeta = {
@@ -106,7 +111,7 @@ export default function Place(props) {
       type: 'line'
     },
     image: {
-      displayStyle: 'fullWidth',
+      displayStyle: 'fullWidth'
     },
     attributes: [
       {
@@ -114,7 +119,7 @@ export default function Place(props) {
         key: 'notes',
         type: 'paragraph',
         titleStyle: { fontStyle: 'italic' },
-        itemStyle: null,
+        itemStyle: null
       },
       {
         title: 'Books',
@@ -123,7 +128,7 @@ export default function Place(props) {
         attachmentType: 'bookId',
         attachmentSourceType: 'place',
         titleStyle: null,
-        itemStyle: null,
+        itemStyle: null
       },
       {
         title: 'Tags',
@@ -132,10 +137,10 @@ export default function Place(props) {
         attachmentType: 'tag',
         attachmentSourceType: 'place',
         titleStyle: null,
-        itemStyle: styles.tagStyle,
-      },
+        itemStyle: true // styles.tagStyle,
+      }
     ]
-  };
+  }
   const addCustomAttributes = () => {
     return customAttributes.map((attr, idx) => {
       const { name, type } = attr
@@ -144,23 +149,14 @@ export default function Place(props) {
         key: name,
         type: type == 'paragraph' ? 'paragraph' : 'line'
       }
-      objectMeta.attributes.push(newAttr);
+      objectMeta.attributes.push(newAttr)
     })
   }
 
-  addCustomAttributes();
+  addCustomAttributes()
   // console.log("Working copy ---------------", workingCopy);
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <TouchableWithoutFeedback>
-        <View>
-          <DetailPreview
-            object={workingCopy}
-            objectMeta={objectMeta}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-    </ScrollView>
+    <DetailPreview object={workingCopy} objectMeta={objectMeta} />
     // <DetailsWrapper>
     //   <DetailsLeft>
     //     <DetailImage image={place.image && place.image.data} />

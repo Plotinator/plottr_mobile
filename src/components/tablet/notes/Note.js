@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import { t } from 'plottr_locales'
 import { Input, Label, Item, Text, Button } from 'native-base'
-import { View, StyleSheet, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableWithoutFeedback
+} from 'react-native'
 import AttachmentList from '../../shared/attachments/AttachmentList'
 import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
 import { RichEditor } from '../../shared/common'
@@ -50,7 +55,7 @@ export default function Note(props) {
         attachmentType: 'bookId',
         attachmentSourceType: 'place',
         titleStyle: null,
-        itemStyle: null,
+        itemStyle: null
       },
       {
         title: 'Characters',
@@ -59,7 +64,7 @@ export default function Note(props) {
         attachmentType: 'character',
         attachmentSourceType: 'place',
         titleStyle: null,
-        itemStyle: null,
+        itemStyle: null
       },
       {
         title: 'Places',
@@ -68,7 +73,7 @@ export default function Note(props) {
         attachmentType: 'place',
         attachmentSourceType: 'place',
         titleStyle: null,
-        itemStyle: null,
+        itemStyle: null
       },
       {
         title: 'Tags',
@@ -77,23 +82,14 @@ export default function Note(props) {
         attachmentType: 'tag',
         attachmentSourceType: 'place',
         titleStyle: null,
-        itemStyle: styles.tagStyle,
-      },
+        itemStyle: true // styles.tagStyle
+      }
     ]
   }
 
   // console.log("Working copy Notes - ------- ", note);
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <TouchableWithoutFeedback>
-        <View>
-          <DetailPreview
-            object={note}
-            objectMeta={objectMeta}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-    </ScrollView>
+    <DetailPreview object={note} objectMeta={objectMeta} />
     // <DetailsWrapper>
     //   <DetailsLeft contentContainerStyle={{ flex: 1 }}>
     //     <DetailImage image={note.image && note.image.data} />

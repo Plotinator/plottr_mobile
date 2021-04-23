@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import { t } from 'plottr_locales'
 import { Input, Label, Item, Text, Button } from 'native-base'
-import { View, StyleSheet, ScrollView, Image, TouchableWithoutFeedback } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableWithoutFeedback
+} from 'react-native'
 import AttachmentList from '../../shared/attachments/AttachmentList'
 import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
 import { RichEditor } from '../../shared/common'
@@ -31,9 +37,9 @@ export default function Character(props) {
   }
 
   updateTemplateValue = (tId, attr, newValue) => {
-    const newTemplates = workingCopy.templates.map(t => {
+    const newTemplates = workingCopy.templates.map((t) => {
       if (t.id == tId) {
-        t.attributes = t.attributes.map(at => {
+        t.attributes = t.attributes.map((at) => {
           if (at.name == attr) {
             at.value = newValue
           }
@@ -132,7 +138,7 @@ export default function Character(props) {
       type: 'line'
     },
     image: {
-      displayStyle: 'circular',
+      displayStyle: 'circular'
     },
     attributes: [
       {
@@ -140,7 +146,7 @@ export default function Character(props) {
         key: 'notes',
         type: 'paragraph',
         titleStyle: { fontStyle: 'italic' },
-        itemStyle: null,
+        itemStyle: null
       },
       {
         title: 'Books',
@@ -149,7 +155,7 @@ export default function Character(props) {
         attachmentType: 'bookId',
         attachmentSourceType: 'place',
         titleStyle: null,
-        itemStyle: null,
+        itemStyle: null
       },
       {
         title: 'Tags',
@@ -158,10 +164,10 @@ export default function Character(props) {
         attachmentType: 'tag',
         attachmentSourceType: 'place',
         titleStyle: null,
-        itemStyle: styles.tagStyle,
-      },
+        itemStyle: styles.tagStyle
+      }
     ]
-  };
+  }
   const addCustomAttributes = () => {
     return customAttributes.map((attr, idx) => {
       const { name, type } = attr
@@ -170,24 +176,15 @@ export default function Character(props) {
         key: name,
         type: type == 'paragraph' ? 'paragraph' : 'line'
       }
-      objectMeta.attributes.push(newAttr);
+      objectMeta.attributes.push(newAttr)
     })
   }
 
-  addCustomAttributes();
+  addCustomAttributes()
 
   // console.log("Working copy of character ------", workingCopy);
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <TouchableWithoutFeedback>
-        <View>
-          <DetailPreview
-            object={workingCopy}
-            objectMeta={objectMeta}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-    </ScrollView>
+    <DetailPreview object={workingCopy} objectMeta={objectMeta} />
     // <DetailsWrapper>
     //   <DetailsLeft>
     //     <DetailImage image={character.image && character.image.data} />
@@ -258,7 +255,5 @@ const styles = StyleSheet.create({
   rceView: {
     marginBottom: 16
   },
-  tagStyle: {
-
-  }
+  tagStyle: {}
 })
