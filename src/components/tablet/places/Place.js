@@ -79,33 +79,11 @@ export default function Place(props) {
     )
   }
 
-  let attributes = [
-    {
-      title: 'Notes',
-      key: 'notes',
-      type: 'richEditor',
-      titleStyle: { fontStyle: 'italic' }
-    },
-    {
-      title: 'Tags',
-      key: 'tags',
-      type: 'attachment',
-      attachmentType: 'tag',
-      attachmentSourceType: 'place'
-    },
-    {
-      title: 'Books',
-      key: 'bookIds',
-      type: 'attachment',
-      attachmentType: 'bookId',
-      attachmentSourceType: 'place'
-    }
-  ]
-
   let objectMeta = {
     title: {
       content: workingCopy.name
     },
+    titleStyle: 'bold',
     description: {
       content: workingCopy.description,
       type: 'line'
@@ -116,28 +94,21 @@ export default function Place(props) {
     attributes: [
       {
         title: 'Notes',
+        titleStyle: 'boldItalic',
         key: 'notes',
-        type: 'paragraph',
-        titleStyle: { fontStyle: 'italic' },
-        itemStyle: null
+        type: 'paragraph'
       },
       {
         title: 'Books',
         key: 'bookIds',
         type: 'attachment',
-        attachmentType: 'bookId',
-        attachmentSourceType: 'place',
-        titleStyle: null,
-        itemStyle: null
+        attachmentType: 'bookId'
       },
       {
         title: 'Tags',
         key: 'tags',
         type: 'attachment',
-        attachmentType: 'tag',
-        attachmentSourceType: 'place',
-        titleStyle: null,
-        itemStyle: true // styles.tagStyle,
+        attachmentType: 'tag'
       }
     ]
   }

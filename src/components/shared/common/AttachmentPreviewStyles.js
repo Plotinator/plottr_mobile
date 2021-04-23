@@ -1,23 +1,33 @@
 import { ScaledSheet } from 'react-native-size-matters'
-import Fonts from '../../../fonts'
 import Metrics from '../../../utils/Metrics'
-import Colors from '../../../utils/Colors'
 
-const { baseMargin, cornerRadius } = Metrics
-const { style, size } = Fonts
-const { orange, white, textGray, cloudWhite, borderGray, textBlack } = Colors
+const { baseMargin } = Metrics
 
 export default ScaledSheet.create({
-  tabsBase: {
+  container: {
+    marginBottom: baseMargin
+  },
+  heading: {
+    marginBottom: baseMargin * 0.05
+  },
+  attachments: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     overflow: 'hidden'
   },
-  tabCell: {
+  attachment: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: baseMargin / 3,
-    marginBottom: baseMargin / 3
+    marginRight: baseMargin / 3
+  },
+  hash: {
+    paddingVertical: baseMargin / 3,
+    paddingTop: baseMargin / 4,
+    paddingHorizontal: baseMargin * 1.25,
+    marginRight: baseMargin / 2,
+    marginTop: baseMargin,
+    borderWidth: 1.2,
+    borderRadius: 20
   }
 })

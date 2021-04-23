@@ -16,43 +16,58 @@ class AttachmentsPreview extends Component {
     return name || title || `New ${firstCapital}${commonLast}`
   }
 
-  renderTabCell = (attachment, i, theArray) => {
+  renderAttachment = (attachment, i, theArray) => {
     const titleDisplay = this.renderAttachmentName(attachment)
     const { color } = attachment
-    const { style } = this.props
-    const hexColor = tinycolor(color).toHexString()
+    const { style, rounded, type } = this.props
+    const showHash = type === 'tag'
+    const divider = i < theArray.length - 1 ? ',' : ''
+    const printText = showHash ? titleDisplay : `"${titleDisplay}"${divider}`
+    const hexColor = color ? tinycolor(color).toHexString() : null
+    const allStyles = [
+      styles.attachment,
+      showHash && rounded && styles.hash,
+      { borderColor: hexColor }
+    ]
     const tagTextProps = {
-      color: hexColor,
       fontSize: 'tiny',
       fontStyle: 'italic'
     }
-    const divider = i < theArray.length - 1 ? ',' : ''
+    showHash ? (tagTextProps.color = hexColor) : null
+
     return (
-      <View
-        key={i}
-        style={[styles.tabCell, hexColor && { borderColor: hexColor }, style]}>
-        {style ? (
-          <Text {...tagTextProps}>
-            <Text {...tagTextProps} faded>#</Text>
-            {`${titleDisplay}`}
-          </Text>
-        ) : (
-          <Text fontSize='tiny' fontStyle='italic'>
-            {`"${titleDisplay}"${divider}`}
-          </Text>
-        )}
+      <View key={i} style={allStyles}>
+        <Text {...tagTextProps}>
+          {showHash && (
+            <Text {...tagTextProps} faded>
+              #
+            </Text>
+          )}
+          {`${printText}`}
+        </Text>
       </View>
     )
   }
 
   render() {
-    const { attachments, type } = this.props
+    const { title, titleStyle = 'bold', attachments, type } = this.props
     const attachmentsList = this.props[`${type}s`]
     const attached = attachmentsList.filter(
       ({ id }) => attachments.indexOf(id) > -1
     )
     return (
-      <View style={styles.tabsBase}>{attached.map(this.renderTabCell)}</View>
+      <View style={styles.container}>
+        {title && (
+          <View style={styles.heading}>
+            <Text fontSize='h7' fontStyle={titleStyle}>
+              {title}
+            </Text>
+          </View>
+        )}
+        <View style={styles.attachments}>
+          {attached.map(this.renderAttachment)}
+        </View>
+      </View>
     )
   }
 }
@@ -60,8 +75,8 @@ class AttachmentsPreview extends Component {
 AttachmentsPreview.propTypes = {
   attachments: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
-  sourceType: PropTypes.string.isRequired,
-  style: PropTypes.object
+  style: PropTypes.object,
+  rounded: PropTypes.bool
 }
 
 function mapStateToProps(state) {

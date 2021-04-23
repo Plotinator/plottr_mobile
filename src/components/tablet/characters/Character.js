@@ -143,28 +143,21 @@ export default function Character(props) {
     attributes: [
       {
         title: 'Notes',
+        titleStyle: 'boldItalic',
         key: 'notes',
-        type: 'paragraph',
-        titleStyle: { fontStyle: 'italic' },
-        itemStyle: null
+        type: 'paragraph'
       },
       {
         title: 'Books',
         key: 'bookIds',
         type: 'attachment',
-        attachmentType: 'bookId',
-        attachmentSourceType: 'place',
-        titleStyle: null,
-        itemStyle: null
+        attachmentType: 'bookId'
       },
       {
         title: 'Tags',
         key: 'tags',
         type: 'attachment',
-        attachmentType: 'tag',
-        attachmentSourceType: 'place',
-        titleStyle: null,
-        itemStyle: styles.tagStyle
+        attachmentType: 'tag'
       }
     ]
   }

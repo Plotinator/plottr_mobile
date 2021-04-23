@@ -52,37 +52,25 @@ export default function Note(props) {
         title: 'Books',
         key: 'bookIds',
         type: 'attachment',
-        attachmentType: 'bookId',
-        attachmentSourceType: 'place',
-        titleStyle: null,
-        itemStyle: null
+        attachmentType: 'bookId'
       },
       {
         title: 'Characters',
         key: 'characters',
         type: 'attachment',
-        attachmentType: 'character',
-        attachmentSourceType: 'place',
-        titleStyle: null,
-        itemStyle: null
+        attachmentType: 'character'
       },
       {
         title: 'Places',
         key: 'places',
         type: 'attachment',
-        attachmentType: 'place',
-        attachmentSourceType: 'place',
-        titleStyle: null,
-        itemStyle: null
+        attachmentType: 'place'
       },
       {
         title: 'Tags',
         key: 'tags',
         type: 'attachment',
-        attachmentType: 'tag',
-        attachmentSourceType: 'place',
-        titleStyle: null,
-        itemStyle: true // styles.tagStyle
+        attachmentType: 'tag'
       }
     ]
   }

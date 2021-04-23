@@ -20,6 +20,7 @@ import {
   Button,
   RichEditor,
   ShellButton,
+  DetailBlock,
   AddButton,
   AttachmentsPreview,
   Attachments
@@ -48,65 +49,43 @@ class DetailPreview extends Component {
     }
   }
 
-  handleEdit = () => {}
+  handleEdit = () => {
+    const { onEdit, object } = this.props
+    onEdit && onEdit(object, objectMeta)
+  }
 
   renderAttribute = (attribute, i) => {
     const { object } = this.state
-    const {
-      title,
-      key,
-      type,
-      titleStyle,
-      attachmentType,
-      attachmentSourceType,
-      itemStyle
-    } = attribute
-    return (
-      <View style={styles.attributeContainer}>
-        {object[key] && object[key].length > 0 && (
-          <View key={i} style={styles.detailsBlock}>
-            <View style={styles.detailsBlockHeading}>
-              <Text
-                fontSize='h7'
-                fontStyle='bold'
-                style={titleStyle ? titleStyle : {}}>
-                {title}
-              </Text>
-            </View>
-            <View style={styles.detailsBlockDetails}>
-              {type === 'line' && (
-                <Text fontSize='tiny' fontStyle='regular'>
-                  {object[key]}
-                </Text>
-              )}
-              {type === 'paragraph' && (
-                <RichEditor
-                  fontSize={Fonts.size.tiny}
-                  initialValue={object[key]}
-                  disabled
-                />
-              )}
-              {type === 'attachment' && (
-                <Collapsible collapsed={false}>
-                  <AttachmentsPreview
-                    cardId={object.id}
-                    attachments={object[key]}
-                    type={attachmentType}
-                    sourceType={attachmentSourceType}
-                    style={itemStyle}
-                  />
-                </Collapsible>
-              )}
-            </View>
-          </View>
-        )}
-      </View>
-    )
+    const { title, key, type, titleStyle, attachmentType } = attribute
+    const isAttachment = type === 'attachment'
+    const shouldRender = object[key] && object[key].length > 0
+    const renderComponent = shouldRender ? (
+      isAttachment ? (
+        <AttachmentsPreview
+          title={title}
+          cardId={object.id}
+          attachments={object[key]}
+          type={attachmentType}
+        />
+      ) : (
+        <DetailBlock
+          heading={title}
+          headingStyle={titleStyle || 'bold'}
+          details={object[key]}
+          type={type}
+        />
+      )
+    ) : null
+    return <View style={styles.attributeContainer}>{renderComponent}</View>
   }
 
   render() {
-    const { object, objectMeta } = this.state
-    // console.log("IMAGE----------", object.image);
+    const { object, objectMeta = {} } = this.state
+    const {
+      title: { content: title },
+      description: { content: description, type },
+      attributes = []
+    } = objectMeta
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
@@ -116,35 +95,23 @@ class DetailPreview extends Component {
             <TouchableWithoutFeedback>
               <View style={styles.detailsWrapper}>
                 <View style={styles.detailsBlock}>
-                  {object.image && (
+                  {object.image ? (
                     <DetailImage
                       displayStyle={objectMeta.image.displayStyle}
                       image={object.image && object.image.data}
                     />
-                  )}
+                  ) : null}
                 </View>
-                <View style={styles.detailsBlock}>
-                  <View style={styles.detailsBlockHeading}>
-                    <Text fontSize='h7' fontStyle='bold'>
-                      {objectMeta.title.content}
+                <DetailBlock
+                  heading={
+                    <Text fontSize='h6' fontStyle='bold'>
+                      {title}
                     </Text>
-                  </View>
-                  <View style={styles.detailsBlockDetails}>
-                    {objectMeta.description.type === 'line' && (
-                      <Text fontSize='tiny' fontStyle='regular'>
-                        {objectMeta.description.content}
-                      </Text>
-                    )}
-                    {objectMeta.description.type === 'paragraph' && (
-                      <RichEditor
-                        disabled
-                        fontSize={Fonts.size.tiny}
-                        initialValue={objectMeta.description.content}
-                      />
-                    )}
-                  </View>
-                </View>
-                {objectMeta && objectMeta.attributes.map(this.renderAttribute)}
+                  }
+                  details={description}
+                  type={type}
+                />
+                {attributes.map(this.renderAttribute)}
               </View>
             </TouchableWithoutFeedback>
           </ScrollView>
