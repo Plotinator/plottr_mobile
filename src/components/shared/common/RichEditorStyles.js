@@ -4,6 +4,7 @@ import Colors from '../../../utils/Colors'
 
 export default ScaledSheet.create({
   editorContainer: {
+    minHeight: 50,
     marginTop: Metrics.baseMargin,
     borderWidth: 1,
     borderColor: Colors.borderGray,
@@ -11,7 +12,7 @@ export default ScaledSheet.create({
     paddingTop: Metrics.baseMargin / 2
   },
   richToolbar: {
-    backgroundColor: Colors.cloudWhite,
+    backgroundColor: Colors.warmWhite,
     borderRadius: Metrics.cornerRadius,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
