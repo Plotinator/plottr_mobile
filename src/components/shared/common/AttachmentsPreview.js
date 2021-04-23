@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { selectors } from 'pltr/v2'
 import { View } from 'react-native'
 import Text from './Text'
+import Attachments from './Attachments'
 import styles from './AttachmentPreviewStyles'
 import PropTypes from 'prop-types'
 import tinycolor from 'tinycolor2'
@@ -50,7 +51,15 @@ class AttachmentsPreview extends Component {
   }
 
   render() {
-    const { title, titleStyle = 'bold', attachments, type } = this.props
+    const {
+      title,
+      source,
+      titleStyle = 'bold',
+      attachments,
+      type,
+      cardId,
+      editMode
+    } = this.props
     const attachmentsList = this.props[`${type}s`]
     const attached = attachmentsList.filter(
       ({ id }) => attachments.indexOf(id) > -1
@@ -59,14 +68,25 @@ class AttachmentsPreview extends Component {
       <View style={styles.container}>
         {title && (
           <View style={styles.heading}>
-            <Text fontSize='h7' fontStyle={titleStyle}>
+            <Text
+              fontStyle={titleStyle}
+              style={[styles.headingText, editMode && styles.headingEditText]}>
               {title}
             </Text>
           </View>
         )}
-        <View style={styles.attachments}>
-          {attached.map(this.renderAttachment)}
-        </View>
+        {editMode ? (
+          <Attachments
+            cardId={cardId}
+            attachments={attachments}
+            type={type}
+            sourceType={source}
+          />
+        ) : (
+          <View style={styles.attachments}>
+            {attached.map(this.renderAttachment)}
+          </View>
+        )}
       </View>
     )
   }

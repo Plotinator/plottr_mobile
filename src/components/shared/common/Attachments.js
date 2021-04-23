@@ -170,6 +170,8 @@ function mapDispatchToProps (dispatch, ownProps) {
       return { actions: bindActionCreators(actions.card, dispatch) }
     case 'character':
       return { actions: bindActionCreators(actions.character, dispatch) }
+    case 'note':
+      return { actions: bindActionCreators(actions.note, dispatch) }
     case 'place':
       return { actions: bindActionCreators(actions.place, dispatch) }
     default:

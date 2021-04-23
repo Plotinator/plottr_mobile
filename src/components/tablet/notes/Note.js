@@ -37,6 +37,7 @@ export default function Note(props) {
   }
 
   let objectMeta = {
+    source: 'note',
     title: {
       content: title
     },

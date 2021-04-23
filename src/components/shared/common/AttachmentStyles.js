@@ -5,11 +5,20 @@ import Colors from '../../../utils/Colors'
 
 const { baseMargin, cornerRadius } = Metrics
 const { style, size } = Fonts
-const { orange, white, textGray, cloudWhite, borderGray, textBlack } = Colors
+const {
+  orange,
+  white,
+  textGray,
+  cloudWhite,
+  borderGray,
+  textBlack,
+  warmWhiteBG,
+  warmWhiter
+} = Colors
 
 export default ScaledSheet.create({
   tabsBase: {
-    backgroundColor: cloudWhite,
+    backgroundColor: warmWhiter,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
@@ -22,6 +31,7 @@ export default ScaledSheet.create({
     minHeight: '35@ms'
   },
   tabCell: {
+    backgroundColor: warmWhiteBG,
     borderWidth: 1,
     borderColor: borderGray,
     borderRadius: cornerRadius,
@@ -32,7 +42,7 @@ export default ScaledSheet.create({
   },
   tabName: {
     ...style.semiBoldItalic,
-    fontSize: size.small,
+    fontSize: size.tiny,
     color: textGray,
     paddingLeft: baseMargin / 1.25
   },

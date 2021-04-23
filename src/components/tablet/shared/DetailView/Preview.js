@@ -9,7 +9,6 @@ import {
   View,
   Image,
   Modal,
-  ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback
 } from 'react-native'
@@ -20,6 +19,7 @@ import {
   Button,
   RichEditor,
   ShellButton,
+  ScrollerView,
   DetailBlock,
   AddButton,
   AttachmentsPreview,
@@ -65,6 +65,9 @@ class DetailPreview extends Component {
 
   renderAttribute = (attribute, i) => {
     const { object, editMode } = this.state
+    const {
+      objectMeta: { source }
+    } = this.props
     const { title, key, type, titleStyle, attachmentType } = attribute
     const isAttachment = type === 'attachment'
     const shouldRender = object[key] && object[key].length > 0
@@ -76,6 +79,7 @@ class DetailPreview extends Component {
           cardId={object.id}
           attachments={object[key]}
           type={attachmentType}
+          source={source}
         />
       ) : (
         <DetailBlock
@@ -100,48 +104,45 @@ class DetailPreview extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <ScrollView
-            style={styles.scroller}
-            showsVerticalScrollIndicator={false}>
-            <TouchableWithoutFeedback>
-              <View style={styles.detailsWrapper}>
+          <ScrollerView
+            scrollerProps={{
+              showsVerticalScrollIndicator: false
+            }}
+            style={styles.scroller}>
+            <View style={styles.detailsWrapper}>
+              {object.image ? (
                 <View style={styles.detailsBlock}>
-                  {object.image ? (
-                    <DetailImage
-                      displayStyle={objectMeta.image.displayStyle}
-                      image={object.image && object.image.data}
-                    />
-                  ) : null}
+                  <DetailImage
+                    displayStyle={objectMeta.image.displayStyle}
+                    image={object.image && object.image.data}
+                  />
                 </View>
-                <DetailBlock
-                  editMode={editMode}
-                  heading={
-                    <Text fontSize='h6' fontStyle='bold'>
-                      {title}
-                    </Text>
-                  }
-                  details={description}
-                  type={type}
-                />
-                {attributes.map(this.renderAttribute)}
-                <Collapsible style={styles.actions} collapsed={!editMode}>
-                  <Button
-                    small
-                    style={styles.action}
-                    onPress={this.handleSave}>
-                    {t('Save')}
-                  </Button>
-                  <Button
-                    small
-                    bordered
-                    style={styles.action}
-                    onPress={this.handleSave}>
-                    {t('Cancel')}
-                  </Button>
-                </Collapsible>
-              </View>
-            </TouchableWithoutFeedback>
-          </ScrollView>
+              ) : null}
+              <DetailBlock
+                editMode={editMode}
+                heading={
+                  <Text fontSize='h6' fontStyle='bold'>
+                    {title}
+                  </Text>
+                }
+                details={description}
+                type={type}
+              />
+              {attributes.map(this.renderAttribute)}
+              <Collapsible style={styles.actions} collapsed={!editMode}>
+                <Button small style={styles.action} onPress={this.handleSave}>
+                  {t('Save')}
+                </Button>
+                <Button
+                  small
+                  bordered
+                  style={styles.action}
+                  onPress={this.handleSave}>
+                  {t('Cancel')}
+                </Button>
+              </Collapsible>
+            </View>
+          </ScrollerView>
           {!editMode && (
             <View style={styles.editButtonContainer}>
               <AddButton size={50} icon='pen' onPress={this.handleEdit} />

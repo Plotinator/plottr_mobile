@@ -80,6 +80,7 @@ export default function Place(props) {
   }
 
   let objectMeta = {
+    source: 'place',
     title: {
       content: workingCopy.name
     },

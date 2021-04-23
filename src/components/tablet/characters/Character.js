@@ -130,6 +130,7 @@ export default function Character(props) {
   // }
 
   let objectMeta = {
+    source: 'character',
     title: {
       content: workingCopy.name
     },

@@ -1,5 +1,6 @@
 import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../../utils/Metrics'
+import Fonts from '../../../fonts'
 
 const { baseMargin } = Metrics
 
@@ -9,6 +10,16 @@ export default ScaledSheet.create({
   },
   heading: {
     marginBottom: baseMargin * 0.05
+  },
+  headingText: {
+    fontSize: Fonts.size.h7,
+    marginBottom: baseMargin / 4
+  },
+  headingEditText: {
+    ...Fonts.style.boldItalic,
+    marginLeft: baseMargin / 4,
+    marginBottom: baseMargin / 2,
+    opacity: 0.5
   },
   attachments: {
     flexDirection: 'row',
