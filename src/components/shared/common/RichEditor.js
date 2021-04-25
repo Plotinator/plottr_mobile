@@ -5,6 +5,7 @@ import { actions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor'
 import { moderateScale } from 'react-native-size-matters'
 import Text from './Text'
 import { Colors, HTMLToSlate, SlateToHTML } from '../../../utils'
+import Collapsible from 'react-native-collapsible'
 
 export default class RichTextEditor extends Component {
   getEditor = () => this.richText
@@ -66,12 +67,12 @@ export default class RichTextEditor extends Component {
     const placeholderText = placeholder || ''
     const html = initialHTMLText || initialValue
     const initialText = typeof html == 'object' ? SlateToHTML(html) : html
-    const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color}; line-height: ${lineHeight}em; padding: 0 0 10px 0;`
-    const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${Colors[bgColor] || bgColor}; }`
+    const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color} !important; line-height: ${lineHeight}em; padding: 0 0 10px 0;`
+    const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${Colors[bgColor] || bgColor} !important; }`
     return (
       <View style={containerStyles}>
         <RichEditor
-          pasteAsPlainText
+          // pasteAsPlainText
           ref={this.setEditor}
           style={editorStyles}
           editorStyle={{
@@ -86,7 +87,7 @@ export default class RichTextEditor extends Component {
           editorInitializedCallback={this.handleEditorInitialized}
           disabled={disabled ? true : false}
         />
-        {disabled ? null : (
+        <Collapsible collapsed={disabled}>
           <RichToolbar
             style={toolbarStyles}
             iconSize={20}
@@ -113,7 +114,7 @@ export default class RichTextEditor extends Component {
               actions.insertBulletsList
             ]}
           />
-        )}
+        </Collapsible>
       </View>
     )
   }

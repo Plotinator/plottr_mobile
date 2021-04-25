@@ -20,7 +20,7 @@ export default ScaledSheet.create({
   },
   richEditor: {
     paddingHorizontal: Metrics.baseMargin,
-    borderRadius: Metrics.cornerRadius,
+    // borderRadius: Metrics.cornerRadius,
     minHeight: 50
   },
   containerDisabled: {
