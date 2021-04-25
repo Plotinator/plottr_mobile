@@ -13,12 +13,13 @@ const {
   borderGray,
   textBlack,
   warmWhiteBG,
+  warmWhite,
   warmWhiter
 } = Colors
 
 export default ScaledSheet.create({
   tabsBase: {
-    backgroundColor: warmWhiter,
+    backgroundColor: warmWhite,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',

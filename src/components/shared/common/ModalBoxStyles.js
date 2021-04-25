@@ -11,7 +11,8 @@ const {
   doubleBaseMargin,
   doubleSection,
   screenHeight,
-  screenWidth
+  screenWidth,
+  warmBG
 } = Metrics
 const { size, style } = Fonts
 
@@ -26,7 +27,7 @@ export default ScaledSheet.create({
     alignItems: 'center'
   },
   dialogBox: {
-    backgroundColor: white,
+    backgroundColor: warmBG,
     borderRadius: buttonRadius,
     minHeight: 120,
     minWidth: 200,

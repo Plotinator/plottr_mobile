@@ -14,6 +14,7 @@ const { style, size } = Fonts
 const {
   gray,
   white,
+  warmBG,
   orange,
   textGray,
   lightGray,
@@ -23,7 +24,8 @@ const {
   cloudWhite,
   borderGray,
   textBlack,
-  cloudGray
+  cloudGray,
+  warmWhiteBG
 } = Colors
 
 const inputText = {
@@ -42,7 +44,7 @@ export default {
     alignItems: 'center'
   },
   window: {
-    backgroundColor: white,
+    backgroundColor: warmWhiteBG,
     borderRadius: cornerRadius * 1.5,
     width: '80%',
     maxHeight: '75%',
@@ -53,7 +55,7 @@ export default {
     shadowRadius: 10
   },
   closeButton: {
-    backgroundColor: white,
+    backgroundColor: warmWhiteBG,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -86,7 +88,7 @@ export default {
   },
   count: {
     marginTop: -baseMargin / 2,
-    backgroundColor: cloudGray,
+    backgroundColor: warmBG,
     borderRadius: 50,
     width: '17@ms',
     height: '17@ms',
@@ -136,6 +138,7 @@ export default {
     transform: [{ rotate: '-90deg' }]
   },
   actions: {
+    width: '100%',
     justifyContent: 'center',
     paddingTop: doubleBaseMargin,
     flexDirection: 'row'

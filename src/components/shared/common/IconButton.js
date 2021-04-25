@@ -3,7 +3,7 @@ import Colors from '../../../utils/Colors'
 import Icon from './Icon'
 import ShellButton from './ShellButton'
 
-export default props => {
+export default (props) => {
   const {
     style,
     buttonStyle,
@@ -26,7 +26,8 @@ export default props => {
       data={data}
       onPress={onPress}
       style={buttonStyle}
-      hitSlop={hitArea}>
+      hitSlop={hitArea}
+      noninteractive={!onPress}>
       <Icon name={name} color={actualColor} size={size} style={style} />
     </ShellButton>
   )

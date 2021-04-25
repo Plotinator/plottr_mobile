@@ -73,6 +73,7 @@ export default ScaledSheet.create({
   },
   labelText: {
     ...style.semiBold,
+    marginTop: -3,
     paddingBottom: 1
   },
   reset: {
