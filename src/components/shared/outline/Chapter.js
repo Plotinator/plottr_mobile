@@ -31,9 +31,9 @@ class Chapter extends Component {
   navigateToNewCard = () => {
     this.props.navigation.push('SceneDetails', {
       isNewCard: true,
-      beatId: this.props.chapter.id,  // Maintaining this since this is a shared component
+      beatId: this.props.chapter.id, // Maintaining this since this is a shared component
       chapterId: this.props.chapter.id
-    });
+    })
   }
 
   autoSortChapter = () => {
@@ -161,11 +161,11 @@ class Chapter extends Component {
 
 const styles = StyleSheet.create({
   cardsContainer: {
-    backgroundColor: Colors.cloud,
+    // backgroundColor: Colors.cloud,
     paddingTop: Metrics.baseMargin
   },
   chapterView: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     padding: 8
   },
   sliderRow: {

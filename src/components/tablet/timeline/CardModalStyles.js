@@ -18,7 +18,9 @@ const {
   white,
   orange,
   textGray,
+  warmWhite,
   lightGray,
+  warmWhiteBG,
   textLightGray,
   lightenGray,
   cloudWhite,
@@ -30,7 +32,7 @@ const {
 export default ScaledSheet.create({
   ...FormStyles,
   breadCrumbs: {
-    backgroundColor: cloudWhite,
+    backgroundColor: warmWhite,
     flexDirection: 'row',
     alignItems: 'center',
     overflow: 'hidden',
