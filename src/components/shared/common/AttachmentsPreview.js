@@ -58,7 +58,9 @@ class AttachmentsPreview extends Component {
       attachments,
       type,
       cardId,
-      editMode
+      editMode,
+      objectKey,
+      onChange
     } = this.props
     const attachmentsList = this.props[`${type}s`]
     const attached = attachmentsList.filter(
@@ -73,6 +75,9 @@ class AttachmentsPreview extends Component {
               style={[styles.headingText, editMode && styles.headingEditText]}>
               {title}
             </Text>
+            <View style={styles.count}>
+              <Text style={styles.countText}>{attached.length}</Text>
+            </View>
           </View>
         )}
         {editMode ? (
@@ -81,6 +86,8 @@ class AttachmentsPreview extends Component {
             attachments={attachments}
             type={type}
             sourceType={source}
+            objectKey={objectKey}
+            onChange={onChange}
           />
         ) : (
           <View style={styles.attachments}>

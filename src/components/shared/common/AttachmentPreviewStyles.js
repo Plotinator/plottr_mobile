@@ -1,19 +1,37 @@
 import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../../utils/Metrics'
 import Fonts from '../../../fonts'
+import { Colors } from '../../../utils'
 
 const { baseMargin } = Metrics
+const { style, size } = Fonts
+const {
+  gray,
+  white,
+  orange,
+  textGray,
+  lightGray,
+  textLightGray,
+  lightenGray,
+  cloudWhite,
+  borderGray,
+  textBlack,
+  cloudGray
+} = Colors
 
 export default ScaledSheet.create({
   container: {
     marginBottom: baseMargin
   },
   heading: {
-    marginBottom: baseMargin * 0.05
+    marginBottom: baseMargin * 0.05,
+    flexDirection: 'row',
+    alignItems:'center',
   },
   headingText: {
     fontSize: Fonts.size.h7,
-    marginBottom: baseMargin / 4
+    marginBottom: baseMargin / 4,
+    marginRight: baseMargin / 2
   },
   headingEditText: {
     ...Fonts.style.boldItalic,
@@ -40,5 +58,19 @@ export default ScaledSheet.create({
     marginTop: baseMargin,
     borderWidth: 1.2,
     borderRadius: 20
-  }
+  },
+  count: {
+    marginTop: -baseMargin / 2,
+    backgroundColor: cloudGray,
+    borderRadius: 50,
+    width: '17@ms',
+    height: '17@ms',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  countText: {
+    ...style.semiBold,
+    fontSize: size.tiny,
+    color: textLightGray
+  },
 })

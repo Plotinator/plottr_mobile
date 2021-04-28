@@ -25,6 +25,7 @@ class Attachments extends Component {
       case 'tag':
         return actions.addTag(cardId, id)
       case 'book':
+      case 'bookId':
         return actions.addBook(cardId, id)
       default:
         return
@@ -41,7 +42,7 @@ class Attachments extends Component {
       case 'tag':
         return actions.removeTag(cardId, id)
       case 'book':
-      case 'bookIds':
+      case 'bookId':
         return actions.removeBook(cardId, id)
       default:
         return
@@ -49,17 +50,28 @@ class Attachments extends Component {
   }
 
   handleRemoveAttachment = ({ id }) => {
-    this.removeAttachment(id)
+    const { attachments, objectKey, onChange } = this.props
+    if (onChange) {
+      const attached = attachments.filter((val)=> val != id);
+      onChange(objectKey, attached);
+    }
+    this.removeAttachment(id);
   }
 
   handleAddAttachment = ({ id }) => {
+    const { attachments, objectKey, onChange } = this.props
+    if (onChange) {
+      const attached = attachments
+      attached.push(id)
+      onChange(objectKey, attached);
+    }
     this.addAttachment(id)
   }
 
-  renderAttachmentName (attachment) {
+  renderAttachmentName(attachment) {
     const { type } = this.props
     const { title, name } = attachment
-    const firstCapital = type.substring(0,1).toUpperCase()
+    const firstCapital = type.substring(0, 1).toUpperCase()
     const commonLast = type.substring(1)
     return name || title || `New ${firstCapital}${commonLast}`
   }
@@ -97,7 +109,7 @@ class Attachments extends Component {
     )
   }
 
-  render () {
+  render() {
     const { attachments, type } = this.props
     const attachmentsList = this.props[`${type}s`]
     const attached = attachmentsList.filter(({ id }) => attachments.indexOf(id) > -1)
@@ -144,16 +156,16 @@ Attachments.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
-  books: PropTypes.object.isRequired,
+  books: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
-  const { books = [] } = state
+function mapStateToProps(state) {
+  const { books } = state
   const bookIds = []
-  Object.keys(books).map((key, index) => {
-    bookIds[index] = { ...books[key] }
-  })
+  books.allIds.forEach(element => {
+    bookIds.push({ ...books[element] })
+  });
   return {
     characters: selectors.charactersSortedAtoZSelector(state),
     places: selectors.placesSortedAtoZSelector(state),
@@ -163,7 +175,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   const { sourceType } = ownProps
   switch (sourceType) {
     case 'card':
