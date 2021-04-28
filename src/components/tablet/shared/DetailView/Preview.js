@@ -1,9 +1,6 @@
 import { cloneDeep } from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { selectors, actions } from 'pltr/v2'
 import {View} from 'react-native'
 import { t } from 'plottr_locales'
 import {
