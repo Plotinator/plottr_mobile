@@ -32,6 +32,10 @@ class Outline extends Component {
     this.outlineListRef.scrollToIndex({ index: listIndex })
   }
 
+  handleScrollFail = () => {
+    // handle scrollTo fail
+  }
+
   handleListRef = (ref) => {
     this.outlineListRef = ref
   }
@@ -88,6 +92,7 @@ class Outline extends Component {
               contentContainerStyle={styles.outline}
               ref={this.handleListRef}
               initialNumToRender={2}
+              onScrollToIndexFailed={this.handleScrollFail}
             />
           </Col>
         </Grid>
