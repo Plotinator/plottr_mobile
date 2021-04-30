@@ -1,5 +1,5 @@
-import React from 'react'
-import { View } from 'react-native'
+import React, { useState } from 'react'
+import { View, TextInput } from 'react-native'
 import Fonts from '../../../fonts'
 import PropTypes from 'react-proptypes'
 import styles from './DetailBlockStyles'
@@ -14,7 +14,8 @@ const DetailBlock = (props) => {
     details,
     type = 'line',
     editMode = false,
-    onChange
+    objectKey,
+    onChange,
   } = props
   const isParagraph = type === 'paragraph'
 
@@ -47,14 +48,29 @@ const DetailBlock = (props) => {
             disabled={!editMode}
             fontSize={Fonts.size.tiny}
             initialValue={details}
-            onChange={onChange}
+            onChange={(value) => {
+              onChange(objectKey, value);
+            }}
           />
         ) : (
-          <LineTextEditor disabled={!editMode} />
+          !editMode ? (
+            <Text style={styles.detailsText}>{details}</Text>
+          ) : (
+            <Input
+              inset
+              value={details}
+              style={styles.input}
+              inputStyle={styles.inputText}
+              onChangeText={(value) => {
+                onChange(objectKey, value);
+              }}
+            />
+          )
         )}
       </View>
     </View>
   )
+
 }
 
 DetailBlock.propTypes = {

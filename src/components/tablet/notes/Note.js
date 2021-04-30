@@ -1,123 +1,141 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import { t } from 'plottr_locales'
-import { Input, Label, Item, Text, Button } from 'native-base'
 import {
-  View,
   StyleSheet,
-  ScrollView,
-  TouchableWithoutFeedback
 } from 'react-native'
-import AttachmentList from '../../shared/attachments/AttachmentList'
-import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
-import { RichEditor } from '../../shared/common'
-import DetailImage from '../shared/DetailImage'
 import DetailPreview from '../shared/DetailView/Preview'
-// import { ScrollView } from 'react-native-gesture-handler'
+import { cloneDeep } from 'lodash'
 
-export default function Note(props) {
-  const { note } = props
-  const [title, setTitle] = useState(note.title)
-  const [content, setContent] = useState(note.content)
-  const [changes, makeChanges] = useState(false)
 
-  const saveChanges = () => {
-    props.onSave(note.id, title, content)
-    makeChanges(false)
+export default class Character extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      object: null,
+      objectMeta: null
+    }
+  }
+  componentDidMount() {
+    const { note } = this.props;
+    let objectMeta = this.getObjectMeta();
+    this.setState({
+      object: note,
+      objectMeta: objectMeta
+    })
   }
 
-  const renderAttachments = () => {
+  getObjectMeta = () => {
+    let objectMeta = {
+      source: 'note',
+      name: {
+        title: t('Name'),
+        key: 'title',
+        type: 'line'
+      },
+      description: {
+        title: t('Description'),
+        key: 'content',
+        type: 'paragraph'
+      },
+      image: {
+        displayStyle: 'fullWidth'
+      },
+      attributes: []
+    };
+    objectMeta = this.addAttachments(objectMeta);
+    return objectMeta;
+  }
+
+  addAttachments = (objectMeta) => {
+    let newMeta = cloneDeep(objectMeta);
+    newMeta.attributes.push({
+      title: 'Books',
+      key: 'bookIds',
+      type: 'attachment',
+      attachmentType: 'bookId'
+    });
+    newMeta.attributes.push({
+      title: 'Characters',
+      key: 'characters',
+      type: 'attachment',
+      attachmentType: 'character'
+    });
+    newMeta.attributes.push({
+      title: 'Places',
+      key: 'places',
+      type: 'attachment',
+      attachmentType: 'place'
+    });
+    newMeta.attributes.push({
+      title: 'Tags',
+      key: 'tags',
+      type: 'attachment',
+      attachmentType: 'tag'
+    });
+    return newMeta;
+  }
+
+  render() {
+    const { object, objectMeta } = this.state
     return (
-      <AttachmentList
-        itemType='note'
-        item={note}
-        navigate={props.navigation.navigate}
-        books
-      />
+      <>
+        {object ?
+          <DetailPreview object={object} objectMeta={objectMeta} onSave={this.props.onSave} /> :
+          null}
+      </>
     )
   }
-
-  let objectMeta = {
-    source: 'note',
-    title: {
-      content: title
-    },
-    description: {
-      content: content,
-      type: 'paragraph'
-    },
-    image: {
-      displayStyle: 'fullWidth'
-    },
-    attributes: [
-      {
-        title: 'Books',
-        key: 'bookIds',
-        type: 'attachment',
-        attachmentType: 'bookId'
-      },
-      {
-        title: 'Characters',
-        key: 'characters',
-        type: 'attachment',
-        attachmentType: 'character'
-      },
-      {
-        title: 'Places',
-        key: 'places',
-        type: 'attachment',
-        attachmentType: 'place'
-      },
-      {
-        title: 'Tags',
-        key: 'tags',
-        type: 'attachment',
-        attachmentType: 'tag'
-      }
-    ]
-  }
-
-  // console.log("Working copy Notes - ------- ", note);
-  return (
-    <DetailPreview object={note} objectMeta={objectMeta} />
-    // <DetailsWrapper>
-    //   <DetailsLeft contentContainerStyle={{ flex: 1 }}>
-    //     <DetailImage image={note.image && note.image.data} />
-    //     <Item inlineLabel style={styles.label}>
-    //       <Label>{t('Title')}</Label>
-    //       <Input
-    //         value={title}
-    //         onChangeText={text => {
-    //           setTitle(text)
-    //           makeChanges(true)
-    //         }}
-    //         autoCapitalize='sentences'
-    //       />
-    //     </Item>
-    //     <View style={[styles.afterList, styles.rceView]}>
-    //       <Label>{t('Content')}</Label>
-    //       <RichEditor
-    //         initialValue={note.content}
-    //         onChange={val => {
-    //           setContent(val)
-    //           makeChanges(true)
-    //         }}
-    //         maxHeight={5000}
-    //       />
-    //     </View>
-    //   </DetailsLeft>
-    //   <DetailsRight>
-    //     <View>
-    //       <View style={styles.detailsRightItems}>{renderAttachments()}</View>
-    //     </View>
-    //     <View style={styles.buttonFooter}>
-    //       <Button block success disabled={!changes} onPress={saveChanges}>
-    //         <Text>{t('Save')}</Text>
-    //       </Button>
-    //     </View>
-    //   </DetailsRight>
-    // </DetailsWrapper>
-  )
 }
+
+// export default function Note(props) {
+//   const { note } = props
+
+//   let objectMeta = {
+//     source: 'note',
+//     name: {
+//       title: t('Name'),
+//       key: 'title',
+//       type: 'line'
+//     },
+//     description: {
+//       title: t('Description'),
+//       key: 'content',
+//       type: 'paragraph'
+//     },
+//     image: {
+//       displayStyle: 'fullWidth'
+//     },
+//     attributes: [
+//       {
+//         title: 'Books',
+//         key: 'bookIds',
+//         type: 'attachment',
+//         attachmentType: 'bookId'
+//       },
+//       {
+//         title: 'Characters',
+//         key: 'characters',
+//         type: 'attachment',
+//         attachmentType: 'character'
+//       },
+//       {
+//         title: 'Places',
+//         key: 'places',
+//         type: 'attachment',
+//         attachmentType: 'place'
+//       },
+//       {
+//         title: 'Tags',
+//         key: 'tags',
+//         type: 'attachment',
+//         attachmentType: 'tag'
+//       }
+//     ]
+//   }
+//   return (
+//     <DetailPreview object={note} objectMeta={objectMeta} onSave={props.onSave} />
+//   )
+// }
 
 const styles = StyleSheet.create({
   buttonFooter: {

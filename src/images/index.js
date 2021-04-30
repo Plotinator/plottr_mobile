@@ -8,7 +8,10 @@ const images = {
   BIRTHDAY_EMOJI: require('./birthday_emoji.png'),
   BOOK: require('./book.png'),
   PLOTTR_VERTICAL: require('./plottr_vertical_logo.png'),
-  CLOSE: require('./close.png')
+  CLOSE: require('./close.png'),
+  PROFILE: require('./profile.png'),
+  PLACE: require('./place.png')
+  
 }
 
 export default images
