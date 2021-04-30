@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { sortBy } from 'lodash'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { selectors, actions, helpers } from 'pltr/v2'
 import { H3, Icon, Card, CardItem, View } from 'native-base'
@@ -31,8 +31,9 @@ class Chapter extends Component {
   navigateToNewCard = () => {
     this.props.navigation.push('SceneDetails', {
       isNewCard: true,
-      beatId: this.props.chapter.id
-    })
+      beatId: this.props.chapter.id,  // Maintaining this since this is a shared component
+      chapterId: this.props.chapter.id
+    });
   }
 
   autoSortChapter = () => {

@@ -2,7 +2,9 @@ import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../../utils/Metrics'
 import Fonts from '../../../fonts'
 import Colors from '../../../utils/Colors'
+import { isTablet } from 'react-native-device-info'
 
+const onTablet = isTablet()
 const {
   white,
   textGray,
@@ -27,8 +29,14 @@ export default ScaledSheet.create({
     ...style.inputText,
     color: textGray,
     paddingVertical: IS_IOS ? 5 : null,
+    minHeight: '35@ms',
     fontSize: size.h4,
     flex: 1
+  },
+  multiline: {
+    height: 'auto',
+    paddingTop: baseMargin,
+    maxHeight: '120@ms'
   },
   inputSmall: {
     fontSize: size.small
@@ -84,7 +92,7 @@ export default ScaledSheet.create({
     marginBottom: 0
   },
   labelDown: {
-    marginTop: 26,
-    marginBottom: -26
+    marginTop: '26@vs',
+    marginBottom: '-26@vs'
   }
 })

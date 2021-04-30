@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 import { keyBy } from 'lodash'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { selectors, helpers } from 'pltr/v2'
 import { View, H3 } from 'native-base'
@@ -29,6 +29,10 @@ class Outline extends Component {
       linesById: keyBy(props.lines, 'id'),
       currentLine: state.currentLine
     }
+  }
+
+  handleScrollFail = () => {
+    // handle scroll to index failure
   }
 
   renderCardDots () {
@@ -119,6 +123,7 @@ class Outline extends Component {
           this.outlineListRef = ref
         }}
         initialNumToRender={2}
+        onScrollToIndexFailed={this.handleScrollFail}
       />
     )
   }

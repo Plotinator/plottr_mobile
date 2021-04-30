@@ -5,12 +5,12 @@ import { actions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor'
 import { moderateScale } from 'react-native-size-matters'
 import Text from './Text'
 import { Colors, HTMLToSlate, SlateToHTML } from '../../../utils'
+import Collapsible from 'react-native-collapsible'
 
 export default class RichTextEditor extends Component {
-
   getEditor = () => this.richText
 
-  setEditor = ref => this.richText = ref
+  setEditor = (ref) => (this.richText = ref)
 
   handleEditorInitialized = () => {
     //
@@ -22,12 +22,10 @@ export default class RichTextEditor extends Component {
     onChange && onChange(SLATE)
   }
 
-  renderTitleIcons = (
-    title,
-    size = 18,
-    style = 'bold',
-    props = {}
-  ) => ({ tintColor, selected }) => {
+  renderTitleIcons = (title, size = 18, style = 'bold', props = {}) => ({
+    tintColor,
+    selected
+  }) => {
     return (
       <Text
         {...props}
@@ -39,36 +37,42 @@ export default class RichTextEditor extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       style,
+      fontSize = 18,
+      bgColor = 'warmWhiteBG',
+      color = Colors.textDarkGrayTone,
+      lineHeight = 1.75,
       value,
       onFocus,
       placeholder,
       editorStyle,
       toolbarStyle,
       initialValue,
-      initialHTMLText
+      initialHTMLText,
+      disabled
     } = this.props
-
     const containerStyles = [styles.editorContainer]
     containerStyles.push(style)
+    // disabled && containerStyles.push(styles.containerDisabled)
 
     const toolbarStyles = [styles.richToolbar]
     toolbarStyles.push(toolbarStyle)
 
     const editorStyles = [styles.richEditor]
+    // disabled && editorStyles.push(styles.editorDisabled)
     editorStyles.push(editorStyle)
 
     const placeholderText = placeholder || ''
     const html = initialHTMLText || initialValue
     const initialText = typeof html == 'object' ? SlateToHTML(html) : html
-    const contentCSSText = `font-family: "Open Sans" !important; font-size: 18px; padding: 5px 15px 15px;`
-    const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');`
+    const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color} !important; line-height: ${lineHeight}em; padding: 0 15px 10px;`
+    const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${Colors[bgColor] || bgColor} !important; }`
     return (
       <View style={containerStyles}>
         <RichEditor
-          pasteAsPlainText
+          // pasteAsPlainText
           ref={this.setEditor}
           style={editorStyles}
           editorStyle={{
@@ -81,31 +85,36 @@ export default class RichTextEditor extends Component {
           initialContentHTML={initialText}
           onChange={this.handleOnChange}
           editorInitializedCallback={this.handleEditorInitialized}
+          disabled={disabled ? true : false}
         />
-        <RichToolbar
-          style={toolbarStyles}
-          iconSize={20}
-          iconMap={{
-            bold: this.renderTitleIcons('B', 20),
-            italic: this.renderTitleIcons('I', 20, 'semiBoldItalic'),
-            underline: this.renderTitleIcons('U', 18, 'semiBold', { underlined: true }),
-            heading2: this.renderTitleIcons('H1'),
-            heading3: this.renderTitleIcons('H2')
-          }}
-          editor={this.richText}
-          getEditor={this.getEditor}
-          selectedIconTint={Colors.orange}
-          actions={[
-            actions.setBold,
-            actions.setItalic,
-            actions.setUnderline,
-            actions.setStrikethrough,
-            actions.heading2,
-            actions.heading3,
-            actions.insertOrderedList,
-            actions.insertBulletsList
-          ]}
-        />
+        <Collapsible collapsed={disabled}>
+          <RichToolbar
+            style={toolbarStyles}
+            iconSize={20}
+            iconMap={{
+              bold: this.renderTitleIcons('B', 20),
+              italic: this.renderTitleIcons('I', 20, 'semiBoldItalic'),
+              underline: this.renderTitleIcons('U', 18, 'semiBold', {
+                underlined: true
+              }),
+              heading2: this.renderTitleIcons('H1'),
+              heading3: this.renderTitleIcons('H2')
+            }}
+            editor={this.richText}
+            getEditor={this.getEditor}
+            selectedIconTint={Colors.orange}
+            actions={[
+              actions.setBold,
+              actions.setItalic,
+              actions.setUnderline,
+              actions.setStrikethrough,
+              actions.heading2,
+              actions.heading3,
+              actions.insertOrderedList,
+              actions.insertBulletsList
+            ]}
+          />
+        </Collapsible>
       </View>
     )
   }
