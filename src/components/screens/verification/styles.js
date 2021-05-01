@@ -1,5 +1,6 @@
 import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../../utils/Metrics'
+import Colors from '../../../utils/Colors'
 
 const {
   baseMargin,
@@ -8,10 +9,11 @@ const {
   screenHeight,
   buttonRadius
 } = Metrics
+const { warmBG } = Colors
 
 export default ScaledSheet.create({
   scroller: {
-    backgroundColor: 'white',
+    backgroundColor: warmBG,
     height: screenHeight
   },
   container: {

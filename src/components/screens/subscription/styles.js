@@ -5,7 +5,7 @@ import Colors from '../../../utils/Colors'
 
 const { baseMargin, section, buttonRadius, doubleBaseMargin } = Metrics
 const { style, size } = Fonts
-const { white, grayBlack } = Colors
+const { white, grayBlack, warmBG } = Colors
 
 export default ScaledSheet.create({
   scroller: {
@@ -16,7 +16,7 @@ export default ScaledSheet.create({
     padding: section,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: warmBG
   },
   actionButtons: {
     minHeight: '150@vs',
