@@ -2,8 +2,21 @@ import { ScaledSheet } from 'react-native-size-matters'
 import { Colors, Metrics } from '../../../utils'
 import Fonts from '../../../fonts'
 
-const { baseMargin, doubleBaseMargin, cornerRadius, section, doubleSection } = Metrics
-const { orange, warmWhite, warmBG, warmGray, warmTextGray, warmTextDarkGray } = Colors
+const {
+  baseMargin,
+  doubleBaseMargin,
+  cornerRadius,
+  section,
+  doubleSection
+} = Metrics
+const {
+  orange,
+  warmWhite,
+  warmBG,
+  warmGray,
+  warmTextGray,
+  warmTextDarkGray
+} = Colors
 const { size, style } = Fonts
 
 export default ScaledSheet.create({
@@ -34,7 +47,7 @@ export default ScaledSheet.create({
     marginRight: baseMargin / 1.5
   },
   labelText: {
-    color: warmTextGray,
+    color: warmTextGray
   },
   seriesContainer: {
     paddingHorizontal: doubleSection * 2,
@@ -63,16 +76,16 @@ export default ScaledSheet.create({
     flexWrap: 'wrap',
     color: warmTextGray,
     paddingHorizontal: section,
-    lineHeight: size.h5 * 1.5,
-    fontSize: size.h5,
+    lineHeight: size.h6 * 1.5,
+    fontSize: size.h6,
     textAlign: 'center'
   },
   seriesGenre: {
     ...style.semiBold,
     flexWrap: 'wrap',
     color: warmTextGray,
-    lineHeight: size.h5 * 1.4,
-    fontSize: size.h5 * .95,
+    lineHeight: size.h6 * 1.4,
+    fontSize: size.h6,
     textAlign: 'center',
     marginBottom: -baseMargin / 2
   },

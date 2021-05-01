@@ -16,7 +16,9 @@ const {
   cloudWhite,
   borderGray,
   textBlack,
-  cloudGray
+  cloudGray,
+  warmWhite,
+  warmTextGray
 } = Colors
 
 export default ScaledSheet.create({
@@ -60,17 +62,17 @@ export default ScaledSheet.create({
     borderRadius: 20
   },
   count: {
-    marginTop: -baseMargin / 2,
-    backgroundColor: cloudGray,
+    marginTop: -baseMargin / 3,
+    backgroundColor: warmWhite,
     borderRadius: 50,
-    width: '17@ms',
-    height: '17@ms',
+    width: '15@ms',
+    height: '15@ms',
     justifyContent: 'center',
     alignItems: 'center'
   },
   countText: {
-    ...style.semiBold,
-    fontSize: size.tiny,
-    color: textLightGray
+    ...style.bold,
+    fontSize: size.micro,
+    color: lightenGray
   },
 })

@@ -13,8 +13,8 @@ export default class Character extends Component {
     }
   }
   componentDidMount() {
-    const { place } = this.props;
-    let objectMeta = this.getObjectMeta();
+    const { place } = this.props
+    let objectMeta = this.getObjectMeta()
     this.setState({
       object: place,
       objectMeta: objectMeta
@@ -22,16 +22,19 @@ export default class Character extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps.customAttributes) !=  JSON.stringify(this.props.customAttributes)) {
-      let objectMeta = this.getObjectMeta();
+    if (
+      JSON.stringify(prevProps.customAttributes) !=
+      JSON.stringify(this.props.customAttributes)
+    ) {
+      let objectMeta = this.getObjectMeta()
       this.setState({
         objectMeta: objectMeta
-      });
+      })
     }
   }
 
   getObjectMeta = () => {
-    const { customAttributes } = this.props;
+    const { customAttributes } = this.props
 
     let objectMeta = {
       source: 'place',
@@ -49,38 +52,39 @@ export default class Character extends Component {
       image: {
         displayStyle: 'fullWidth'
       },
-      attributes: [{
-        title: 'Notes',
-        titleStyle: 'boldItalic',
-        key: 'notes',
-        type: 'paragraph'
-      }]
-    };
-    objectMeta = this.addCustomAttributes(objectMeta, customAttributes);
-    objectMeta = this.addAttachments(objectMeta);
-    return objectMeta;
+      attributes: [
+        {
+          title: 'Notes',
+          titleStyle: 'boldItalic',
+          key: 'notes',
+          type: 'paragraph'
+        }
+      ]
+    }
+    objectMeta = this.addCustomAttributes(objectMeta, customAttributes)
+    objectMeta = this.addAttachments(objectMeta)
+    return objectMeta
   }
 
   addAttachments = (objectMeta) => {
-    let newMeta = cloneDeep(objectMeta);
+    let newMeta = cloneDeep(objectMeta)
     newMeta.attributes.push({
       title: 'Books',
       key: 'bookIds',
       type: 'attachment',
       attachmentType: 'bookId'
-    });
+    })
     newMeta.attributes.push({
       title: 'Tags',
       key: 'tags',
       type: 'attachment',
       attachmentType: 'tag'
-    });
-    return newMeta;
+    })
+    return newMeta
   }
 
-
   addCustomAttributes = (objectMeta, customAttributes) => {
-    let newMeta = cloneDeep(objectMeta);
+    let newMeta = cloneDeep(objectMeta)
     customAttributes.map((attr, idx) => {
       const { name, type } = attr
       let newAttr = {
@@ -89,19 +93,19 @@ export default class Character extends Component {
         type: type == 'paragraph' ? 'paragraph' : 'line'
       }
       newMeta.attributes.push(newAttr)
-    });
-    return newMeta;
+    })
+    return newMeta
   }
 
   render() {
-    const { object, objectMeta } = this.state;
-    return (
-      <>
-        {object ?
-          <DetailPreview object={object} objectMeta={objectMeta} onSave={this.props.onSave} /> :
-          null}
-      </>
-    )
+    const { object, objectMeta } = this.state
+    return object ? (
+      <DetailPreview
+        object={object}
+        objectMeta={objectMeta}
+        onSave={this.props.onSave}
+      />
+    ) : null
   }
 }
 

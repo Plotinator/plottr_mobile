@@ -69,6 +69,6 @@ export default ScaledSheet.create({
     height: '100%',
     maxHeight: screenHeight - headerHeight - footerHeight - 35,
     top: 0,
-    right: doubleBaseMargin * 1.25
+    right: doubleBaseMargin
   }
 })

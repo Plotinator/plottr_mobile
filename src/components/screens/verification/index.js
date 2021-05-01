@@ -5,7 +5,7 @@ import {
   Image,
   Linking,
   ScrollView,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback
 } from 'react-native'
 import styles from './styles'
 import {
@@ -42,7 +42,7 @@ class Verification extends Component {
   //   }
   // }
 
-  showError (message, useTranslation = true) {
+  showError(message, useTranslation = true) {
     showAlert({
       title: t('UH-OH!'),
       message: useTranslation ? t(message) : message
@@ -52,18 +52,26 @@ class Verification extends Component {
   handleEmailValidation = async () => {
     const { navigation } = this.props
     const { email } = this.state
-    const { route: { params: { sendVerificationEmail } } } = this.props
+    const {
+      route: {
+        params: { sendVerificationEmail }
+      }
+    } = this.props
 
     this.setState({ submitted: true, verifying: true })
     await getLicenses(email, async (result, error) => {
       if (!result || error) {
-        return this.showError(error || t("Your email didn't verify. Try again or try another email."), false)
+        return this.showError(
+          error ||
+            t("Your email didn't verify. Try again or try another email."),
+          false
+        )
       }
-      if (result.length > 1 || result[0] && result[0].licenses?.length > 1) {
+      if (result.length > 1 || (result[0] && result[0].licenses?.length > 1)) {
         // when you have more than one licenses
         navigation.navigate('VerificationLicenses', { Licenses: result })
         console.log('LICENSES', result)
-      } else if(result[0]) {
+      } else if (result[0]) {
         // only one license
         console.log('ONLY ONE')
         if (result[0].email === TESTR_EMAIL) {
@@ -77,21 +85,25 @@ class Verification extends Component {
           await sendVerificationEmail(userInfo)
           navigation.navigate('VerificationConfirmation')
         } else {
-          const error = t("Your email didn't verify. Try again or try another email.")
+          const error = t(
+            "Your email didn't verify. Try again or try another email."
+          )
           const hasMessage = userInfo && userInfo.message
-          const message = (hasMessage ? `\n${hasMessage}` : '')
+          const message = hasMessage ? `\n${hasMessage}` : ''
           this.showError(error + message, false)
         }
       } else {
-        this.showError('You currently have no available licenses for this email.')
+        this.showError(
+          'You currently have no available licenses for this email.'
+        )
       }
     })
     this.setState({ submitted: false, verifying: false })
   }
 
-  handleEmailText = email => this.setState({ email })
+  handleEmailText = (email) => this.setState({ email })
 
-  handleGetLicense () {
+  handleGetLicense() {
     Linking.openURL('https://plottr.com/pricing/')
   }
 
@@ -103,27 +115,29 @@ class Verification extends Component {
   renderSubscriptionButtons(verifying) {
     if (IS_ANDROID) return null
 
-    return <>
-      {IS_ANDROID ? (
-        <View style={styles.or}>
-          <Text fontStyle={'bold'}>{t('or')}</Text>
-        </View>
-      ) : null}
-      <Button
-        block
-        disabled={verifying}
-        style={styles.button}
-        onPress={this.handleGoToSubscriptions}>
-        {t('Start Mobile Subscription')}
-      </Button>
-    </>
+    return (
+      <React.Fragment>
+        {IS_ANDROID ? (
+          <View style={styles.or}>
+            <Text fontStyle={'bold'}>{t('or')}</Text>
+          </View>
+        ) : null}
+        <Button
+          block
+          disabled={verifying}
+          style={styles.button}
+          onPress={this.handleGoToSubscriptions}>
+          {t('Start Mobile Subscription')}
+        </Button>
+      </React.Fragment>
+    )
   }
 
   render() {
     const { email, verifying } = this.state
-    const isValidEmail = email && String(email).match(
-      /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
-    )
+    const isValidEmail =
+      email &&
+      String(email).match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
 
     return (
       <ScrollView

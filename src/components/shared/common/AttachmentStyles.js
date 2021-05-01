@@ -26,10 +26,11 @@ export default ScaledSheet.create({
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: borderGray,
-    borderRadius: cornerRadius * 1.25,
+    borderRadius: cornerRadius * 1.5,
     padding: baseMargin / 3,
+    paddingBottom: baseMargin / 4,
     paddingRight: '23@ms',
-    minHeight: '35@ms'
+    minHeight: '30@ms'
   },
   tabCell: {
     backgroundColor: warmWhiteBG,
@@ -38,8 +39,9 @@ export default ScaledSheet.create({
     borderRadius: cornerRadius,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: baseMargin / 4,
-    margin: baseMargin / 3
+    paddingVertical: baseMargin / 6,
+    marginRight: baseMargin / 3,
+    marginBottom: baseMargin / 3
   },
   tabName: {
     ...style.semiBoldItalic,
@@ -59,11 +61,11 @@ export default ScaledSheet.create({
     opacity: 0.25
   },
   addButton: {
-    width: '23@ms',
-    height: '23@ms',
+    width: '22@ms',
+    height: '22@ms',
     position: 'absolute',
-    top: baseMargin / 1.5,
-    right: baseMargin / 1.4,
+    top: baseMargin / 2,
+    right: baseMargin / 2,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
@@ -96,5 +98,8 @@ export default ScaledSheet.create({
     marginLeft: baseMargin / 2,
     borderRadius: 50,
     marginTop: baseMargin / 4
+  },
+  addTypeText: {
+    padding: baseMargin * 0.9
   }
 })

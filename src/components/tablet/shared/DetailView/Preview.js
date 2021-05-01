@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import {View} from 'react-native'
+import { View } from 'react-native'
 import { t } from 'plottr_locales'
 import {
   Text,
@@ -9,7 +9,7 @@ import {
   ScrollerView,
   DetailBlock,
   AddButton,
-  AttachmentsPreview,
+  AttachmentsPreview
 } from '../../../shared/common'
 import styles from './styles'
 import Collapsible from 'react-native-collapsible'
@@ -22,45 +22,35 @@ export default class DetailPreview extends Component {
     this.state = {
       object: null,
       objectMeta: null,
-      editMode: false // test example
+      editMode: false
     }
   }
 
   componentDidMount() {
-    const { object, objectMeta } = this.props;
-    const {
-      name,
-    } = objectMeta;
+    const { object, objectMeta } = this.props
+    const { name } = objectMeta
 
-    const editMode = object[name.key] ? false : true;
+    const editMode = object[name.key] ? false : true
     this.setState({
       object: cloneDeep(object),
       objectMeta: cloneDeep(objectMeta),
       editMode: editMode
-    });
+    })
   }
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) != JSON.stringify(this.props)) {
-      const { object, objectMeta } = this.props;
+      const { object, objectMeta } = this.props
       this.setState({
         object: cloneDeep(object),
         objectMeta: cloneDeep(objectMeta)
-      });
+      })
     }
   }
 
-  // static getDerivedStateFromProps(props, state) {
-  //   const { object, objectMeta } = props
-  //   return {
-  //     object: cloneDeep(object),
-  //     objectMeta: cloneDeep(objectMeta)
-  //   }
-  // }
-
   handleChange = (key, value) => {
-    let objectCopy = cloneDeep(this.state.object);
-    objectCopy[key] = value;
+    let objectCopy = cloneDeep(this.state.object)
+    objectCopy[key] = value
     this.setState({
       object: objectCopy
     })
@@ -85,73 +75,69 @@ export default class DetailPreview extends Component {
 
   renderHeader = () => {
     const { object, objectMeta = {}, editMode } = this.state
-    const {
-      name,
-      description,
-      source,
-      attributes = []
-    } = objectMeta;
+    const { name, description, source, attributes = [] } = objectMeta
 
-    return (<>
-      { editMode ? (
-        <>
-          <View style={styles.detailsBlock}>
-            {object.image ? (
-              <DetailImage
-                displayStyle={objectMeta.image.displayStyle}
-                image={object.image && object.image.data}
-                editMode={editMode}
-              />
-            ) : <DetailImage
+    return editMode ? (
+      <React.Fragment>
+        <View style={styles.detailsBlock}>
+          {object.image ? (
+            <DetailImage
               displayStyle={objectMeta.image.displayStyle}
-              imageSourceType="default"
+              image={object.image && object.image.data}
+              editMode={editMode}
+            />
+          ) : (
+            <DetailImage
+              displayStyle={objectMeta.image.displayStyle}
+              imageSourceType='default'
               image={source === 'character' ? images.PROFILE : null}
               editMode={editMode}
-            />}
+            />
+          )}
+        </View>
+        <DetailBlock
+          editMode={editMode}
+          heading={name.title}
+          headingStyle={name.titleStyle || 'bold'}
+          details={object[name.key]}
+          type={name.type}
+          objectKey={name.key}
+          onChange={this.handleChange}
+        />
+        <DetailBlock
+          editMode={editMode}
+          heading={description.title}
+          headingStyle={description.titleStyle || 'bold'}
+          details={object[description.key]}
+          type={description.type}
+          objectKey={description.key}
+          onChange={this.handleChange}
+        />
+      </React.Fragment>
+    ) : (
+      <React.Fragment>
+        {object.image && (
+          <View style={styles.detailsBlock}>
+            <DetailImage
+              displayStyle={objectMeta.image.displayStyle}
+              image={object.image && object.image.data}
+            />
           </View>
-          <DetailBlock
-            editMode={editMode}
-            heading={name.title}
-            headingStyle={name.titleStyle || 'bold'}
-            details={object[name.key]}
-            type={name.type}
-            objectKey={name.key}
-            onChange={this.handleChange}
-          />
-          <DetailBlock
-            editMode={editMode}
-            heading={description.title}
-            headingStyle={description.titleStyle || 'bold'}
-            details={object[description.key]}
-            type={description.type}
-            objectKey={description.key}
-            onChange={this.handleChange}
-          />
-        </>) : (
-        <>
-          {object.image ? (
-            <View style={styles.detailsBlock}>
-              <DetailImage
-                displayStyle={objectMeta.image.displayStyle}
-                image={object.image && object.image.data}
-              />
-            </View>
-          ) : null}
-          <DetailBlock
-            editMode={editMode}
-            heading={
-              <Text fontSize='h6' fontStyle='bold'>
-                {object[name.key] ? object[name.key] : "New Character"}
-              </Text>
-            }
-            details={object[description.key]}
-            type={description.type}
-            objectKey={description.key}
-            onChange={this.handleChange}
-          />
-        </>)
-      }
-    </>)
+        )}
+        <DetailBlock
+          editMode={editMode}
+          heading={
+            <Text fontSize='h6' fontStyle='bold'>
+              {object[name.key] ? object[name.key] : 'New Character'}
+            </Text>
+          }
+          details={object[description.key]}
+          type={description.type}
+          objectKey={description.key}
+          onChange={this.handleChange}
+        />
+      </React.Fragment>
+    )
   }
 
   renderSaveButtons = () => {
@@ -170,7 +156,6 @@ export default class DetailPreview extends Component {
         </Button>
       </Collapsible>
     )
-
   }
 
   renderAttribute = (attribute, i) => {
@@ -181,42 +166,43 @@ export default class DetailPreview extends Component {
     const { title, key, type, titleStyle, attachmentType } = attribute
     const isAttachment = type === 'attachment'
     const shouldRender = object[key] && object[key].length > 0
-    const renderComponent = editMode || shouldRender ? (
-      isAttachment ? (
-        <AttachmentsPreview
-          editMode={editMode} // test example
-          title={title}
-          cardId={object.id}
-          attachments={object[key]}
-          type={attachmentType}
-          source={source}
-          objectKey={key}
-          onChange={this.handleChange}
-        />
-      ) : (
-        <DetailBlock
-          key={i}
-          editMode={editMode}
-          heading={title}
-          headingStyle={titleStyle || 'bold'}
-          details={object[key]}
-          type={type}
-          objectKey={key}
-          onChange={this.handleChange}
-        />
-      )
-    ) : null
-    return <View key={i} style={styles.attributeContainer}>{renderComponent}</View>
+    const renderComponent =
+      editMode || shouldRender ? (
+        isAttachment ? (
+          <AttachmentsPreview
+            editMode={editMode} // test example
+            title={title}
+            cardId={object.id}
+            attachments={object[key]}
+            type={attachmentType}
+            source={source}
+            objectKey={key}
+            onChange={this.handleChange}
+          />
+        ) : (
+          <DetailBlock
+            key={i}
+            editMode={editMode}
+            heading={title}
+            headingStyle={titleStyle || 'bold'}
+            details={object[key]}
+            type={type}
+            objectKey={key}
+            onChange={this.handleChange}
+          />
+        )
+      ) : null
+    return (
+      <View key={i} style={styles.attributeContainer}>
+        {renderComponent}
+      </View>
+    )
   }
 
   render() {
     const { object, objectMeta = {}, editMode } = this.state
     if (object) {
-      const {
-        name,
-        description,
-        attributes = []
-      } = objectMeta;
+      const { name, description, attributes = [] } = objectMeta
 
       return (
         <View style={styles.container}>
@@ -234,7 +220,7 @@ export default class DetailPreview extends Component {
             </ScrollerView>
             {!editMode && (
               <View style={styles.editButtonContainer}>
-                <AddButton size={50} icon='pen' onPress={this.handleEdit} />
+                <AddButton size={40} icon='pen' onPress={this.handleEdit} />
               </View>
             )}
           </View>

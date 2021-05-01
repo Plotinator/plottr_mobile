@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import { t } from 'plottr_locales'
-import {
-  StyleSheet,
-} from 'react-native'
+import { StyleSheet } from 'react-native'
 import DetailPreview from '../shared/DetailView/Preview'
 import { cloneDeep } from 'lodash'
-
 
 export default class Character extends Component {
   constructor(props) {
@@ -16,8 +13,8 @@ export default class Character extends Component {
     }
   }
   componentDidMount() {
-    const { note } = this.props;
-    let objectMeta = this.getObjectMeta();
+    const { note } = this.props
+    let objectMeta = this.getObjectMeta()
     this.setState({
       object: note,
       objectMeta: objectMeta
@@ -41,49 +38,49 @@ export default class Character extends Component {
         displayStyle: 'fullWidth'
       },
       attributes: []
-    };
-    objectMeta = this.addAttachments(objectMeta);
-    return objectMeta;
+    }
+    objectMeta = this.addAttachments(objectMeta)
+    return objectMeta
   }
 
   addAttachments = (objectMeta) => {
-    let newMeta = cloneDeep(objectMeta);
+    let newMeta = cloneDeep(objectMeta)
     newMeta.attributes.push({
       title: 'Books',
       key: 'bookIds',
       type: 'attachment',
       attachmentType: 'bookId'
-    });
+    })
     newMeta.attributes.push({
       title: 'Characters',
       key: 'characters',
       type: 'attachment',
       attachmentType: 'character'
-    });
+    })
     newMeta.attributes.push({
       title: 'Places',
       key: 'places',
       type: 'attachment',
       attachmentType: 'place'
-    });
+    })
     newMeta.attributes.push({
       title: 'Tags',
       key: 'tags',
       type: 'attachment',
       attachmentType: 'tag'
-    });
-    return newMeta;
+    })
+    return newMeta
   }
 
   render() {
     const { object, objectMeta } = this.state
-    return (
-      <>
-        {object ?
-          <DetailPreview object={object} objectMeta={objectMeta} onSave={this.props.onSave} /> :
-          null}
-      </>
-    )
+    return object ? (
+      <DetailPreview
+        object={object}
+        objectMeta={objectMeta}
+        onSave={this.props.onSave}
+      />
+    ) : null
   }
 }
 

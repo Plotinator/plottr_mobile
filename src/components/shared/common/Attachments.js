@@ -14,7 +14,6 @@ import Popover, {
 } from 'react-native-popover-view'
 
 class Attachments extends Component {
-
   addAttachment = (id) => {
     const { actions, type, cardId } = this.props
     switch (type) {
@@ -52,10 +51,10 @@ class Attachments extends Component {
   handleRemoveAttachment = ({ id }) => {
     const { attachments, objectKey, onChange } = this.props
     if (onChange) {
-      const attached = attachments.filter((val)=> val != id);
-      onChange(objectKey, attached);
+      const attached = attachments.filter((val) => val != id)
+      onChange(objectKey, attached)
     }
-    this.removeAttachment(id);
+    this.removeAttachment(id)
   }
 
   handleAddAttachment = ({ id }) => {
@@ -63,7 +62,7 @@ class Attachments extends Component {
     if (onChange) {
       const attached = attachments
       attached.push(id)
-      onChange(objectKey, attached);
+      onChange(objectKey, attached)
     }
     this.addAttachment(id)
   }
@@ -104,7 +103,7 @@ class Attachments extends Component {
         <Text fontSize='h6' fontStyle={'semiBold'} color={'textGray'}>
           {titleDisplay}
         </Text>
-        {color && (<View style={[styles.menuDot, { backgroundColor: color }]} />)}
+        {color && <View style={[styles.menuDot, { backgroundColor: color }]} />}
       </ShellButton>
     )
   }
@@ -112,14 +111,18 @@ class Attachments extends Component {
   render() {
     const { attachments, type } = this.props
     const attachmentsList = this.props[`${type}s`]
-    const attached = attachmentsList.filter(({ id }) => attachments.indexOf(id) > -1)
-    const unattached = attachmentsList.filter(({ id }) => attachments.indexOf(id) == -1)
+    const attached = attachmentsList.filter(
+      ({ id }) => attachments.indexOf(id) > -1
+    )
+    const unattached = attachmentsList.filter(
+      ({ id }) => attachments.indexOf(id) == -1
+    )
     return (
       <View style={styles.tabsBase}>
         {attached.map(this.renderTabCell)}
         {attached.length == 0 && (
           <Text
-            padded
+            style={styles.addTypeText}
             fontSize='micro'
             fontStyle='italic'
             color='lightGray'>
@@ -163,9 +166,9 @@ Attachments.propTypes = {
 function mapStateToProps(state) {
   const { books } = state
   const bookIds = []
-  books.allIds.forEach(element => {
+  books.allIds.forEach((element) => {
     bookIds.push({ ...books[element] })
-  });
+  })
   return {
     characters: selectors.charactersSortedAtoZSelector(state),
     places: selectors.placesSortedAtoZSelector(state),

@@ -102,7 +102,8 @@ export default {
   },
   input: {
     backgroundColor: 'transparent',
-    height: '40@mvs'
+    height: '40@mvs',
+    borderRadius: cornerRadius * 1.25
   },
   inputText: {
     ...style.regular,

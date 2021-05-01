@@ -6,17 +6,17 @@ export default ScaledSheet.create({
   containerDefault: {
     alignSelf: 'center',
     width: 120,
-    height: 120,
+    height: 120
   },
   containerCircular: {
     alignSelf: 'center',
     width: 200,
-    height: 200,
+    height: 200
   },
   containerFullWidth: {
     alignSelf: 'center',
     width: '100%',
-    height: 400,
+    height: 400
   },
   default: {
     resizeMode: 'contain',
@@ -52,20 +52,21 @@ export default ScaledSheet.create({
   },
   editIconDefault: {
     position: 'absolute',
-    right: 10,
+    right: Metrics.baseMargin,
     bottom: 0
   },
   editIconFullWidth: {
     position: 'absolute',
-    right: 10,
-    bottom: 10
+    right: Metrics.baseMargin,
+    bottom: Metrics.baseMargin
   },
   addImageButtonContainer: {
     flexDirection: 'row',
-    justifyContent:'flex-end',
-    alignItems:'center'
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: -Metrics.doubleBaseMargin
   },
-  addImageText:{
-    paddingLeft: Metrics.baseMargin / 2,
+  addImageText: {
+    paddingLeft: Metrics.baseMargin / 2
   }
 })
