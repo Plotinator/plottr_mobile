@@ -17,6 +17,7 @@ import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
 import { Text, MainList } from '../../shared/common'
+import styles from './NotesStyles'
 
 class Notes extends Component {
   state = {
@@ -139,20 +140,6 @@ class Notes extends Component {
     )
   }
 
-  renderNoteList () {
-    const { notes } = this.props
-    return (
-      <View style={styles.noteList}>
-        <Text fontSize='h5' fontStyle='semiBold' style={styles.title}>{t('Notes')}</Text>
-        <FlatList
-          data={notes}
-          renderItem={this.renderNoteItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
-    )
-  }
-
   renderNoteDetail () {
     let note = this.props.notes.find(
       (note) => note.id == this.state.activeNoteId
@@ -177,13 +164,12 @@ class Notes extends Component {
     const { activeNoteId, viewableNotes } = this.state
     const { openDrawer } = this.props
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewNote} />
         </Toolbar>
-        <Grid style={{ flex: 1 }}>
+        <Grid style={styles.grid}>
           <Col size={5}>
-            {/*this.renderNoteList()*/}
             <MainList
               list={viewableNotes}
               title={t('Notes')}
@@ -195,42 +181,12 @@ class Notes extends Component {
               onPressDelete={this.handleDeleteNote}
             />
           </Col>
-            <Col size={10}>{this.renderNoteDetail()}</Col>
+          <Col size={10}>{this.renderNoteDetail()}</Col>
         </Grid>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  noteList: {
-    height: '100%',
-    padding: 8
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 8
-  },
-  noteItem: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingLeft: 8,
-    borderColor: 'hsl(210, 36%, 96%)', //gray-9
-    borderWidth: 1
-  },
-  activeItem: {
-    borderColor: 'hsl(208, 88%, 62%)', //blue-6
-    backgroundColor: 'hsl(210, 31%, 80%)', //gray-7
-    borderStyle: 'dashed'
-  },
-  buttonWrapper: {
-    flexDirection: 'row',
-    marginLeft: 'auto'
-  }
-})
 
 Notes.propTypes = {
   notes: PropTypes.array.isRequired,

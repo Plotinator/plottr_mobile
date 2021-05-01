@@ -17,6 +17,7 @@ import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
 import { Text, MainList, AttributesButton } from '../../shared/common'
+import styles from './CharactersStyles'
 
 class Characters extends Component {
   state = {
@@ -113,13 +114,11 @@ class Characters extends Component {
   }
 
   handleDeleteCharacter = (character) => {
-    askToDelete(character.name || t('New Character'),
-      () => {
-        const { data } = this.state
-        this.setState({ activeCharacterId: data[0] })
-        this.props.actions.deleteCharacter(character.id)
-      }
-    )
+    askToDelete(character.name || t('New Character'), () => {
+      const { data } = this.state
+      this.setState({ activeCharacterId: data[0] })
+      this.props.actions.deleteCharacter(character.id)
+    })
   }
 
   handleSelectCharacter = ({ id }) => {
@@ -155,16 +154,15 @@ class Characters extends Component {
   render () {
     const { openDrawer } = this.props
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewCharacter} />
           <View style={styles.additionals}>
             <AttributesButton onPress={this.navigateToCustomAttributes} />
           </View>
         </Toolbar>
-        <Grid style={{ flex: 1 }}>
-          <Col size={4}>
-            {/*this.renderCharacterList()*/}
+        <Grid style={styles.grid}>
+          <Col size={5}>
             <MainList
               isGroup
               list={this.state.data}
@@ -183,61 +181,6 @@ class Characters extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  characterList: {
-    height: '100%',
-    padding: 8
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 8
-  },
-  sectionHeader: {
-    paddingVertical: 10,
-    paddingHorizontal: 6,
-    backgroundColor: 'hsl(210, 36%, 96%)' //gray-9
-  },
-  characterItem: {
-    borderRadius: 15,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingLeft: 8,
-    paddingRight: 10,
-    borderColor: 'hsl(210, 36%, 96%)', //gray-9
-    borderWidth: 1
-  },
-  activeItem: {
-    borderColor: 'hsl(208, 88%, 62%)', //blue-6
-    backgroundColor: 'hsl(210, 31%, 80%)', //gray-7
-    borderStyle: 'dashed'
-  },
-  buttonWrapper: {
-    flexDirection: 'row',
-    marginLeft: 'auto'
-  },
-  sideButton: {
-    minHeight: 50,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  characterSideImage: {
-    resizeMode: 'contain',
-    overflow: 'hidden',
-    borderRadius: 50,
-    marginRight: 10,
-    width: 30,
-    height: 30
-  },
-  additionals: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  }
-})
 
 Characters.propTypes = {
   visibleCharactersByCategory: PropTypes.object.isRequired,

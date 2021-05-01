@@ -17,6 +17,7 @@ import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
 import { Text, MainList, AttributesButton } from '../../shared/common'
+import styles from './PlacesStyles'
 
 class Places extends Component {
   state = {
@@ -102,15 +103,15 @@ class Places extends Component {
     const { activePlaceId } = this.state
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewPlace} />
           <View style={styles.additionals}>
             <AttributesButton onPress={this.navigateToCustomAttributes} />
           </View>
         </Toolbar>
-        <Grid style={{ flex: 1 }}>
-          <Col size={4}>
+        <Grid style={styles.grid}>
+          <Col size={5}>
             <MainList
               list={visiblePlaces}
               title={t('Places')}
@@ -128,41 +129,6 @@ class Places extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  placeList: {
-    height: '100%',
-    padding: 8
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 8
-  },
-  placeItem: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingLeft: 8,
-    borderColor: 'hsl(210, 36%, 96%)', //gray-9
-    borderWidth: 1
-  },
-  activeItem: {
-    borderColor: 'hsl(208, 88%, 62%)', //blue-6
-    backgroundColor: 'hsl(210, 31%, 80%)', //gray-7
-    borderStyle: 'dashed'
-  },
-  buttonWrapper: {
-    flexDirection: 'row',
-    marginLeft: 'auto'
-  },
-  additionals: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  }
-})
 
 Places.propTypes = {
   places: PropTypes.array.isRequired,
