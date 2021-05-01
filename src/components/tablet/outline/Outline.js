@@ -16,7 +16,7 @@ class Outline extends Component {
   state = { linesById: {}, currentLine: null, selectedLine: null }
   outlineListRef = null
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     return {
       linesById: keyBy(props.lines, 'id'),
       currentLine: state.currentLine
@@ -40,14 +40,14 @@ class Outline extends Component {
     this.outlineListRef = ref
   }
 
-  renderOutlineChapter (chapter, cardMap, i) {
+  renderOutlineChapter(chapter, cardMap, i) {
     return <OutlineChapter key={i} chapter={chapter} cardMap={cardMap} />
   }
 
   returnChapterRenderer = (cardMap) => ({ item }, i) =>
     this.renderOutlineChapter(item, cardMap, i)
 
-  render () {
+  render() {
     const {
       lines,
       chapters,
@@ -109,7 +109,7 @@ Outline.propTypes = {
   navigation: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     chapters: selectors.sortedBeatsByBookSelector(state),
     lines: selectors.sortedLinesByBookSelector(state),
