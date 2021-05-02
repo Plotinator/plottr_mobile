@@ -13,12 +13,14 @@ export default function Book(props) {
     style,
     editable,
     noTimeline,
+    noOutline,
     book,
     book: { id, title },
     navigateToOutline,
     navigateToDetails,
     navigateToTimeline,
-    onDeleteBook
+    onDeleteBook,
+    children
   } = props
   const goToOutline = () => {
     navigateToOutline(id)
@@ -38,51 +40,58 @@ export default function Book(props) {
   const bookTitle = title || t('Untitled')
   console.log('BOOK', id, title)
   return (
-    <ShellButton onPress={goToTimeline} style={bookStyles}>
+    <ShellButton
+      onPress={goToTimeline}
+      style={bookStyles}
+      noninteractive={!goToTimeline}>
       <ImageBackground
         source={BOOK}
         style={styles.bookImage}
         resizeMode='contain'>
-        <View style={styles.titleWrapper}>
-          <Text
-            style={styles.bookTitle}
-            center>
-            {bookTitle}
-          </Text>
-        </View>
-        <View style={[styles.actions, !editable && styles.centerButtons]}>
-          {onDeleteBook && (
-            <IconButton
-              name='trash'
-              color='lightenGray'
-              size={11}
-              onPress={deleteBook}
-              buttonStyle={styles.trashButton}
-            />
-          )}
-          <AddButton
-            icon='stream'
-            onPress={goToOutline}
-            size={28}
-            hitSize={20}
-          />
-          {!noTimeline && (
-            <AddButton
-              icon='grip-horizontal'
-              onPress={goToTimeline}
-              size={28}
-              hitSize={20}
-            />
-          )}
-          {editable && (
-            <AddButton
-              icon='pen'
-              onPress={goToEditBook}
-              size={28}
-              hitSize={20}
-            />
-          )}
-        </View>
+        {children || [
+          <View key='title' style={styles.titleWrapper}>
+            <Text style={styles.bookTitle} center>
+              {bookTitle}
+            </Text>
+          </View>,
+          <View
+            key='actions'
+            style={[styles.actions, !editable && styles.centerButtons]}>
+            {onDeleteBook && (
+              <IconButton
+                name='trash'
+                color='lightenGray'
+                size={11}
+                onPress={deleteBook}
+                buttonStyle={styles.trashButton}
+              />
+            )}
+            {!noOutline && (
+              <AddButton
+                icon='stream'
+                onPress={goToOutline}
+                size={28}
+                hitSize={20}
+              />
+            )}
+            {!noTimeline && (
+              <AddButton
+                icon='grip-horizontal'
+                onPress={goToTimeline}
+                size={28}
+                hitSize={20}
+              />
+            )}
+            {editable && (
+              <AddButton
+                icon='pen'
+                onPress={goToEditBook}
+                size={28}
+                hitSize={20}
+              />
+            )}
+          </View>
+        ]}
       </ImageBackground>
     </ShellButton>
   )

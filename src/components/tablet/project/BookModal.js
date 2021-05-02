@@ -11,6 +11,8 @@ import {
   Input,
   Text,
   Button,
+  AddButton,
+  IconButton,
   RichEditor,
   ShellButton,
   Attachments
@@ -18,6 +20,7 @@ import {
 import styles from './BookModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
+import Book from '../../shared/project/Book'
 
 export default class BookModal extends Component {
   state = {
@@ -95,6 +98,13 @@ export default class BookModal extends Component {
                   <Text fontStyle='bold'>
                     {t('Edit Book')}
                   </Text>
+                </View>
+                <View style={styles.bookContainer}>
+                  <Book book={{ id, title }} noTimeline noOutline>
+                    <View style={styles.cameraContainer}>
+                      <AddButton icon='camera' size={40} />
+                    </View>
+                  </Book>
                 </View>
                 <View style={styles.row}>
                   <Text style={styles.label}>{t('Title')}</Text>

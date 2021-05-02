@@ -32,5 +32,19 @@ export default ScaledSheet.create({
   centerTitle: {
     width: '100%',
     alignItems: 'center'
+  },
+  cameraContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    paddingRight: section * 1.1,
+    paddingBottom: section * 1.2,
+  },
+  bookContainer: {
+    paddingTop: doubleBaseMargin,
+    paddingLeft: doubleBaseMargin * .83,
+    marginBottom: -section,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })
