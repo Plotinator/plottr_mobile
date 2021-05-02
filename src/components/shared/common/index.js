@@ -9,6 +9,7 @@ import IconButton from './IconButton'
 import RichEditor from './RichEditor'
 import ShellButton from './ShellButton'
 import AlertDialog from './AlertDialog'
+import ImagesModal from './ImagesModal'
 import Attachments from './Attachments'
 import AttachmentsPreview from './AttachmentsPreview'
 import DetailBlock from './DetailBlock'
@@ -33,6 +34,7 @@ export {
   RichEditor,
   AlertDialog,
   DetailBlock,
+  ImagesModal,
   Attachments,
   AttachmentsPreview,
   ShellButton,
