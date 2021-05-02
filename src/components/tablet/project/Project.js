@@ -7,7 +7,7 @@ import { View } from 'native-base'
 import { newIds, actions } from 'pltr/v2'
 import Toolbar from '../shared/Toolbar'
 import { t } from 'plottr_locales'
-import { Text, Input, AddButton, Button } from '../../shared/common'
+import { Text, Input, AddButton, Button, HeaderButton } from '../../shared/common'
 import Book from '../../shared/project/Book'
 import Collapsible from 'react-native-collapsible'
 import styles from './ProjectStyles'
@@ -30,6 +30,7 @@ class Project extends Component {
   }
 
   handleSetNameInputRef = ref => this.seriesName = ref
+
   handleSetScrollerRef = ref => this.scroller = ref
 
   handleToggleEdit = () => {
@@ -159,9 +160,13 @@ class Project extends Component {
   render() {
     const { series, changes, editMode } = this.state
     const { openDrawer } = this.props
+    const isEditing = editMode === true
     return (
       <View style={styles.container}>
-        <Toolbar onPressDrawer={openDrawer} />
+        <Toolbar onPressDrawer={openDrawer}>
+          <HeaderButton title={t('Categories')} icon='list' />
+          <HeaderButton title={t('Filter')} icon='filter' />
+        </Toolbar>
         <View style={styles.labelContainer}>
           <View style={styles.labelProject}>
             <Text style={styles.labelText}>Series</Text>
@@ -170,7 +175,7 @@ class Project extends Component {
             icon='pen'
             duration={300}
             animated
-            animation={editMode ? 'zoomOut' : 'zoomIn'}
+            animation={isEditing ? 'zoomOut' : 'zoomIn'}
             onPress={this.handleToggleEdit} />
         </View>
         <View style={styles.seriesContainer}>
@@ -178,51 +183,55 @@ class Project extends Component {
             reset
             multiline
             ref={this.handleSetNameInputRef}
-            editable={editMode === true}
+            editable={isEditing}
             value={series.name}
             onChangeText={this.handleSeriesName}
             autoCapitalize='words'
             numberOfLines={4}
             inputStyle={styles.seriesName}
+            placeholder={t('Title')}
           />
-          {!series.premise ? null : (
+        {!series.premise && !isEditing ? null : (
             <Input
               reset
               multiline
-              editable={editMode === true}
+              editable={isEditing}
               value={series.premise}
               onChangeText={this.handleSeriesPremise}
               autoCapitalize='sentences'
               numberOfLines={4}
               inputStyle={styles.seriesDescription}
+              placeholder={t('Premise')}
             />
           )}
-          {!series.theme ? null : (
+          {!series.theme && !isEditing ? null : (
             <Input
               reset
               multiline
-              editable={editMode === true}
+              editable={isEditing}
               value={series.theme}
               onChangeText={this.handleSeriesTheme}
               autoCapitalize='sentences'
               numberOfLines={4}
               inputStyle={styles.seriesTheme}
+              placeholder={t('Theme')}
             />
           )}
-          {!series.genre ? null : (
+          {!series.genre && !isEditing ? null : (
             <Input
               reset
               multiline
-              editable={editMode === true}
+              editable={isEditing}
               value={series.genre}
               onChangeText={this.handleSeriesGenre}
               autoCapitalize='words'
               numberOfLines={4}
               inputStyle={styles.seriesGenre}
+              placeholder={t('Genre')}
             />
           )}
         </View>
-        <Collapsible collapsed={!editMode}>
+        <Collapsible collapsed={!isEditing}>
           <View style={styles.buttonContainer}>
             <Button
               small
