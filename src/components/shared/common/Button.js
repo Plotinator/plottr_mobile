@@ -22,6 +22,7 @@ export default class Button extends Component {
       block,
       tight,
       small,
+      tiny,
       textColor,
       textStyle,
       buttonText,
@@ -47,6 +48,7 @@ export default class Button extends Component {
     if (wrapperStyle) wrapperStylesArray.push(wrapperStyle)
     if (tight) wrapperStylesArray.push(styles.tightWrapper)
     if (small) wrapperStylesArray.push(styles.smallWrapper)
+    if (tiny) wrapperStylesArray.push(styles.tinyWrapper)
     if (disabled || faded) stylesArray.push(styles.faded)
     if (colorProp) {
       stylesArray.push({

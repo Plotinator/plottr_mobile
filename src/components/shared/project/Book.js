@@ -8,13 +8,14 @@ import { isTablet } from 'react-native-device-info'
 
 const { BOOK } = Images
 
-export default function Book(props) {
+export default function Book (props) {
   const {
     style,
     editable,
     noTimeline,
     noOutline,
     book,
+    image = null,
     book: { id, title },
     navigateToOutline,
     navigateToDetails,
@@ -38,7 +39,37 @@ export default function Book(props) {
   const bookStyles = [styles.book, style]
   const fontSize = isTablet() ? 'tiny' : 'regular'
   const bookTitle = title || t('Untitled')
-  console.log('BOOK', id, title)
+  const actions = (
+    <View
+      key='actions'
+      style={[styles.actions, !editable && styles.centerButtons]}>
+      {onDeleteBook && (
+        <IconButton
+          name='trash'
+          color='lightenGray'
+          size={11}
+          onPress={deleteBook}
+          buttonStyle={styles.trashButton}
+        />
+      )}
+      {!noOutline && (
+        <AddButton icon='stream' onPress={goToOutline} size={28} hitSize={20} />
+      )}
+      {!noTimeline && (
+        <AddButton
+          icon='grip-horizontal'
+          onPress={goToTimeline}
+          size={28}
+          hitSize={20}
+        />
+      )}
+      {editable && (
+        <AddButton icon='pen' onPress={goToEditBook} size={28} hitSize={20} />
+      )}
+    </View>
+  )
+
+  // imageWrapper
   return (
     <ShellButton
       onPress={goToTimeline}
@@ -48,50 +79,18 @@ export default function Book(props) {
         source={BOOK}
         style={styles.bookImage}
         resizeMode='contain'>
-        {children || [
-          <View key='title' style={styles.titleWrapper}>
-            <Text style={styles.bookTitle} center>
-              {bookTitle}
-            </Text>
-          </View>,
-          <View
-            key='actions'
-            style={[styles.actions, !editable && styles.centerButtons]}>
-            {onDeleteBook && (
-              <IconButton
-                name='trash'
-                color='lightenGray'
-                size={11}
-                onPress={deleteBook}
-                buttonStyle={styles.trashButton}
-              />
-            )}
-            {!noOutline && (
-              <AddButton
-                icon='stream'
-                onPress={goToOutline}
-                size={28}
-                hitSize={20}
-              />
-            )}
-            {!noTimeline && (
-              <AddButton
-                icon='grip-horizontal'
-                onPress={goToTimeline}
-                size={28}
-                hitSize={20}
-              />
-            )}
-            {editable && (
-              <AddButton
-                icon='pen'
-                onPress={goToEditBook}
-                size={28}
-                hitSize={20}
-              />
-            )}
-          </View>
-        ]}
+        <ImageBackground source={image} style={styles.imageWrapper}>
+          {children || [
+            !image && (
+              <View key='title' style={styles.titleWrapper}>
+                <Text style={styles.bookTitle} center>
+                  {bookTitle}
+                </Text>
+              </View>
+            ),
+            actions
+          ]}
+        </ImageBackground>
       </ImageBackground>
     </ShellButton>
   )

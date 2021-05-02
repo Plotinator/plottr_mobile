@@ -34,7 +34,7 @@ export default class AlertDialog extends Component {
     message: '',
     actions: [],
     shadeBase: 0
-  };
+  }
 
   componentDidMount () {
     MasterAlert = this
@@ -58,34 +58,39 @@ export default class AlertDialog extends Component {
       shadeBase: 0,
       actions
     })
-  };
+  }
 
   showInput = ({ title, message, actions = [], inputText = '' }) => {
-    this.setState({
-      initial: false,
-      title: message ? title : 'Plottr',
-      message: message || title,
-      inputText,
-      isInput: true,
-      visible: true,
-      shadeBase: 0,
-      actions
-    }, () => {
-      setTimeout(() => this.input.focus(), 300)
-    })
-  };
+    this.setState(
+      {
+        initial: false,
+        title: message ? title : 'Plottr',
+        message: message || title,
+        inputText,
+        isInput: true,
+        visible: true,
+        shadeBase: 0,
+        actions
+      },
+      () => {
+        setTimeout(() => this.input.focus(), 300)
+      }
+    )
+  }
 
   hide = () => {
     Keyboard.dismiss()
     this.setState({
-      visible: false,
+      visible: false
     })
-  };
+  }
 
   handleKeyboardShow = (event) => {
     const { visible } = this.state
-    const { endCoordinates: { height } } = event
-    if(visible)
+    const {
+      endCoordinates: { height }
+    } = event
+    if (visible)
       this.setState({
         shadeBase: height
       })
@@ -93,7 +98,7 @@ export default class AlertDialog extends Component {
 
   handleKeyboardHide = () => {
     const { visible } = this.state
-    if(visible)
+    if (visible)
       this.setState({
         shadeBase: 0
       })
@@ -101,17 +106,17 @@ export default class AlertDialog extends Component {
 
   handleOnClose = () => {
     this.hide()
-  };
+  }
 
-  handleActionPress = action => {
+  handleActionPress = (action) => {
     const { callback } = action
     if (callback) callback(action)
     this.hide()
-  };
+  }
 
-  handleInputText = inputText => this.setState({ inputText })
+  handleInputText = (inputText) => this.setState({ inputText })
 
-  handleInputRef = ref => this.input = ref
+  handleInputRef = (ref) => (this.input = ref)
 
   renderActionButton = (action, i) => {
     const { inputText, isInput } = this.state
@@ -175,14 +180,16 @@ export default class AlertDialog extends Component {
             <Icon type='FontAwesome5' name='times' style={styles.closeIcon} />
           </ShellButton>
           <View style={styles.dialogTitle}>
-            <Text style={styles.titleText} fontSize='h3' fontStyle='bold' center>
+            <Text
+              style={styles.titleText}
+              fontSize='h3'
+              fontStyle='bold'
+              center>
               {title}
             </Text>
           </View>
           <View style={styles.dialogBody}>
-            <Text center>
-              {message}
-            </Text>
+            <Text center>{message}</Text>
             {isInput && this.renderInput(inputText)}
           </View>
           <View style={styles.dialogActions}>
@@ -203,12 +210,9 @@ export default class AlertDialog extends Component {
 
 class ActionButton extends Component {
   handlePress = () => {
-    const {
-      action,
-      onPress,
-    } = this.props
+    const { action, onPress } = this.props
     onPress(action)
-  };
+  }
   render () {
     const {
       index,

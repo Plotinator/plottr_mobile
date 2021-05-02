@@ -7,7 +7,13 @@ import { View } from 'native-base'
 import { newIds, actions } from 'pltr/v2'
 import Toolbar from '../shared/Toolbar'
 import { t } from 'plottr_locales'
-import { Text, Input, AddButton, Button, HeaderButton } from '../../shared/common'
+import {
+  Text,
+  Input,
+  AddButton,
+  Button,
+  HeaderButton
+} from '../../shared/common'
 import Book from '../../shared/project/Book'
 import Collapsible from 'react-native-collapsible'
 import styles from './ProjectStyles'
@@ -21,7 +27,7 @@ class Project extends Component {
     editMode: false
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps (props, state) {
     if (state.changes) {
       return { series: state.series, changes: true }
     } else {
@@ -29,15 +35,13 @@ class Project extends Component {
     }
   }
 
-  handleSetNameInputRef = ref => this.seriesName = ref
+  handleSetNameInputRef = (ref) => (this.seriesName = ref)
 
-  handleSetScrollerRef = ref => this.scroller = ref
+  handleSetScrollerRef = (ref) => (this.scroller = ref)
 
   handleToggleEdit = () => {
     this.setState({ editMode: true }, () => {
-      setTimeout(
-        () => this.seriesName && this.seriesName.focus()
-      )
+      setTimeout(() => this.seriesName && this.seriesName.focus())
     })
   }
 
@@ -120,12 +124,12 @@ class Project extends Component {
     this.BookModal.editBook(book)
   }
 
-  handleSaveBook = ({ id, title, premise, genre, theme }) => {
+  handleSaveBook = ({ id, imageId, title, premise, genre, theme }) => {
     const { actions } = this.props
-    actions.editBook(id, { title, premise, genre, theme })
+    actions.editBook(id, { imageId, title, premise, genre, theme })
   }
 
-  handleBookModalRef = ref => this.BookModal = ref
+  handleBookModalRef = (ref) => (this.BookModal = ref)
 
   navigateToTimeline = (id) => {
     this.props.uiActions.changeCurrentTimeline(id)
@@ -137,29 +141,34 @@ class Project extends Component {
     this.props.navigation.navigate('Outline')
   }
 
-  renderBooks() {
-    const { books } = this.props
+  renderBooks () {
+    const { books, images } = this.props
     if (!books.allIds) return null
     return books.allIds.map((id) => {
+      const book = books[`${id}`]
+      const { imageId } = book
+      const bookImage = imageId &&
+        images[imageId] && { uri: images[imageId].data }
+
       return (
         <Book
           editable
           noTimeline
           key={id}
-          book={books[`${id}`]}
+          book={book}
+          image={bookImage}
           navigateToOutline={this.navigateToOutline}
           navigateToTimeline={this.navigateToTimeline}
           navigateToDetails={this.handleEditBook}
           onDeleteBook={this.handleDeleteBook}
-          style={styles.book}
-        />
+          style={styles.book}></Book>
       )
     })
   }
 
-  render() {
+  render () {
     const { series, changes, editMode } = this.state
-    const { openDrawer } = this.props
+    const { openDrawer, images } = this.props
     const isEditing = editMode === true
     return (
       <View style={styles.container}>
@@ -176,7 +185,8 @@ class Project extends Component {
             duration={300}
             animated
             animation={isEditing ? 'zoomOut' : 'zoomIn'}
-            onPress={this.handleToggleEdit} />
+            onPress={this.handleToggleEdit}
+          />
         </View>
         <View style={styles.seriesContainer}>
           <Input
@@ -191,7 +201,7 @@ class Project extends Component {
             inputStyle={styles.seriesName}
             placeholder={t('Title')}
           />
-        {!series.premise && !isEditing ? null : (
+          {!series.premise && !isEditing ? null : (
             <Input
               reset
               multiline
@@ -267,6 +277,7 @@ class Project extends Component {
         <BookModal
           ref={this.handleBookModalRef}
           onSaveBook={this.handleSaveBook}
+          images={images}
         />
       </View>
     )
@@ -282,14 +293,15 @@ Project.propTypes = {
   closeFile: PropTypes.func
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     series: state.series,
+    images: state.images,
     books: state.books
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     actions: bindActionCreators(actions.book, dispatch),
     lineActions: bindActionCreators(actions.line, dispatch),

@@ -7,7 +7,7 @@ import Fonts from '../../../fonts'
 const { size, style } = Fonts
 const { section, baseMargin, cornerRadius } = Metrics
 
-const { gray, orange } = Colors
+const { gray, orange, warmWhite } = Colors
 
 export default ScaledSheet.create({
   book: {
@@ -15,14 +15,22 @@ export default ScaledSheet.create({
   },
   bookImage: {
     width: '100%',
+    justifyContent: 'flex-end',
     aspectRatio: 0.8
   },
   titleWrapper: {
     flex: 2,
-    paddingRight: '25%',
-    paddingLeft: '12%',
+    paddingHorizontal: baseMargin,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  imageWrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginTop: '2.8%',
+    marginLeft: '3.5%',
+    marginRight: '15%',
+    marginBottom: '17%'
   },
   bookTitle: {
     width: '100%',
@@ -32,13 +40,13 @@ export default ScaledSheet.create({
     fontSize: size[isTablet() ? 'h5' : 'h3']
   },
   actions: {
+    backgroundColor: `${warmWhite}99`,
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    paddingLeft: '10%',
-    paddingRight: '22%',
-    paddingBottom: '25%',
-    alignItems: 'center'
+    paddingHorizontal: baseMargin,
+    paddingVertical: baseMargin,
+    paddingLeft: baseMargin / 2,
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   centerButtons: {
     justifyContent: 'center'

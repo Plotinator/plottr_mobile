@@ -34,6 +34,11 @@ export default ScaledSheet.create({
     paddingTop: baseMargin / 2,
     paddingBottom: baseMargin / 1.5
   },
+  tinyWrapper: {
+    paddingHorizontal: 0,
+    paddingTop: baseMargin / 2.5,
+    paddingBottom: baseMargin / 2
+  },
   faded: {
     opacity: 0.5
   },

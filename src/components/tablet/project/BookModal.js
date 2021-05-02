@@ -3,9 +3,15 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { View, Icon } from 'native-base'
+import { Icon } from 'native-base'
 import { selectors, actions, helpers, initialState } from 'pltr/v2'
-import { Modal, ScrollView, KeyboardAvoidingView } from 'react-native'
+import {
+  View,
+  ImageBackground,
+  Modal,
+  ScrollView,
+  KeyboardAvoidingView
+} from 'react-native'
 import { t } from 'plottr_locales'
 import {
   Input,
@@ -15,7 +21,8 @@ import {
   IconButton,
   RichEditor,
   ShellButton,
-  Attachments
+  Attachments,
+  ImagesModal
 } from '../../shared/common'
 import styles from './BookModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
@@ -36,7 +43,7 @@ export default class BookModal extends Component {
   setChangeValue (stateName, callback) {
     if (!this.functs) this.functs = {}
     if (!this.functs[stateName]) {
-      this.functs[stateName] = textValue => {
+      this.functs[stateName] = (textValue) => {
         const state = { changes: true }
         state[stateName] = textValue
         this.setState(state)
@@ -46,14 +53,31 @@ export default class BookModal extends Component {
     return this.functs[stateName]
   }
 
-  editBook = ({ id, title, premise, genre, theme }) => {
+  editBook = ({ id, imageId, title, premise, genre, theme }) => {
     this.setState({
       id,
+      imageId,
       title,
       premise,
       genre,
       theme,
-      visible: true
+      visible: true,
+      showImageModal: false
+    })
+  }
+
+  handleToggleImageModal = () =>
+    this.setState({ showImageModal: !this.state.showImageModal })
+
+  handleChangeImage = () => {
+    this.handleToggleImageModal()
+  }
+
+  handleChooseImage = (imageId) => {
+    this.setState({
+      imageId,
+      changes: true,
+      showImageModal: false
     })
   }
 
@@ -65,21 +89,26 @@ export default class BookModal extends Component {
 
   handleSaveChanges = () => {
     const { onSaveBook } = this.props
-    const { id, title, premise, genre, theme } = this.state
-    onSaveBook && onSaveBook({ id, title, premise, genre, theme })
+    const { id, imageId, title, premise, genre, theme } = this.state
+    onSaveBook && onSaveBook({ id, imageId, title, premise, genre, theme })
     this.setState({ visible: false, changes: false })
   }
 
   render () {
     const {
+      showImageModal,
       changes,
       visible,
+      id,
+      imageId,
       title,
       premise,
       genre,
       theme
     } = this.state
-    const { book } = this.props
+    const { book, images } = this.props
+    const bookImage = imageId &&
+      images[imageId] && { uri: images[imageId].data }
     return (
       <Modal
         visible={visible}
@@ -96,13 +125,23 @@ export default class BookModal extends Component {
               <View style={styles.form}>
                 <View style={styles.centerTitle}>
                   <Text fontStyle='bold'>
-                    {t('Edit Book')}
+                    {t('Edit Book')}: {title}
                   </Text>
                 </View>
                 <View style={styles.bookContainer}>
-                  <Book book={{ id, title }} noTimeline noOutline>
+                  <Book
+                    book={{ id, title }}
+                    image={bookImage}
+                    noTimeline
+                    noOutline
+                    onPress={this.handleChangeImage}>
                     <View style={styles.cameraContainer}>
-                      <AddButton icon='camera' size={40} />
+                      <AddButton
+                        icon='camera'
+                        size={40}
+                        onPress={this.handleChangeImage}
+                        style={styles.cameraButton}
+                      />
                     </View>
                   </Book>
                 </View>
@@ -156,6 +195,11 @@ export default class BookModal extends Component {
                 {t('Save Book')}
               </Button>
             </Collapsible>
+            <ImagesModal
+              visible={showImageModal}
+              onChooseImage={this.handleChooseImage}
+              onClose={this.handleToggleImageModal}
+            />
           </View>
         </KeyboardAvoidingView>
       </Modal>
@@ -164,5 +208,6 @@ export default class BookModal extends Component {
 }
 
 BookModal.propTypes = {
-  onSaveBook: PropTypes.func.isRequired
+  onSaveBook: PropTypes.func.isRequired,
+  images: PropTypes.object.isRequired
 }

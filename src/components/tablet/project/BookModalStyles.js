@@ -36,15 +36,17 @@ export default ScaledSheet.create({
   cameraContainer: {
     flex: 1,
     alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    paddingRight: section * 1.1,
-    paddingBottom: section * 1.2,
+    justifyContent: 'flex-end'
   },
   bookContainer: {
     paddingTop: doubleBaseMargin,
-    paddingLeft: doubleBaseMargin * .83,
+    paddingLeft: doubleBaseMargin * 0.83,
     marginBottom: -section,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
+  },
+  cameraButton: {
+    marginRight: baseMargin,
+    marginBottom: baseMargin
   }
 })
