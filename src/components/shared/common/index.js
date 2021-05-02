@@ -13,6 +13,7 @@ import Attachments from './Attachments'
 import AttachmentsPreview from './AttachmentsPreview'
 import DetailBlock from './DetailBlock'
 import ScrollerView from './ScrollerView'
+import HeaderButton from './HeaderButton'
 import FloatingInput from './FloatingInput'
 import Title, { RenderTitle } from './Title'
 import WelcomeToPlottr from './WelcomeToPlottr'
@@ -37,6 +38,7 @@ export {
   ShellButton,
   RenderTitle,
   ScrollerView,
+  HeaderButton,
   FloatingInput,
   WelcomeToPlottr,
   GoToPlottrDotCom,
