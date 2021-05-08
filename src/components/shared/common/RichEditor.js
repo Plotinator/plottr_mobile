@@ -55,20 +55,22 @@ export default class RichTextEditor extends Component {
     } = this.props
     const containerStyles = [styles.editorContainer]
     containerStyles.push(style)
-    // disabled && containerStyles.push(styles.containerDisabled)
+    disabled && containerStyles.push(styles.containerDisabled)
 
     const toolbarStyles = [styles.richToolbar]
     toolbarStyles.push(toolbarStyle)
 
     const editorStyles = [styles.richEditor]
-    // disabled && editorStyles.push(styles.editorDisabled)
+    disabled && editorStyles.push(styles.editorDisabled)
     editorStyles.push(editorStyle)
 
     const placeholderText = placeholder || ''
     const html = initialHTMLText || initialValue
     const initialText = typeof html == 'object' ? SlateToHTML(html) : html
-    const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color} !important; line-height: ${lineHeight}em; padding: 0 15px 10px;`
-    const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${Colors[bgColor] || bgColor} !important; }`
+    const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color} !important; line-height: ${lineHeight}em; padding: 0 0 10px 0;`
+    const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${
+      Colors[bgColor] || bgColor
+    } !important; }`
     return (
       <View style={containerStyles}>
         <RichEditor
@@ -100,7 +102,7 @@ export default class RichTextEditor extends Component {
               heading2: this.renderTitleIcons('H1'),
               heading3: this.renderTitleIcons('H2')
             }}
-            editor={this.richText}
+            // editor={this.richText}
             getEditor={this.getEditor}
             selectedIconTint={Colors.orange}
             actions={[

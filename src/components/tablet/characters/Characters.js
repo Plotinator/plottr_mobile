@@ -16,7 +16,8 @@ import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
-import { Text, AttributesButton } from '../../shared/common'
+import { Text, MainList, AttributesButton } from '../../shared/common'
+import styles from './CharactersStyles'
 
 class Characters extends Component {
   state = {
@@ -42,8 +43,9 @@ class Characters extends Component {
         characters = props.visibleCharactersByCategory[`${cat.id}`]
       }
       return {
+        id: cat.id,
         title: cat.name,
-        data: characters
+        data: sortBy(characters, 'id')
       }
     })
 
@@ -99,54 +101,28 @@ class Characters extends Component {
     this.props.actions.editCharacter(id, attributes)
   }
 
-  deleteCharacter = (character) => {
-    askToDelete(character.name || t('New Character'), () =>
+  handleAddCharacter = ({ id: categoryId }) => {
+    const id = newIds.nextId(this.props.characters)
+    if (categoryId) {
+      this.props.actions.addCharacterWithValues({
+        categoryId
+      })
+    } else {
+      this.props.actions.addCharacter()
+    }
+    this.setState({ activeCharacterId: id })
+  }
+
+  handleDeleteCharacter = (character) => {
+    askToDelete(character.name || t('New Character'), () => {
+      const { data } = this.state
+      this.setState({ activeCharacterId: data[0] })
       this.props.actions.deleteCharacter(character.id)
-    )
+    })
   }
 
-  renderCharacterItem = ({ item }) => {
-    const isActive = item.id == this.state.activeCharacterId
-    const { images = [] } = this.props
-    const foundImage = images[item.imageId]
-    return (
-      <SideButton
-        onPress={() => this.setState({ activeCharacterId: item.id })}
-        onDelete={() => this.deleteCharacter(item)}
-        image={foundImage && foundImage.data}
-        title={item.name || t('New Character')}
-        isActive={isActive}
-      />
-    )
-  }
-
-  renderSectionHeader = ({ section }) => {
-    if (!section.data.length) return null
-
-    return <H3 style={styles.sectionHeader}>{section.title}</H3>
-  }
-
-  renderCharacterList () {
-    const {
-      visibleCharactersByCategory,
-      categories,
-      filterIsEmpty
-    } = this.props
-
-    return (
-      <View style={styles.characterList}>
-        <Text style={styles.title} fontSize='h5' fontStyle='semiBold'>
-          {t('Characters')}
-        </Text>
-        <SectionList
-          sections={this.state.data}
-          renderSectionHeader={this.renderSectionHeader}
-          renderItem={this.renderCharacterItem}
-          extraData={{ visibleCharactersByCategory, categories, filterIsEmpty }}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
-    )
+  handleSelectCharacter = ({ id }) => {
+    this.setState({ activeCharacterId: id })
   }
 
   renderCharacterDetail () {
@@ -176,78 +152,35 @@ class Characters extends Component {
   }
 
   render () {
+    const { openDrawer } = this.props
     return (
-      <View style={{ flex: 1 }}>
-        <Toolbar>
-          <DrawerButton openDrawer={this.props.openDrawer} />
+      <View style={styles.container}>
+        <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewCharacter} />
           <View style={styles.additionals}>
             <AttributesButton onPress={this.navigateToCustomAttributes} />
           </View>
         </Toolbar>
-        <Grid style={{ flex: 1 }}>
-          <Col size={4}>{this.renderCharacterList()}</Col>
+        <Grid style={styles.grid}>
+          <Col size={5}>
+            <MainList
+              isGroup
+              list={this.state.data}
+              title={t('Characters')}
+              type={t('Character')}
+              activeKey='id'
+              activeValue={this.state.activeCharacterId}
+              onPressItem={this.handleSelectCharacter}
+              onPressAdd={this.handleAddCharacter}
+              onPressDelete={this.handleDeleteCharacter}
+            />
+          </Col>
           <Col size={10}>{this.renderCharacterDetail()}</Col>
         </Grid>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  characterList: {
-    height: '100%',
-    padding: 8
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 8
-  },
-  sectionHeader: {
-    paddingVertical: 10,
-    paddingHorizontal: 6,
-    backgroundColor: 'hsl(210, 36%, 96%)' //gray-9
-  },
-  characterItem: {
-    borderRadius: 15,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingLeft: 8,
-    paddingRight: 10,
-    borderColor: 'hsl(210, 36%, 96%)', //gray-9
-    borderWidth: 1
-  },
-  activeItem: {
-    borderColor: 'hsl(208, 88%, 62%)', //blue-6
-    backgroundColor: 'hsl(210, 31%, 80%)', //gray-7
-    borderStyle: 'dashed'
-  },
-  buttonWrapper: {
-    flexDirection: 'row',
-    marginLeft: 'auto'
-  },
-  sideButton: {
-    minHeight: 50,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  characterSideImage: {
-    resizeMode: 'contain',
-    overflow: 'hidden',
-    borderRadius: 50,
-    marginRight: 10,
-    width: 30,
-    height: 30
-  },
-  additionals: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  }
-})
 
 Characters.propTypes = {
   visibleCharactersByCategory: PropTypes.object.isRequired,

@@ -16,7 +16,8 @@ import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
-import { Text } from '../../shared/common'
+import { Text, MainList } from '../../shared/common'
+import styles from './NotesStyles'
 
 class Notes extends Component {
   state = {
@@ -104,11 +105,21 @@ class Notes extends Component {
     this.setState({ activeNoteId: id })
   }
 
-  saveNote = (id, title, content) => {
-    this.props.actions.editNote(id, { title, content })
+  saveNote = (id, attributes) => {
+    this.props.actions.editNote(id, attributes)
   }
 
-  deleteNote = (note) => {
+  handleSelectNote = ({ id }) => {
+    this.setState({ activeNoteId: id })
+  }
+
+  handleAddNote = () => {
+    const id = newIds.nextId(this.props.notes)
+    this.props.actions.addNote()
+    this.setState({ activeNoteId: id })
+  }
+
+  handleDeleteNote = (note) => {
     askToDelete(note.title || t('New Note'), () =>
       this.props.actions.deleteNote(note.id)
     )
@@ -126,20 +137,6 @@ class Notes extends Component {
         title={item.title || t('New Note')}
         isActive={isActive}
       />
-    )
-  }
-
-  renderNoteList () {
-    const { notes } = this.props
-    return (
-      <View style={styles.noteList}>
-        <Text fontSize='h5' fontStyle='semiBold' style={styles.title}>{t('Notes')}</Text>
-        <FlatList
-          data={notes}
-          renderItem={this.renderNoteItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
     )
   }
 
@@ -164,50 +161,32 @@ class Notes extends Component {
   }
 
   render () {
+    const { activeNoteId, viewableNotes } = this.state
+    const { openDrawer } = this.props
     return (
-      <View style={{ flex: 1 }}>
-        <Toolbar>
-          <DrawerButton openDrawer={this.props.openDrawer} />
+      <View style={styles.container}>
+        <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewNote} />
         </Toolbar>
-        <Grid style={{ flex: 1 }}>
-          <Col size={4}>{this.renderNoteList()}</Col>
+        <Grid style={styles.grid}>
+          <Col size={5}>
+            <MainList
+              list={viewableNotes}
+              title={t('Notes')}
+              type={t('Note')}
+              activeKey='id'
+              activeValue={activeNoteId}
+              onPressItem={this.handleSelectNote}
+              onPressAdd={this.handleAddNote}
+              onPressDelete={this.handleDeleteNote}
+            />
+          </Col>
           <Col size={10}>{this.renderNoteDetail()}</Col>
         </Grid>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  noteList: {
-    height: '100%',
-    padding: 8
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 8
-  },
-  noteItem: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingLeft: 8,
-    borderColor: 'hsl(210, 36%, 96%)', //gray-9
-    borderWidth: 1
-  },
-  activeItem: {
-    borderColor: 'hsl(208, 88%, 62%)', //blue-6
-    backgroundColor: 'hsl(210, 31%, 80%)', //gray-7
-    borderStyle: 'dashed'
-  },
-  buttonWrapper: {
-    flexDirection: 'row',
-    marginLeft: 'auto'
-  }
-})
 
 Notes.propTypes = {
   notes: PropTypes.array.isRequired,

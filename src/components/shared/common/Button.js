@@ -21,6 +21,8 @@ export default class Button extends Component {
       style,
       block,
       tight,
+      small,
+      tiny,
       textColor,
       textStyle,
       buttonText,
@@ -38,27 +40,31 @@ export default class Button extends Component {
     const textStylesArray = [styles.text]
     const wrapperStylesArray = [styles.textWrapper]
     const buttonTextRender = buttonText || children
+    const colorProp = Colors[buttonColor] || buttonColor
 
     if (style) stylesArray.push(style)
     if (block) stylesArray.push(styles.block)
     if (textStyle) textStylesArray.push(textStyle)
     if (wrapperStyle) wrapperStylesArray.push(wrapperStyle)
     if (tight) wrapperStylesArray.push(styles.tightWrapper)
+    if (small) wrapperStylesArray.push(styles.smallWrapper)
+    if (tiny) wrapperStylesArray.push(styles.tinyWrapper)
     if (disabled || faded) stylesArray.push(styles.faded)
-    if (buttonColor) {
-      stylesArray.push({ backgroundColor: Colors[buttonColor] || buttonColor })
+    if (colorProp) {
+      stylesArray.push({
+        backgroundColor: colorProp,
+        borderColor: colorProp
+      })
     }
     if (textColor) {
       textStylesArray.push({ color: Colors[textColor] || textColor })
     }
     if (bordered) {
-      stylesArray.push(styles.bordered)
       stylesArray.push({
-        borderColor: Colors[buttonColor] || buttonColor,
         backgroundColor: 'transparent'
       })
       !textColor &&
-        textStylesArray.push({ color: buttonColor[textColor] || buttonColor })
+        textStylesArray.push({ color: colorProp })
     }
 
     return (

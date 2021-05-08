@@ -4,10 +4,10 @@ import Colors from '../../../utils/Colors'
 import { isTablet } from 'react-native-device-info'
 import Fonts from '../../../fonts'
 
-const { size } = Fonts
+const { size, style } = Fonts
 const { section, baseMargin, cornerRadius } = Metrics
 
-const { gray } = Colors
+const { gray, orange, warmWhite } = Colors
 
 export default ScaledSheet.create({
   book: {
@@ -15,28 +15,38 @@ export default ScaledSheet.create({
   },
   bookImage: {
     width: '100%',
+    justifyContent: 'flex-end',
     aspectRatio: 0.8
   },
   titleWrapper: {
     flex: 2,
-    paddingTop: '10%',
-    paddingRight: '20%',
-    paddingBottom: '10%',
-    paddingLeft: '7%',
+    paddingHorizontal: baseMargin,
+    justifyContent: 'center',
     alignItems: 'center'
+  },
+  imageWrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginTop: '2.8%',
+    marginLeft: '3.5%',
+    marginRight: '15%',
+    marginBottom: '17%'
   },
   bookTitle: {
     width: '100%',
-    fontSize: size[isTablet() ? 'h6' : 'h3']
+    fontFamily: 'Georgia',
+    lineHeight: size.h5 * 1.4,
+    color: Colors.warmTextGray,
+    fontSize: size[isTablet() ? 'h5' : 'h3']
   },
   actions: {
+    backgroundColor: `${warmWhite}99`,
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    paddingLeft: '10%',
-    paddingRight: '22%',
-    paddingBottom: '25%',
-    alignItems: 'center'
+    paddingHorizontal: baseMargin,
+    paddingVertical: baseMargin,
+    paddingLeft: baseMargin / 2,
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   centerButtons: {
     justifyContent: 'center'
@@ -44,7 +54,10 @@ export default ScaledSheet.create({
   button: {
     paddingVertical: baseMargin / 2,
     paddingHorizontal: baseMargin,
-    backgroundColor: gray,
+    backgroundColor: orange,
     borderRadius: cornerRadius
+  },
+  trashButton: {
+    paddingLeft: baseMargin / 2
   }
 })

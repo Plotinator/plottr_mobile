@@ -1,128 +1,112 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import { t } from 'plottr_locales'
-import { View, Input, Label, Item, Text, Button } from 'native-base'
 import { StyleSheet } from 'react-native'
-import AttachmentList from '../../shared/attachments/AttachmentList'
-import { DetailsWrapper, DetailsLeft, DetailsRight } from '../shared/Details'
-import { RichEditor } from '../../shared/common'
-import DetailImage from '../shared/DetailImage'
+import DetailPreview from '../shared/DetailView/Preview'
+import { cloneDeep } from 'lodash'
 
-export default function Place (props) {
-  const { place, customAttributes } = props
-  const [changes, makeChanges] = useState(false)
-  const [workingCopy, setWorkingCopy] = useState(place)
-  let customAttrs = customAttributes.reduce((acc, attr) => {
-    acc[attr.name] = place[attr.name]
-    return acc
-  }, {})
-  const [workingCA, setWorkingCA] = useState(customAttrs)
-
-  const saveChanges = () => {
-    const values = {
-      name: workingCopy.name,
-      notes: workingCopy.notes,
-      description: workingCopy.description,
-      ...workingCA
+export default class Character extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      object: null,
+      objectMeta: null
     }
-    props.onSave(place.id, values)
-    makeChanges(false)
   }
-
-  const renderCustomAttributes = () => {
-    return customAttributes.map((attr, idx) => {
-      const { name, type } = attr
-      if (type == 'paragraph') {
-        return (
-          <View key={idx} style={[styles.afterList, styles.rceView]}>
-            <Label>{name}</Label>
-            <RichEditor
-              initialValue={workingCA[name]}
-              onChange={val => {
-                setWorkingCA({ ...workingCA, [name]: val })
-                makeChanges(true)
-              }}
-            />
-          </View>
-        )
-      } else {
-        return (
-          <Item key={idx} inlineLabel style={styles.label}>
-            <Label>{name}</Label>
-            <Input
-              value={workingCA[name]}
-              onChangeText={text => {
-                setWorkingCA({ ...workingCA, [name]: text })
-                makeChanges(true)
-              }}
-              autoCapitalize='sentences'
-            />
-          </Item>
-        )
-      }
+  componentDidMount() {
+    const { place } = this.props
+    let objectMeta = this.getObjectMeta()
+    this.setState({
+      object: place,
+      objectMeta: objectMeta
     })
   }
 
-  const renderAttachments = () => {
-    return (
-      <AttachmentList
-        itemType='place'
-        item={place}
-        navigate={props.navigation.navigate}
-        only={['bookIds', 'tags']}
-      />
-    )
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(prevProps.customAttributes) !=
+      JSON.stringify(this.props.customAttributes)
+    ) {
+      let objectMeta = this.getObjectMeta()
+      this.setState({
+        objectMeta: objectMeta
+      })
+    }
   }
 
-  return (
-    <DetailsWrapper>
-      <DetailsLeft>
-        <DetailImage image={place.image && place.image.data} />
-        <Item inlineLabel style={styles.label}>
-          <Label>{t('Name')}</Label>
-          <Input
-            value={workingCopy.name}
-            onChangeText={text => {
-              setWorkingCopy({ ...workingCopy, name: text })
-              makeChanges(true)
-            }}
-            autoCapitalize='words'
-          />
-        </Item>
-        <Item inlineLabel style={styles.label}>
-          <Label>{t('Description')}</Label>
-          <Input
-            value={workingCopy.description}
-            onChangeText={text => {
-              setWorkingCopy({ ...workingCopy, description: text })
-              makeChanges(true)
-            }}
-            autoCapitalize='sentences'
-          />
-        </Item>
-        <View style={[styles.afterList, styles.rceView]}>
-          <Label>{t('Notes')}</Label>
-          <RichEditor
-            initialValue={workingCopy.notes}
-            onChange={val => {
-              setWorkingCopy({ ...workingCopy, notes: val })
-              makeChanges(true)
-            }}
-          />
-        </View>
-        {renderCustomAttributes()}
-      </DetailsLeft>
-      <DetailsRight>
-        <View>
-          <View style={styles.detailsRightItems}>{renderAttachments()}</View>
-        </View>
-        <View style={styles.buttonFooter}>
-          <Button block success disabled={!changes} onPress={saveChanges}>
-            <Text>{t('Save')}</Text>
-          </Button>
-        </View>
-      </DetailsRight>
-    </DetailsWrapper>
-  )
+  getObjectMeta = () => {
+    const { customAttributes } = this.props
+
+    let objectMeta = {
+      source: 'place',
+      titleStyle: 'bold',
+      name: {
+        title: t('Name'),
+        key: 'name',
+        type: 'line'
+      },
+      description: {
+        title: t('Description'),
+        key: 'description',
+        type: 'line'
+      },
+      image: {
+        displayStyle: 'fullWidth'
+      },
+      attributes: [
+        {
+          title: 'Notes',
+          titleStyle: 'boldItalic',
+          key: 'notes',
+          type: 'paragraph'
+        }
+      ]
+    }
+    objectMeta = this.addCustomAttributes(objectMeta, customAttributes)
+    objectMeta = this.addAttachments(objectMeta)
+    return objectMeta
+  }
+
+  addAttachments = (objectMeta) => {
+    let newMeta = cloneDeep(objectMeta)
+    newMeta.attributes.push({
+      title: 'Books',
+      key: 'bookIds',
+      type: 'attachment',
+      attachmentType: 'bookId'
+    })
+    newMeta.attributes.push({
+      title: 'Tags',
+      key: 'tags',
+      type: 'attachment',
+      attachmentType: 'tag'
+    })
+    return newMeta
+  }
+
+  addCustomAttributes = (objectMeta, customAttributes) => {
+    let newMeta = cloneDeep(objectMeta)
+    customAttributes.map((attr, idx) => {
+      const { name, type } = attr
+      let newAttr = {
+        title: name,
+        key: name,
+        type: type == 'paragraph' ? 'paragraph' : 'line'
+      }
+      newMeta.attributes.push(newAttr)
+    })
+    return newMeta
+  }
+
+  render() {
+    const { object, objectMeta } = this.state
+    return object ? (
+      <DetailPreview
+        object={object}
+        objectMeta={objectMeta}
+        onSave={this.props.onSave}
+      />
+    ) : null
+  }
 }
 
 const styles = StyleSheet.create({

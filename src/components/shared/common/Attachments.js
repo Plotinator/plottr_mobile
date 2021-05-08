@@ -14,7 +14,6 @@ import Popover, {
 } from 'react-native-popover-view'
 
 class Attachments extends Component {
-
   addAttachment = (id) => {
     const { actions, type, cardId } = this.props
     switch (type) {
@@ -25,6 +24,7 @@ class Attachments extends Component {
       case 'tag':
         return actions.addTag(cardId, id)
       case 'book':
+      case 'bookId':
         return actions.addBook(cardId, id)
       default:
         return
@@ -41,7 +41,7 @@ class Attachments extends Component {
       case 'tag':
         return actions.removeTag(cardId, id)
       case 'book':
-      case 'bookIds':
+      case 'bookId':
         return actions.removeBook(cardId, id)
       default:
         return
@@ -49,17 +49,28 @@ class Attachments extends Component {
   }
 
   handleRemoveAttachment = ({ id }) => {
+    const { attachments, objectKey, onChange } = this.props
+    if (onChange) {
+      const attached = attachments.filter((val) => val != id)
+      onChange(objectKey, attached)
+    }
     this.removeAttachment(id)
   }
 
   handleAddAttachment = ({ id }) => {
+    const { attachments, objectKey, onChange } = this.props
+    if (onChange) {
+      const attached = attachments
+      attached.push(id)
+      onChange(objectKey, attached)
+    }
     this.addAttachment(id)
   }
 
-  renderAttachmentName (attachment) {
+  renderAttachmentName(attachment) {
     const { type } = this.props
     const { title, name } = attachment
-    const firstCapital = type.substring(0,1).toUpperCase()
+    const firstCapital = type.substring(0, 1).toUpperCase()
     const commonLast = type.substring(1)
     return name || title || `New ${firstCapital}${commonLast}`
   }
@@ -92,22 +103,26 @@ class Attachments extends Component {
         <Text fontSize='h6' fontStyle={'semiBold'} color={'textGray'}>
           {titleDisplay}
         </Text>
-        {color && (<View style={[styles.menuDot, { backgroundColor: color }]} />)}
+        {color && <View style={[styles.menuDot, { backgroundColor: color }]} />}
       </ShellButton>
     )
   }
 
-  render () {
+  render() {
     const { attachments, type } = this.props
     const attachmentsList = this.props[`${type}s`]
-    const attached = attachmentsList.filter(({ id }) => attachments.indexOf(id) > -1)
-    const unattached = attachmentsList.filter(({ id }) => attachments.indexOf(id) == -1)
+    const attached = attachmentsList.filter(
+      ({ id }) => attachments.indexOf(id) > -1
+    )
+    const unattached = attachmentsList.filter(
+      ({ id }) => attachments.indexOf(id) == -1
+    )
     return (
       <View style={styles.tabsBase}>
         {attached.map(this.renderTabCell)}
         {attached.length == 0 && (
           <Text
-            padded
+            style={styles.addTypeText}
             fontSize='micro'
             fontStyle='italic'
             color='lightGray'>
@@ -144,32 +159,34 @@ Attachments.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
-  books: PropTypes.object.isRequired,
+  books: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
-  const { books = [] } = state
-  const bookIds = {}
-  Object.keys(books).map((key, index) => {
-    bookIds[index] = { ...books[key] }
+function mapStateToProps(state) {
+  const { books } = state
+  const bookIds = []
+  books.allIds.forEach((element) => {
+    bookIds.push({ ...books[element] })
   })
   return {
     characters: selectors.charactersSortedAtoZSelector(state),
     places: selectors.placesSortedAtoZSelector(state),
     tags: selectors.sortedTagsSelector(state),
-    books: state.books,
+    books: [state.books],
     bookIds
   }
 }
 
-function mapDispatchToProps (dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   const { sourceType } = ownProps
   switch (sourceType) {
     case 'card':
       return { actions: bindActionCreators(actions.card, dispatch) }
     case 'character':
       return { actions: bindActionCreators(actions.character, dispatch) }
+    case 'note':
+      return { actions: bindActionCreators(actions.note, dispatch) }
     case 'place':
       return { actions: bindActionCreators(actions.place, dispatch) }
     default:

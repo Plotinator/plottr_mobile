@@ -359,6 +359,12 @@
   "Days of Backup": {
     "message": "Days of Backup"
   },
+  "Delete Book": {
+    "message": "Delete Book"
+  },
+  "Delete Book {name}?": {
+    "message": "Delete Book \"{name}\"?"
+  },
   "Default Colors": {
     "message": "Default Colors"
   },
@@ -409,6 +415,9 @@
   },
   "Do you want to remove this image? It will NOT be deleted from your computer": {
     "message": "Do you want to remove this image? It will NOT be deleted from your computer"
+  },
+  "Do you want to delete tag {name}?": {
+    "message": "Do you want to delete tag \"{name}\"?"
   },
   "Documentation": {
     "message": "Documentation"
@@ -1108,6 +1117,12 @@
   },
   "See the outline here": {
     "message": "See the outline here"
+  },
+  "See More": {
+    "message": "See More"
+  },
+  "See Less": {
+    "message": "See Less"
   },
   "Select All": {
     "message": "Select All"

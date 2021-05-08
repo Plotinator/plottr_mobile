@@ -17,13 +17,34 @@ const Colors = {
   inputBorderWhite: '#D6D6D6',
   gray: '#E0E0E0',
   grayBlack: '#353535',
+  lightGray: '#A8A8A8',
   textBlack: '#505050',
   darkGray: '#303030',
   textGray: '#888888',
   textLightGray: '#A8A8A8',
-  lightGray: '#9F9F9F',
   lightenGray: '#b3b3b3',
-  lighterGray: '#CBCBCB'
+  lighterGray: '#CBCBCB',
+  // new tones
+  whiteTone: '#ffffff',
+  grayTone: '#efefef',
+  lightGrayTone: '#f8f8f8',
+  textLightGrayTone: '#a8a8a8',
+  textGrayTone: '#7d7d7d',
+  textDarkGrayTone: '#666666',
+  textDarkerGrayTone: '#545454',
+  deactivated: '#9F9F9F',
+  tagColors: ['#6cace4', '#78be20', '#e5554f', '#ff7f32', '#ffc72c'], // Same as the timeline colors
+  // warm tones
+  warmWhite: '#f5f4f0',
+  warmWhiter: '#f6f5f3',
+  warmBG: '#efece7',
+  warmWhiteBG: '#fffcf7',
+  warmGray: '#e1ded9',
+  warmTextGray: '#7d7d7b', //7f7e7d
+  warmTextDarkGray: '#656462'
+
 }
+
+Colors.backgroundTone = Colors.lightGrayTone
 
 export default Colors

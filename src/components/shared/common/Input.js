@@ -20,6 +20,7 @@ export default class Input extends Component {
 
   render() {
     const {
+      reset,
       inset,
       small,
       label,
@@ -57,8 +58,6 @@ export default class Input extends Component {
 
     let placeholderColor = placeholderTextColor
     const inputStyles = [styles.input]
-    inputStyles.push(inputStyle)
-
     const containerStyles = [styles.container]
     if (friendly) {
       placeholderColor = inputWhiteText
@@ -77,7 +76,13 @@ export default class Input extends Component {
     if (center) inputStyles.push(styles.center)
     if (darkMode) inputStyles.push(styles.darkMode)
     if (small) inputStyles.push(styles.inputSmall)
+    if (reset) {
+      containerStyles.push(styles.reset)
+      inputStyles.push(styles.resetInput)
+    }
+
     containerStyles.push(style)
+    inputStyles.push(inputStyle)
 
     const placeholderText = placeholder || ''
 
@@ -88,7 +93,7 @@ export default class Input extends Component {
             <View style={[styles.label, labelStyle]}>
               <Text
                 fontSize='small'
-                color='lightGray'
+                color='lightenGray'
                 style={[styles.labelText, labelTextStyle]}>
                 {label}
               </Text>

@@ -88,13 +88,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: Metrics.baseMargin / 1.5,
+    paddingVertical: Metrics.baseMargin / 1.25,
     paddingLeft: Metrics.baseMargin * 1.5,
     paddingRight: Metrics.doubleBaseMargin / 1.5,
     borderRadius: Metrics.cornerRadius / 2,
     borderColor: Colors.borderGray,
     backgroundColor: 'white',
     alignSelf: 'center',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0.5,
+      height: 0.75
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.25,
+    elevation: 2
   },
   listItem: {
     width: 400,

@@ -25,7 +25,7 @@ class Project extends Component {
     this.props.book.deleteBook(id)
   }
 
-  navigateToDetails = (id) => {
+  navigateToDetails = ({ id }) => {
     this.props.navigation.push('SeriesDetails', { id })
   }
 
@@ -76,6 +76,7 @@ class Project extends Component {
       <View style={[styles.bookWrapper, isLast && styles.lastBook]}>
         <Book
           editable
+          noTimeline
           book={item}
           navigateToOutline={this.navigateToOutline}
           navigateToDetails={this.navigateToDetails}

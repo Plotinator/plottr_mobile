@@ -9,7 +9,7 @@ const { size } = Fonts
 
 export default ScaledSheet.create({
   container: {
-    backgroundColor: 'hsl(210, 36%, 96%)',
+    backgroundColor: Colors.warmBG, // 'hsl(210, 36%, 96%)',
     marginVertical: 2,
     marginBottom: 0,
     flex: 1

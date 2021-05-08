@@ -21,16 +21,15 @@ export default function DrawerButton (props) {
 const styles = ScaledSheet.create({
   tabletButton: {
     borderRadius: Metrics.cornerRadius / 2,
-    alignSelf: 'center',
     backgroundColor: onTablet ? 'white' : 'transparent',
     marginRight: onTablet ? 20 : 0,
-    shadowColor: '#000',
+    shadowColor: '#000000',
     shadowOffset: {
-      width: 0,
-      height: 1
+      width: 0.5,
+      height: 0.5
     },
     shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    shadowRadius: 1.25,
     elevation: 2
   },
   tabletIcon: {

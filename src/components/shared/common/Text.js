@@ -30,7 +30,8 @@ export default class Text extends Component {
         leading,
         children,
         underlined,
-        paragraph
+        paragraph,
+        ...otherProps
       }
     } = this
     const compStyles = []
@@ -67,7 +68,7 @@ export default class Text extends Component {
     compStyles.push(style)
 
     return (
-      <RNText {...props} style={compStyles}>
+      <RNText {...otherProps} style={compStyles}>
         {children}
       </RNText>
     )

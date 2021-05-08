@@ -24,7 +24,7 @@ export default StyleSheet.create({
     color: 'white'
   },
   faded: {
-    opacity: 0.5
+    opacity: 0.4
   },
   paragraph: {
     paddingVertical: doubleBaseMargin

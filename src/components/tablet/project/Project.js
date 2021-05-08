@@ -4,21 +4,30 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { View } from 'native-base'
-import { actions } from 'pltr/v2'
+import { newIds, actions } from 'pltr/v2'
 import Toolbar from '../shared/Toolbar'
 import { t } from 'plottr_locales'
-import { Text, Input, Button } from '../../shared/common'
+import {
+  Text,
+  Input,
+  AddButton,
+  Button,
+  HeaderButton
+} from '../../shared/common'
 import Book from '../../shared/project/Book'
-import DrawerButton from '../../ui/DrawerButton'
-import Metrics from '../../../utils/Metrics'
-import Colors from '../../../utils/Colors'
 import Collapsible from 'react-native-collapsible'
+import styles from './ProjectStyles'
+import { showAlert } from '../../shared/common/AlertDialog'
+import BookModal from './BookModal'
 
-const { baseMargin } = Metrics
+const { objectId } = newIds
 
 class Project extends Component {
-  state = {}
-  static getDerivedStateFromProps(props, state) {
+  state = {
+    editMode: false
+  }
+
+  static getDerivedStateFromProps (props, state) {
     if (state.changes) {
       return { series: state.series, changes: true }
     } else {
@@ -26,212 +35,254 @@ class Project extends Component {
     }
   }
 
-  saveChanges = () => {
-    this.props.seriesActions.editSeries({ ...this.state.series })
-    this.setState({ changes: false })
+  handleSetNameInputRef = (ref) => (this.seriesName = ref)
+
+  handleSetScrollerRef = (ref) => (this.scroller = ref)
+
+  handleToggleEdit = () => {
+    this.setState({ editMode: true }, () => {
+      setTimeout(() => this.seriesName && this.seriesName.focus())
+    })
   }
 
-  openEditModal = (id) => {
-    // this.props.navigation.push('SeriesDetails', { id })
-    this.props.uiActions.changeCurrentTimeline(id)
-    this.props.navigation.navigate('Timeline')
+  handleSeriesName = (name) => {
+    const { series } = this.state
+    this.setState({
+      series: { ...series, name },
+      changes: true
+    })
   }
+
+  handleSeriesPremise = (text) => {
+    const { series } = this.state
+    this.setState({
+      series: { ...series, premise: text },
+      changes: true
+    })
+  }
+
+  handleSeriesGenre = (text) => {
+    const { series } = this.state
+    this.setState({
+      series: { ...series, genre: text },
+      changes: true
+    })
+  }
+
+  handleSeriesTheme = (text) => {
+    const { series } = this.state
+    this.setState({
+      series: { ...series, theme: text },
+      changes: true
+    })
+  }
+
+  handleSaveChanges = () => {
+    const { series } = this.state
+    this.props.seriesActions.editSeries({ ...series })
+    this.setState({ changes: false, editMode: false })
+  }
+
+  handleCancelChanges = () => {
+    const { series } = this.props
+    this.setState({ changes: false, editMode: false, series })
+  }
+
+  handleAddNewBook = () => {
+    const { actions, books, lineActions, beatActions } = this.props
+    const newBookId = objectId(books.allIds)
+    actions.addBook()
+    // add a plotline
+    lineActions.addLineWithTitle(t('Main Plot'), newBookId)
+    // add a beat
+    beatActions.addBeat(newBookId)
+
+    setTimeout(this.scroller.scrollToEnd)
+  }
+
+  handleDeleteBook = (id, title) => {
+    const { actions } = this.props
+    showAlert({
+      title: t('Delete Book'),
+      message: t('Delete Book {name}?', { name: title }),
+      actions: [
+        {
+          positive: true,
+          name: t('Delete Book'),
+          callback: () => {
+            actions.deleteBook(id)
+          }
+        },
+        {
+          name: t('Cancel')
+        }
+      ]
+    })
+  }
+
+  handleEditBook = (book) => {
+    this.BookModal.editBook(book)
+  }
+
+  handleSaveBook = ({ id, imageId, title, premise, genre, theme }) => {
+    const { actions } = this.props
+    actions.editBook(id, { imageId, title, premise, genre, theme })
+  }
+
+  handleBookModalRef = (ref) => (this.BookModal = ref)
 
   navigateToTimeline = (id) => {
     this.props.uiActions.changeCurrentTimeline(id)
     this.props.navigation.navigate('Timeline')
   }
 
-  renderBooks() {
-    const { books } = this.props
-    if (!books.allIds) return null
+  navigateToOutline = (id) => {
+    this.props.uiActions.changeCurrentTimeline(id)
+    this.props.navigation.navigate('Outline')
+  }
 
+  renderBooks () {
+    const { books, images } = this.props
+    if (!books.allIds) return null
     return books.allIds.map((id) => {
+      const book = books[`${id}`]
+      const { imageId } = book
+      const bookImage = imageId &&
+        images[imageId] && { uri: images[imageId].data }
+
       return (
         <Book
+          editable
+          noTimeline
           key={id}
-          book={books[`${id}`]}
-          navigateToOutline={this.navigateToTimeline}
-          navigateToDetails={this.openEditModal}
-          style={styles.book}
-        />
+          book={book}
+          image={bookImage}
+          navigateToOutline={this.navigateToOutline}
+          navigateToTimeline={this.navigateToTimeline}
+          navigateToDetails={this.handleEditBook}
+          onDeleteBook={this.handleDeleteBook}
+          style={styles.book}></Book>
       )
     })
   }
 
-  render() {
-    const { series, changes } = this.state
+  render () {
+    const { series, changes, editMode } = this.state
+    const { openDrawer, images } = this.props
+    const isEditing = editMode === true
     return (
       <View style={styles.container}>
-        <Toolbar>
-          <DrawerButton openDrawer={this.props.openDrawer} />
+        <Toolbar onPressDrawer={openDrawer}>
+          <HeaderButton title={t('Categories')} icon='list' />
+          <HeaderButton title={t('Filter')} icon='filter' />
         </Toolbar>
-        <View style={styles.seriesWrapper}>
-          <Text fontSize='h2' style={styles.subTitle}>
-            {t('Series')}
-          </Text>
-          <View style={styles.grid}>
-            <View style={styles.row}>
-              <View style={styles.column}>
-                <Input
-                  inset
-                  small
-                  label={`${t('Name')}:`}
-                  value={series.name}
-                  onChangeText={(text) =>
-                    this.setState({
-                      series: { ...series, name: text },
-                      changes: true
-                    })
-                  }
-                  autoCapitalize='words'
-                />
-              </View>
-              <View style={styles.column}>
-                <Input
-                  inset
-                  small
-                  label={`${t('Premise')}:`}
-                  value={series.premise}
-                  onChangeText={(text) =>
-                    this.setState({
-                      series: { ...series, premise: text },
-                      changes: true
-                    })
-                  }
-                  autoCapitalize='sentences'
-                />
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.column}>
-                <Input
-                  inset
-                  small
-                  label={`${t('Genre')}:`}
-                  value={series.genre}
-                  onChangeText={(text) =>
-                    this.setState({
-                      series: { ...series, genre: text },
-                      changes: true
-                    })
-                  }
-                  autoCapitalize='sentences'
-                />
-              </View>
-              <View style={styles.column}>
-                <Input
-                  inset
-                  small
-                  label={`${t('Theme')}:`}
-                  value={series.theme}
-                  onChangeText={(text) =>
-                    this.setState({
-                      series: { ...series, theme: text },
-                      changes: true
-                    })
-                  }
-                  autoCapitalize='sentences'
-                />
-              </View>
-            </View>
-            <Collapsible collapsed={!changes}>
-              <View style={styles.row}>
-                <View style={styles.centerColumn}>
-                  <Button
-                    tight
-                    disabled={!changes}
-                    onPress={this.saveChanges}
-                    style={styles.saveButton}>
-                    {t('Save')}
-                  </Button>
-                </View>
-              </View>
-            </Collapsible>
+        <View style={styles.labelContainer}>
+          <View style={styles.labelProject}>
+            <Text style={styles.labelText}>Series</Text>
           </View>
+          <AddButton
+            icon='pen'
+            duration={300}
+            animated
+            animation={isEditing ? 'zoomOut' : 'zoomIn'}
+            onPress={this.handleToggleEdit}
+          />
         </View>
-        <View style={styles.booksWrapper}>
-          <Text fontSize='h2' style={styles.subTitle}>
-            {t('Books')}
-          </Text>
-          <ScrollView contentContainerStyle={styles.booksList}>
+        <View style={styles.seriesContainer}>
+          <Input
+            reset
+            multiline
+            ref={this.handleSetNameInputRef}
+            editable={isEditing}
+            value={series.name}
+            onChangeText={this.handleSeriesName}
+            autoCapitalize='words'
+            numberOfLines={4}
+            inputStyle={styles.seriesName}
+            placeholder={t('Title')}
+          />
+          {!series.premise && !isEditing ? null : (
+            <Input
+              reset
+              multiline
+              editable={isEditing}
+              value={series.premise}
+              onChangeText={this.handleSeriesPremise}
+              autoCapitalize='sentences'
+              numberOfLines={4}
+              inputStyle={styles.seriesDescription}
+              placeholder={t('Premise')}
+            />
+          )}
+          {!series.theme && !isEditing ? null : (
+            <Input
+              reset
+              multiline
+              editable={isEditing}
+              value={series.theme}
+              onChangeText={this.handleSeriesTheme}
+              autoCapitalize='sentences'
+              numberOfLines={4}
+              inputStyle={styles.seriesTheme}
+              placeholder={t('Theme')}
+            />
+          )}
+          {!series.genre && !isEditing ? null : (
+            <Input
+              reset
+              multiline
+              editable={isEditing}
+              value={series.genre}
+              onChangeText={this.handleSeriesGenre}
+              autoCapitalize='words'
+              numberOfLines={4}
+              inputStyle={styles.seriesGenre}
+              placeholder={t('Genre')}
+            />
+          )}
+        </View>
+        <Collapsible collapsed={!isEditing}>
+          <View style={styles.buttonContainer}>
+            <Button
+              small
+              disabled={!changes}
+              onPress={this.handleSaveChanges}
+              style={styles.saveButton}>
+              {t('Save')}
+            </Button>
+            <Button
+              small
+              bordered
+              onPress={this.handleCancelChanges}
+              style={styles.saveButton}>
+              {t('Cancel')}
+            </Button>
+          </View>
+        </Collapsible>
+        <View style={styles.labelContainer}>
+          <View style={styles.labelProject}>
+            <Text style={styles.labelText}>{t('Books')}</Text>
+          </View>
+          <AddButton onPress={this.handleAddNewBook} />
+        </View>
+        <View style={styles.booksContainer}>
+          <ScrollView
+            ref={this.handleSetScrollerRef}
+            contentContainerStyle={styles.booksList}>
             <TouchableWithoutFeedback>
               <React.Fragment>{this.renderBooks()}</React.Fragment>
             </TouchableWithoutFeedback>
           </ScrollView>
         </View>
+        <BookModal
+          ref={this.handleBookModalRef}
+          onSaveBook={this.handleSaveBook}
+          images={images}
+        />
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    // backgroundColor: 'white',
-    flex: 1
-  },
-  button: {
-    alignSelf: 'center',
-    backgroundColor: 'white',
-    borderColor: 'hsl(211, 27%, 70%)', //gray-6
-    marginRight: 16
-  },
-  text: {
-    color: 'hsl(209, 61%, 16%)' //gray-0
-  },
-  icon: {
-    color: 'hsl(209, 61%, 16%)' //gray-0
-  },
-  seriesWrapper: {
-    padding: baseMargin * 1.5,
-    paddingBottom: 0
-  },
-  booksWrapper: {
-    flex: 2,
-    marginTop: 5,
-    paddingLeft: baseMargin * 1.5
-  },
-  subTitle: {
-    paddingLeft: baseMargin / 2,
-    paddingBottom: baseMargin / 2
-  },
-  label: {
-    // marginBottom: 16,
-    backgroundColor: 'white',
-    padding: 2
-  },
-  grid: {
-    width: '100%'
-  },
-  row: {
-    width: '100%',
-    flexDirection: 'row'
-  },
-  column: {
-    flex: 1,
-    padding: baseMargin
-  },
-  centerColumn: {
-    flex: 1,
-    padding: baseMargin,
-    alignItems: 'center'
-  },
-  bookScroller: {
-    flex: 1
-  },
-  booksList: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    alignContent: 'flex-start'
-  },
-  book: {
-    width: '33%'
-  },
-  saveButton: {
-    width: '33%'
-  }
-})
 
 Project.propTypes = {
   series: PropTypes.object.isRequired,
@@ -242,16 +293,19 @@ Project.propTypes = {
   closeFile: PropTypes.func
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     series: state.series,
+    images: state.images,
     books: state.books
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     actions: bindActionCreators(actions.book, dispatch),
+    lineActions: bindActionCreators(actions.line, dispatch),
+    beatActions: bindActionCreators(actions.beat, dispatch),
     seriesActions: bindActionCreators(actions.series, dispatch),
     uiActions: bindActionCreators(actions.ui, dispatch)
   }

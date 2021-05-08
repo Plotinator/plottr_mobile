@@ -73,7 +73,17 @@ export default ScaledSheet.create({
   },
   labelText: {
     ...style.semiBold,
+    marginTop: -3,
     paddingBottom: 1
+  },
+  reset: {
+    borderBottomWidth: 0,
+    paddingTop: 0
+  },
+  resetInput: {
+    paddingVertical: 0,
+    paddingTop: 0,
+    minHeight: 0
   },
   inset: {
     backgroundColor: white,

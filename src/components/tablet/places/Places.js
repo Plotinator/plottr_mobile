@@ -16,7 +16,8 @@ import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
-import { Text, AttributesButton } from '../../shared/common'
+import { Text, MainList, AttributesButton } from '../../shared/common'
+import styles from './PlacesStyles'
 
 class Places extends Component {
   state = {
@@ -55,44 +56,25 @@ class Places extends Component {
     this.props.actions.editPlace(id, attributes)
   }
 
-  deletePlace = (place) => {
-    askToDelete(place.name || t('New Place'), () =>
-      this.props.actions.deletePlace(place.id)
-    )
-  }
-
   navigateToCustomAttributes = () => {
     this.props.navigation.navigate('CustomAttributesModal', {
       type: 'places'
     })
   }
 
-  renderPlaceItem = ({ item }) => {
-    const isActive = item.id == this.state.activePlaceId
-    const { images = [] } = this.props
-    const foundImage = images[item.imageId]
-    return (
-      <SideButton
-        onPress={() => this.setState({ activePlaceId: item.id })}
-        onDelete={() => this.deletePlace(item)}
-        image={foundImage && foundImage.data}
-        title={item.name || t('New Place')}
-        isActive={isActive}
-      />
-    )
+  handleSelectPlace = ({ id }) => {
+    this.setState({ activePlaceId: id })
   }
 
-  renderPlaceList () {
-    const { visiblePlaces } = this.props
-    return (
-      <View style={styles.placeList}>
-        <Text fontSize='h5' fontStyle='semiBold' style={styles.title}>{t('Places')}</Text>
-        <FlatList
-          data={visiblePlaces}
-          renderItem={this.renderPlaceItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
+  handleAddPlace = () => {
+    const id = newIds.nextId(this.props.places)
+    this.props.actions.addPlace()
+    this.setState({ activePlaceId: id })
+  }
+
+  handleDeletePlace = (place) => {
+    askToDelete(place.name || t('New Place'), () =>
+      this.props.actions.deletePlace(place.id)
     )
   }
 
@@ -117,58 +99,36 @@ class Places extends Component {
   }
 
   render () {
+    const { visiblePlaces, openDrawer } = this.props
+    const { activePlaceId } = this.state
+
     return (
-      <View style={{ flex: 1 }}>
-        <Toolbar>
-          <DrawerButton openDrawer={this.props.openDrawer} />
+      <View style={styles.container}>
+        <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewPlace} />
           <View style={styles.additionals}>
             <AttributesButton onPress={this.navigateToCustomAttributes} />
           </View>
         </Toolbar>
-        <Grid style={{ flex: 1 }}>
-          <Col size={4}>{this.renderPlaceList()}</Col>
+        <Grid style={styles.grid}>
+          <Col size={5}>
+            <MainList
+              list={visiblePlaces}
+              title={t('Places')}
+              type={t('Place')}
+              activeKey='id'
+              activeValue={activePlaceId}
+              onPressItem={this.handleSelectPlace}
+              onPressAdd={this.handleAddPlace}
+              onPressDelete={this.handleDeletePlace}
+            />
+          </Col>
           <Col size={10}>{this.renderPlaceDetail()}</Col>
         </Grid>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  placeList: {
-    height: '100%',
-    padding: 8
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 8
-  },
-  placeItem: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingLeft: 8,
-    borderColor: 'hsl(210, 36%, 96%)', //gray-9
-    borderWidth: 1
-  },
-  activeItem: {
-    borderColor: 'hsl(208, 88%, 62%)', //blue-6
-    backgroundColor: 'hsl(210, 31%, 80%)', //gray-7
-    borderStyle: 'dashed'
-  },
-  buttonWrapper: {
-    flexDirection: 'row',
-    marginLeft: 'auto'
-  },
-  additionals: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  }
-})
 
 Places.propTypes = {
   places: PropTypes.array.isRequired,

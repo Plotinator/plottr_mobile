@@ -1,6 +1,6 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import ProjectHome from '../project/ProjectHome'
+import Project from '../project'
 import OutlineHome from '../outline/OutlineHome'
 import TimelineHome from '../timeline/TimelineHome'
 import NotesHome from '../notes/NotesHome'
@@ -18,7 +18,7 @@ export default function MainTabs(props) {
       screenOptions={TabScreenOptions}>
       <Tab.Screen
         name='Project'
-        component={ProjectHome}
+        component={Project}
         initialParams={{ openDrawer: props.route?.params?.openDrawer }}
       />
       <Tab.Screen

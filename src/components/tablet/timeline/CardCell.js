@@ -12,6 +12,7 @@ import CardModal from './CardModal'
 import { useRegisterCoordinates } from './hooks'
 import { Text } from '../../shared/common'
 import Metrics from '../../../utils/Metrics'
+import Colors from '../../../utils/Colors'
 
 export default function CardCell (props) {
   const { color, card, onEditCard } = props
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     left: 26, // 25 +1
     width: 125,
     height: 80,
-    backgroundColor: 'hsl(210, 36%, 96%)', // gray-9
+    backgroundColor: Colors.warmWhite, // 'hsl(210, 36%, 96%)', // gray-9
     borderWidth: 3,
     borderRadius: Metrics.cornerRadius,
     padding: 4,

@@ -14,7 +14,7 @@ export default ScaledSheet.create({
     paddingTop: ifIphoneX(section, 0),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'hsl(210, 36%, 96%)',
+    backgroundColor: Colors.warmBG,
     borderTopRightRadius: buttonRadius,
     borderBottomRightRadius: buttonRadius
   },
