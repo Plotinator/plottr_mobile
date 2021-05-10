@@ -4,6 +4,7 @@ import Input from './Input'
 import Button from './Button'
 import MainList from './MainList'
 import ModalBox from './ModalBox'
+import Checkbox from './Checkbox'
 import AddButton from './AddButton'
 import IconButton from './IconButton'
 import RichEditor from './RichEditor'
@@ -15,11 +16,13 @@ import AttachmentsPreview from './AttachmentsPreview'
 import DetailBlock from './DetailBlock'
 import ScrollerView from './ScrollerView'
 import HeaderButton from './HeaderButton'
+import HeaderFilter from './HeaderFilter'
 import FloatingInput from './FloatingInput'
 import Title, { RenderTitle } from './Title'
 import WelcomeToPlottr from './WelcomeToPlottr'
 import GoToPlottrDotCom from './GoToPlottrDotCom'
 import AttributesButton from './AttributesButton'
+import HeaderButtonOptions from './HeaderButtonOptions'
 
 export {
   Text,
@@ -29,6 +32,7 @@ export {
   Button,
   MainList,
   ModalBox,
+  Checkbox,
   AddButton,
   IconButton,
   RichEditor,
@@ -41,8 +45,10 @@ export {
   RenderTitle,
   ScrollerView,
   HeaderButton,
+  HeaderFilter,
   FloatingInput,
   WelcomeToPlottr,
   GoToPlottrDotCom,
-  AttributesButton
+  AttributesButton,
+  HeaderButtonOptions
 }

@@ -12,6 +12,7 @@ import Popover, {
   PopoverMode,
   PopoverPlacement
 } from 'react-native-popover-view'
+import { t } from 'plottr_locales'
 
 class Attachments extends Component {
   addAttachment = (id) => {
@@ -72,7 +73,7 @@ class Attachments extends Component {
     const { title, name } = attachment
     const firstCapital = type.substring(0, 1).toUpperCase()
     const commonLast = type.substring(1)
-    return name || title || `New ${firstCapital}${commonLast}`
+    return name || title || t(`New {type}`, { type: `${firstCapital}${commonLast}` })
   }
 
   renderTabCell = (attachment, i) => {
@@ -126,7 +127,7 @@ class Attachments extends Component {
             fontSize='micro'
             fontStyle='italic'
             color='lightGray'>
-            Add a {type}
+            {t('Add a {type}', { type })}
           </Text>
         )}
         <Popover
@@ -141,7 +142,7 @@ class Attachments extends Component {
             {unattached.length == 0 && (
               <View style={styles.menuItem}>
                 <Text fontSize='h6' fontStyle={'semiBold'} color={'textGray'}>
-                  No more :)
+                  {t('No more :)')}
                 </Text>
               </View>
             )}

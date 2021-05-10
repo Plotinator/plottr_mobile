@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { View } from 'native-base'
 import { newIds, actions } from 'pltr/v2'
 import Toolbar from '../shared/Toolbar'
@@ -12,7 +12,6 @@ import {
   Input,
   AddButton,
   Button,
-  HeaderButton
 } from '../../shared/common'
 import Book from '../../shared/project/Book'
 import Collapsible from 'react-native-collapsible'
@@ -172,10 +171,7 @@ class Project extends Component {
     const isEditing = editMode === true
     return (
       <View style={styles.container}>
-        <Toolbar onPressDrawer={openDrawer}>
-          <HeaderButton title={t('Categories')} icon='list' />
-          <HeaderButton title={t('Filter')} icon='filter' />
-        </Toolbar>
+        <Toolbar onPressDrawer={openDrawer} />
         <View style={styles.labelContainer}>
           <View style={styles.labelProject}>
             <Text style={styles.labelText}>Series</Text>
