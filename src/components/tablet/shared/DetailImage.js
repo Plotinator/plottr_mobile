@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
 import { View, Image } from 'react-native'
-import { AddButton, Text } from '../../shared/common'
+import { AddButton, ShellButton, Text } from '../../shared/common'
 import styles from './DetailImageStyles'
 import { t } from 'plottr_locales'
 
@@ -9,7 +9,8 @@ export default function DetailImage({
   image,
   displayStyle,
   imageSourceType,
-  editMode
+  editMode,
+  onPress
 }) {
   let imageStyle = styles.default
   let containerStyle = styles.containerDefault
@@ -32,11 +33,11 @@ export default function DetailImage({
         source={imageSourceType == 'default' ? image : { uri: image }}
       />
       {editMode ? (
-        <AddButton style={editIconStyle} size={40} icon='camera' />
+        <AddButton style={editIconStyle} size={40} icon='camera' onPress={onPress} />
       ) : null}
     </View>
   ) : editMode ? (
-    <View style={styles.addImageButtonContainer}>
+    <ShellButton style={styles.addImageButtonContainer} onPress={onPress}>
       <AddButton size={30} icon='camera' />
       <Text
         style={styles.addImageText}
@@ -45,7 +46,7 @@ export default function DetailImage({
         color='orange'>
         {t('Add Image')}
       </Text>
-    </View>
+    </ShellButton>
   ) : null
 }
 

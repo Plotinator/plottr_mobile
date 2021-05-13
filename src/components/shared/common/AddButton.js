@@ -50,6 +50,7 @@ export default class AddButton extends Component {
       <ShellButton
         data={data}
         onPress={onPress}
+        noninteractive={!onPress}
         style={buttonStyles}
         hitSlop={hitArea}
         animation={animated ? animation : null}>

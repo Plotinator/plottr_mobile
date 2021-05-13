@@ -49,7 +49,8 @@ export default class Character extends Component {
         type: 'line'
       },
       image: {
-        displayStyle: 'circular'
+        displayStyle: 'circular',
+        key: 'imageId'
       },
       attributes: [
         {

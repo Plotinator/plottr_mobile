@@ -35,7 +35,8 @@ export default class Character extends Component {
         type: 'paragraph'
       },
       image: {
-        displayStyle: 'fullWidth'
+        displayStyle: 'fullWidth',
+        key: 'imageId'
       },
       attributes: []
     }

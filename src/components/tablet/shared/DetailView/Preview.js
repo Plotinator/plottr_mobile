@@ -9,6 +9,7 @@ import {
   ScrollerView,
   DetailBlock,
   AddButton,
+  ImagesModal,
   AttachmentsPreview
 } from '../../../shared/common'
 import styles from './styles'
@@ -22,11 +23,14 @@ export default class DetailPreview extends Component {
     this.state = {
       object: null,
       objectMeta: null,
-      editMode: false
+      editMode: false,
+      showImageModal: false
     }
+    console.log('CONSTRUCTED')
   }
 
   componentDidMount() {
+    console.log('MOUNTED')
     const { object, objectMeta } = this.props
     const { name } = objectMeta
 
@@ -46,6 +50,23 @@ export default class DetailPreview extends Component {
         objectMeta: cloneDeep(objectMeta)
       })
     }
+  }
+
+  setScrollerRef = ref => this.scroller = ref
+
+  handleToggleImageModal = () =>
+    this.setState({ showImageModal: !this.state.showImageModal })
+
+  handleChooseImage = (imageId, image) => {
+    const { object: oldObject, objectMeta = {} } = this.state
+    const { image: { key } } = objectMeta
+    const object = cloneDeep(oldObject)
+    object[key] = imageId
+    object.image = image
+    this.setState({
+      object,
+      showImageModal: false
+    })
   }
 
   handleChange = (key, value) => {
@@ -70,13 +91,14 @@ export default class DetailPreview extends Component {
   }
 
   handleCancel = () => {
-    this.setState({ editMode: false })
+    this.setState({ editMode: false }, () => {
+      setTimeout(() => this.scroller.scrollTo({ x: 0, y: 0, animated: true }))
+    })
   }
 
   renderHeader = () => {
-    const { object, objectMeta = {}, editMode } = this.state
+    const { object, objectMeta = {}, editMode, showImageModal } = this.state
     const { name, description, source, attributes = [] } = objectMeta
-
     return editMode ? (
       <React.Fragment>
         <View style={styles.detailsBlock}>
@@ -85,6 +107,7 @@ export default class DetailPreview extends Component {
               displayStyle={objectMeta.image.displayStyle}
               image={object.image && object.image.data}
               editMode={editMode}
+              onPress={this.handleToggleImageModal}
             />
           ) : (
             <DetailImage
@@ -92,6 +115,7 @@ export default class DetailPreview extends Component {
               imageSourceType='default'
               image={source === 'character' ? images.PROFILE : null}
               editMode={editMode}
+              onPress={this.handleToggleImageModal}
             />
           )}
         </View>
@@ -112,6 +136,11 @@ export default class DetailPreview extends Component {
           type={description.type}
           objectKey={description.key}
           onChange={this.handleChange}
+        />
+        <ImagesModal
+          visible={editMode && showImageModal}
+          onChooseImage={this.handleChooseImage}
+          onClose={this.handleToggleImageModal}
         />
       </React.Fragment>
     ) : (
@@ -209,6 +238,7 @@ export default class DetailPreview extends Component {
           <View style={styles.subContainer}>
             <ScrollerView
               scrollerProps={{
+                ref: this.setScrollerRef,
                 showsVerticalScrollIndicator: false
               }}
               style={styles.scroller}>

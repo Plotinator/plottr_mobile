@@ -50,7 +50,8 @@ export default class Character extends Component {
         type: 'line'
       },
       image: {
-        displayStyle: 'fullWidth'
+        displayStyle: 'fullWidth',
+        key: 'imageId'
       },
       attributes: [
         {

@@ -40,8 +40,8 @@ class ImagesModal extends Component {
 
   handleChoose = () => {
     const { selected } = this.state
-    const { onChooseImage } = this.props
-    onChooseImage && onChooseImage(selected)
+    const { onChooseImage, images } = this.props
+    onChooseImage && onChooseImage(selected, images[selected])
   }
 
   handleToggleSelected = (id) => {
@@ -199,7 +199,6 @@ class ImagesModal extends Component {
     const { selected, forceHide } = this.state
     const { book, visible } = this.props
     const { images } = this.props
-    console.log('images', images)
     return (
       <Modal
         visible={forceHide ? false : visible}
