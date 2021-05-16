@@ -53,6 +53,7 @@ export default class HeaderButtonOptions extends Component {
             />
           )
         })}
+        {data.length == 0 ? <Text fontSize='micro'>{t('n/a')}</Text> : null}
       </View>
     )
   }

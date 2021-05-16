@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { View, TextInput, TouchableWithoutFeedback } from 'react-native'
 import styles from './InputStyles'
 import Text from './Text'
+import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
 const { textGray, inputWhiteText } = Colors
+const { ifIOS } = Metrics
 
 export default class Input extends Component {
   handleOnChangeText = (TextValue) => {
@@ -107,7 +109,7 @@ export default class Input extends Component {
           secureTextEntry={secureTextEntry}
           multiline={multiline}
           maxLength={maxLength}
-          numberOfLines={numberOfLines}
+          numberOfLines={ifIOS(numberOfLines, 1)}
           placeholderTextColor={placeholderColor}
           underlineColorAndroid='transparent'
           placeholder={placeholderText}

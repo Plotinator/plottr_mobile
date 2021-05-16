@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native'
 import { View } from 'native-base'
 import { newIds, actions } from 'pltr/v2'
 import Toolbar from '../shared/Toolbar'
@@ -193,7 +193,7 @@ class Project extends Component {
             value={series.name}
             onChangeText={this.handleSeriesName}
             autoCapitalize='words'
-            numberOfLines={4}
+            numberOfLines={1}
             inputStyle={styles.seriesName}
             placeholder={t('Title')}
           />
@@ -205,7 +205,7 @@ class Project extends Component {
               value={series.premise}
               onChangeText={this.handleSeriesPremise}
               autoCapitalize='sentences'
-              numberOfLines={4}
+              numberOfLines={1}
               inputStyle={styles.seriesDescription}
               placeholder={t('Premise')}
             />
@@ -218,7 +218,7 @@ class Project extends Component {
               value={series.theme}
               onChangeText={this.handleSeriesTheme}
               autoCapitalize='sentences'
-              numberOfLines={4}
+              numberOfLines={1}
               inputStyle={styles.seriesTheme}
               placeholder={t('Theme')}
             />
@@ -231,7 +231,7 @@ class Project extends Component {
               value={series.genre}
               onChangeText={this.handleSeriesGenre}
               autoCapitalize='words'
-              numberOfLines={4}
+              numberOfLines={1}
               inputStyle={styles.seriesGenre}
               placeholder={t('Genre')}
             />

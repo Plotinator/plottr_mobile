@@ -18,6 +18,9 @@ import {
 import styles from './CardModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
+import Metrics from '../../../utils/Metrics'
+
+const { ifIOS } = Metrics
 
 class CardModal extends Component {
   state = {}
@@ -189,7 +192,7 @@ class CardModal extends Component {
         transparent={true}
         onDismiss={this.props.onClose}
         onRequestClose={this.props.onClose}>
-        <KeyboardAvoidingView behavior='padding' style={styles.avoidingView}>
+        <KeyboardAvoidingView behavior={ifIOS('padding', 'height')} style={styles.avoidingView}>
           <View style={styles.window}>
             <ShellButton style={styles.closeButton} onPress={this.handleClose}>
               <Icon style={styles.closeIcon} type='FontAwesome5' name='times' />

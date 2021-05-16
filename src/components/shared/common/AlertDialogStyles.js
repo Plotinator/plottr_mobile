@@ -19,8 +19,12 @@ export default ScaledSheet.create({
   shade: {
     position: 'absolute',
     flex: 1,
-    width: screenWidth,
-    height: screenHeight,
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
     backgroundColor: '#00000099',
     justifyContent: 'center',
     alignItems: 'center'
@@ -28,7 +32,7 @@ export default ScaledSheet.create({
   dialogBox: {
     backgroundColor: white,
     borderRadius: buttonRadius,
-    minHeight: 120,
+    // minHeight: 120,
     minWidth: 200,
     maxWidth: '90%',
     alignItems: 'center',

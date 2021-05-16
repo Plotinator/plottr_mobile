@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { View, Dimensions, Keyboard } from 'react-native'
+import { View, Keyboard } from 'react-native'
 import styles from './ModalBoxStyles'
 import * as Animatable from 'react-native-animatable'
 import { Icon } from 'native-base'
 import Text from './Text'
 import ShellButton from './ShellButton'
+import Metrics from '../../../utils/Metrics'
+
+const { ifIOS } = Metrics
 
 export default class ModalBox extends Component {
   state = {
@@ -63,16 +66,13 @@ export default class ModalBox extends Component {
   };
 
   render () {
-    const { width, height } = Dimensions.get('window')
     const { shadeBase, initial, visible: visibleState } = this.state
     const { visible, title = 'Plottr', children } = this.props
     const isVisible = visible === undefined ? visibleState : visible
     const shadeStyles = [
       styles.shade,
       { opacity: isVisible ? 1 : 0 },
-      { paddingBottom: shadeBase },
-      width,
-      height
+      { paddingBottom: ifIOS(shadeBase, 0) }
     ]
     return initial && !isVisible ? null : (
       <Animatable.View
@@ -81,9 +81,10 @@ export default class ModalBox extends Component {
         duration={600}
         easing={'ease-out-expo'}
         pointerEvents={isVisible ? 'auto' : 'none'}
-        style={shadeStyles}>
+        style={shadeStyles}
+        >
         <Animatable.View
-          style={[styles.dialogBox, { minHeight: 0.333 * height }]}
+          style={[styles.dialogBox]}
           animation={isVisible ? 'zoomIn' : 'zoomOut'}
           delay={isVisible ? 100 : 0}
           easing={'ease-out-expo'}

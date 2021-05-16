@@ -7,7 +7,9 @@ import ShellButton from './ShellButton'
 import Input from './Input'
 import { Icon } from 'native-base'
 import { t } from 'plottr_locales'
+import Metrics from '../../../utils/Metrics'
 
+const { ifIOS } = Metrics
 let MasterAlert
 
 export const showAlert = (config) => {
@@ -160,7 +162,7 @@ export default class AlertDialog extends Component {
     const shadeStyles = [
       styles.shade,
       { opacity: visible ? 1 : 0 },
-      { paddingBottom: shadeBase }
+      { paddingBottom: ifIOS(shadeBase, 0) }
     ]
     return initial && !visible ? null : (
       <Animatable.View

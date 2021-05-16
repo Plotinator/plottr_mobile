@@ -12,6 +12,7 @@ const {
   doubleSection,
   screenHeight,
   screenWidth,
+  warmWhiteBG,
   warmBG
 } = Metrics
 const { size, style } = Fonts
@@ -20,20 +21,23 @@ export default ScaledSheet.create({
   shade: {
     position: 'absolute',
     flex: 1,
-    width: screenWidth,
-    height: screenHeight,
-    backgroundColor: '#00000099',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#00000033',
     justifyContent: 'center',
     alignItems: 'center'
   },
   dialogBox: {
-    backgroundColor: warmBG,
+    backgroundColor: '#fffcf7', // warmWhiteBG
     borderRadius: buttonRadius,
-    minHeight: 400,
+    minHeight: 200,
     minWidth: 200,
     maxWidth: '90%',
     alignItems: 'center',
-    minHeight: .3 * screenHeight,
     height: 'auto',
     width: 'auto'
   },

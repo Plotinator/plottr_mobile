@@ -48,6 +48,7 @@ export default {
     borderRadius: cornerRadius * 1.5,
     width: '80%',
     maxHeight: '75%',
+    minHeight: 400,
     padding: doubleBaseMargin,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
