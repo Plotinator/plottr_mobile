@@ -47,6 +47,19 @@ class CardModal extends Component {
     onClose && onClose()
   }
 
+  handleChangeAttachments = (key, value) => {
+    console.log('handleChangeAttachments', key, value)
+    console.log('isNewCard', isNewCard)
+    const { isNewCard, card: stateCard } = this.state
+    if (isNewCard) {
+      const card = cloneDeep(stateCard)
+      card[key] = value
+      this.setState({
+        card
+      })
+    }
+  }
+
   handleSaveChanges = () => {
     const { changes, isNewCard, card } = this.state
     if (!changes) return
@@ -276,7 +289,9 @@ class CardModal extends Component {
                       cardId={cardId}
                       attachments={characters}
                       type={'character'}
+                      objectKey={'characters'}
                       sourceType={'card'}
+                      onChange={this.handleChangeAttachments}
                     />
                   </Collapsible>
                 </View>
@@ -307,7 +322,9 @@ class CardModal extends Component {
                       cardId={cardId}
                       attachments={places}
                       type={'place'}
+                      objectKey={'places'}
                       sourceType={'card'}
+                      onChange={this.handleChangeAttachments}
                     />
                   </Collapsible>
                 </View>
@@ -338,7 +355,9 @@ class CardModal extends Component {
                       cardId={cardId}
                       attachments={tags}
                       type={'tag'}
+                      objectKey={'tags'}
                       sourceType={'card'}
+                      onChange={this.handleChangeAttachments}
                     />
                   </Collapsible>
                 </View>

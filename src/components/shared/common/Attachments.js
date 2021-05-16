@@ -13,6 +13,7 @@ import Popover, {
   PopoverPlacement
 } from 'react-native-popover-view'
 import { t } from 'plottr_locales'
+import { cloneDeep } from 'lodash'
 
 class Attachments extends Component {
   addAttachment = (id) => {
@@ -50,22 +51,24 @@ class Attachments extends Component {
   }
 
   handleRemoveAttachment = ({ id }) => {
-    const { attachments, objectKey, onChange } = this.props
+    const { cardId, attachments, objectKey, onChange } = this.props
     if (onChange) {
       const attached = attachments.filter((val) => val != id)
       onChange(objectKey, attached)
     }
-    this.removeAttachment(id)
+    if (cardId)
+      this.removeAttachment(id)
   }
 
   handleAddAttachment = ({ id }) => {
-    const { attachments, objectKey, onChange } = this.props
+    const { cardId, attachments, objectKey, onChange } = this.props
     if (onChange) {
-      const attached = attachments
+      const attached = cloneDeep(attachments)
       attached.push(id)
       onChange(objectKey, attached)
     }
-    this.addAttachment(id)
+    if (cardId)
+      this.addAttachment(id)
   }
 
   renderAttachmentName(attachment) {
