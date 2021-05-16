@@ -185,7 +185,7 @@ class RecentDocument extends Component {
         style={styles.project}
         onPress={this.handleSelect}>
         <Image source={PLOTTR_FILE} style={styles.fileIcon} />
-        <Text fontStyle='semiBold' fontSize='h6' center>
+        <Text fontStyle='semiBold' fontSize='h7' center>
           {name}
         </Text>
       </ShellButton>

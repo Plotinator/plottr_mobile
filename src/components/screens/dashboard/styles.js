@@ -1,6 +1,7 @@
 import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
+import { isTablet } from 'react-native-device-info'
 
 const { warmWhiteBG, warmGray } = Colors
 const {
@@ -8,7 +9,7 @@ const {
   doubleBaseMargin,
   section,
   doubleSection,
-  cornerRadius
+  cornerRadius,
 } = Metrics
 
 export default ScaledSheet.create({
@@ -23,6 +24,7 @@ export default ScaledSheet.create({
   },
   recentFiles: {
     flexDirection: 'row',
+    justifyContent: "center",
     flexWrap: 'wrap',
     borderRadius: cornerRadius,
     backgroundColor: warmGray,
@@ -40,15 +42,15 @@ export default ScaledSheet.create({
     marginBottom: baseMargin * 1.5
   },
   project: {
-    width: '50%',
+    width: isTablet() ? '33%' : '50%',
     alignItems: 'center',
     marginBottom: baseMargin,
     paddingHorizontal: baseMargin / 2,
     paddingBottom: baseMargin / 2
   },
   fileIcon: {
-    width: '70@ms',
-    height: '70@ms',
+    width: '60@ms',
+    height: '60@ms',
     resizeMode: 'contain'
   },
   actionButtons: {

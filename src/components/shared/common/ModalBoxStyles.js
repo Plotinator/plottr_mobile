@@ -29,10 +29,11 @@ export default ScaledSheet.create({
   dialogBox: {
     backgroundColor: warmBG,
     borderRadius: buttonRadius,
-    minHeight: 120,
+    minHeight: 400,
     minWidth: 200,
     maxWidth: '90%',
     alignItems: 'center',
+    minHeight: .3 * screenHeight,
     height: 'auto',
     width: 'auto'
   },

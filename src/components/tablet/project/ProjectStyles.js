@@ -7,7 +7,9 @@ const {
   doubleBaseMargin,
   cornerRadius,
   section,
-  doubleSection
+  doubleSection,
+  screenHeight,
+  screenWidth
 } = Metrics
 const {
   orange,
@@ -17,6 +19,7 @@ const {
   warmTextGray,
   warmTextDarkGray
 } = Colors
+const smallestDimension = screenWidth > screenHeight ? screenHeight : screenWidth
 const { size, style } = Fonts
 
 export default ScaledSheet.create({
@@ -101,7 +104,7 @@ export default ScaledSheet.create({
     flexWrap: 'wrap'
   },
   book: {
-    width: '33%'
+    width: 0.29 * smallestDimension
   },
   saveButton: {
     width: 120,
