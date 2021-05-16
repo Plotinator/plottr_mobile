@@ -7,7 +7,7 @@ import { t } from 'plottr_locales'
 import { selectors, actions } from 'pltr/v2'
 import { List, ListItem, Button, Icon } from 'native-base'
 import Popover from 'react-native-popover-view'
-import { Text, ShellButton } from '../../shared/common'
+import { Text, ShellButton, ScrollerView } from '../../shared/common'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 import Fonts from '../../../fonts'
@@ -68,7 +68,7 @@ class SeriesPicker extends Component {
             />
           </ShellButton>
         }>
-        <List>
+        <ScrollerView>
           <ListItem
             noIndent
             style={[styles.listItem, styles.seriesListItem]}
@@ -77,7 +77,7 @@ class SeriesPicker extends Component {
             <Text style={styles.text}>{seriesText}</Text>
           </ListItem>
           {this.renderItems()}
-        </List>
+        </ScrollerView>
       </Popover>
     )
   }
