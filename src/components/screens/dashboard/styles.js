@@ -2,7 +2,7 @@ import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
-const { warmWhiteBG } = Colors
+const { warmWhiteBG, warmGray } = Colors
 const {
   baseMargin,
   doubleBaseMargin,
@@ -25,7 +25,7 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     borderRadius: cornerRadius,
-    backgroundColor: warmWhiteBG,
+    backgroundColor: warmGray,
     paddingHorizontal: doubleBaseMargin,
     paddingTop: doubleBaseMargin,
     paddingBottom: baseMargin,
