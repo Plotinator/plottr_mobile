@@ -13,7 +13,7 @@ export default ScaledSheet.create({
     marginVertical: 2,
     marginBottom: 0,
     flex: 1
-  }, // gray-9
+  },
   header: { flexDirection: 'row' },
   cornerCell: { width: LEFT_COLUMN_WIDTH },
   lineTitlesColumn: { position: 'absolute', width: LEFT_COLUMN_WIDTH },

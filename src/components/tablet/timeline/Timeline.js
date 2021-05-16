@@ -481,11 +481,12 @@ class Timeline extends Component {
         const key = `${cards ? 'card' : 'blank'}-${
           beat.position
         }-${linePosition}`
+        console.log('cards', cards)
         if (cards) {
           cards.forEach((c, idx) =>
             acc.push(
               <CardCell
-                key={`${key}-${idx}`}
+                key={`${key}-${idx}-${c.id}`}
                 card={c}
                 color={line.color}
                 showLine={idx == 0}
@@ -774,7 +775,7 @@ function mapStateToProps (state) {
   nextBeatId = nextId(state.beats)
   return {
     beats: visibleSortedBeatsByBookSelector(state),
-    lineMap: sortedLinesByBookSelector(state),
+    lineMap: linePositionMappingSelector(state),
     linesMaxCards: selectors.lineMaxCardsSelector(state),
     nextBeatId: nextBeatId,
     lines: sortedLinesByBookSelector(state),
