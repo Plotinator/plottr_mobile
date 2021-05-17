@@ -65,7 +65,7 @@ class NotesList extends Component {
 
 const styles = StyleSheet.create({
   row: {
-    backgroundColor: 'white'
+    backgroundColor: Colors.warmWhiteBG
   },
   title: {
     paddingVertical: Metrics.baseMargin / 2

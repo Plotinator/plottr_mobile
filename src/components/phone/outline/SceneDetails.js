@@ -250,6 +250,7 @@ class SceneDetails extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: Colors.warmBG
   },
   label: {
     marginBottom: Metrics.baseMargin

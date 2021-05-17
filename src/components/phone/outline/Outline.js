@@ -153,7 +153,7 @@ class Outline extends Component {
       this.state.currentLine
     )
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <View style={styles.container}>
         <FlatList
           data={chapters}
           renderItem={({ item }) => this.renderChapter(item, cardMap)}

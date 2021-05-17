@@ -86,6 +86,8 @@ export default ScaledSheet.create({
   actionButton: {
     flexDirection: 'row',
     backgroundColor: orange,
+    borderWidth: 1,
+    borderColor: orange,
     padding: baseMargin,
     paddingHorizontal: doubleBaseMargin * 0.66,
     marginHorizontal: baseMargin / 2,
@@ -94,7 +96,10 @@ export default ScaledSheet.create({
     borderRadius: buttonRadius
   },
   positiveButton: {
-    backgroundColor: green
+    backgroundColor: orange
+  },
+  outlined: {
+    backgroundColor: 'transparent',
   },
   dangerButton: {
     backgroundColor: red
@@ -105,5 +110,8 @@ export default ScaledSheet.create({
     fontSize: size.h5,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  orangeText: {
+    color: orange
   }
 })

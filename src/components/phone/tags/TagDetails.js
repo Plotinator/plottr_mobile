@@ -161,6 +161,7 @@ class TagDetails extends Component {
             // textColor='darkGray'
             buttonColor='gray'
             style={styles.button}
+            textColor={Colors.warmTextGray}
             onPress={this.toggleColorPicker}>
             {t('Choose Color')}
           </Button>
@@ -205,10 +206,11 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'center',
-    marginTop: 8
+    marginTop: 8,
+    borderColor: Colors.warmTextGray
   },
   buttonText: {
-    color: 'black'
+    color: Colors.warmTextGray
   }
 })
 

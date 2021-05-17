@@ -228,13 +228,13 @@ class ActionButton extends Component {
         style={[
           styles.actionButton,
           positive && styles.positiveButton,
-          danger && styles.dangerButton
+          !positive && styles.outlined,
         ]}
         onPress={this.handlePress}>
         {icon && (
           <Icon type='FontAwesome5' name={icon} style={styles.actionIcon} />
         )}
-        <Text fontStyle={'bold'} white center>
+        <Text fontStyle={'bold'} white center style={!positive && styles.orangeText}>
           {name}
         </Text>
       </ShellButton>

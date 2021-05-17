@@ -11,6 +11,7 @@ import { t } from 'plottr_locales'
 import EditButton from '../../ui/EditButton'
 import Book from '../../shared/project/Book'
 import { Text } from '../../shared/common'
+import Colors from '../../../utils/Colors'
 
 class Project extends Component {
   state = { data: [] }
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   row: {
-    backgroundColor: 'white'
+    backgroundColor: Colors.warmWhiteBG
   },
   title: {
     paddingVertical: 4

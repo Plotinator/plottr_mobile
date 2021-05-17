@@ -3,9 +3,13 @@ import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
 const { section, baseMargin, doubleBaseMargin } = Metrics
-const { borderGray } = Colors
+const { borderGray, warmBG, warmWhiteBG } = Colors
 
 export default ScaledSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: warmBG
+  },
   content: {
     paddingVertical: 8
   },
@@ -13,7 +17,7 @@ export default ScaledSheet.create({
     fontSize: 16
   },
   chapterView: {
-    backgroundColor: 'white',
+    backgroundColor: warmWhiteBG,
     paddingHorizontal: doubleBaseMargin,
     paddingVertical: baseMargin / 2
   },

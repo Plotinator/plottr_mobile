@@ -12,7 +12,8 @@ const {
   blackGray,
   inputWhite,
   inputBorderWhite,
-  inputBorder
+  inputBorder,
+  warmWhiteBG
 } = Colors
 const { baseMargin, doubleBaseMargin, cornerRadius, IS_IOS } = Metrics
 const { size, style } = Fonts
@@ -86,7 +87,7 @@ export default ScaledSheet.create({
     minHeight: 0
   },
   inset: {
-    backgroundColor: white,
+    backgroundColor: warmWhiteBG,
     borderColor: inputBorderWhite,
     borderRadius: cornerRadius,
     borderWidth: 1,

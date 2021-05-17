@@ -57,22 +57,28 @@ class TagsList extends Component {
 
   render () {
     return (
-      <SwipeListView
-        data={this.props.tags}
-        renderItem={this.renderTag}
-        renderHiddenItem={({ item }, rowMap) => (
-          <TrashButton iconStyle={styles.trash} data={item} onPress={this.deleteTag} />
-        )}
-        keyExtractor={(item) => item.id}
-        leftOpenValue={75}
-      />
+      <View style={styles.container}>
+        <SwipeListView
+          data={this.props.tags}
+          renderItem={this.renderTag}
+          renderHiddenItem={({ item }, rowMap) => (
+            <TrashButton iconStyle={styles.trash} data={item} onPress={this.deleteTag} />
+          )}
+          keyExtractor={(item) => item.id}
+          leftOpenValue={75}
+        />
+    </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.warmBG
+  },
   row: {
-    backgroundColor: 'white'
+    backgroundColor: Colors.warmWhiteBG
   },
   title: {
     paddingVertical: Metrics.baseMargin / 2

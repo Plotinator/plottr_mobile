@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native'
 import Metrics from '../../../utils/Metrics'
+import Colors from '../../../utils/Colors'
 
 export default class DetailsScrollView extends Component {
   _setRef = (ref) => this.scroller = ref
@@ -25,7 +26,7 @@ export default class DetailsScrollView extends Component {
 
 const styles = StyleSheet.create({
   scroller: {
-    backgroundColor: 'white'
+    backgroundColor: Colors.warmWhiteBG
   },
   content: {
     flexGrow: 1,

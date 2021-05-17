@@ -108,16 +108,16 @@ class CharactersList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.cloud
+    backgroundColor: Colors.warmWhite
   },
   row: {
-    backgroundColor: 'white'
+    backgroundColor: Colors.warmWhiteBG
   },
   title: {
-    color: Colors.textLightGray,
+    color: Colors.warmTextGray,
     paddingLeft: Metrics.doubleBaseMargin * 0.8,
     paddingVertical: Metrics.baseMargin,
-    backgroundColor: Colors.cloud
+    backgroundColor: Colors.warmWhite
   },
   subtitle: {
     paddingVertical: Metrics.baseMargin / 2,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     paddingVertical: 10,
     paddingHorizontal: 6,
-    backgroundColor: DefaultTheme.colors.background
+    backgroundColor: Colors.warmWhiteBG
   },
   right: {
     paddingRight: Metrics.baseMargin / 2

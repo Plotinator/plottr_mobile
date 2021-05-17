@@ -87,9 +87,9 @@ export default class RichTextEditor extends Component {
           initialContentHTML={initialText}
           onChange={this.handleOnChange}
           editorInitializedCallback={this.handleEditorInitialized}
-          disabled={disabled ? true : false}
+          disabled={!!disabled}
         />
-        <Collapsible collapsed={disabled}>
+        <Collapsible collapsed={!!disabled}>
           <RichToolbar
             style={toolbarStyles}
             iconSize={20}

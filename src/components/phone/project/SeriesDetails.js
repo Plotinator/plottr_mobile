@@ -14,20 +14,21 @@ import {
   addLeaveListener,
   removeLeaveListener
 } from '../../../utils/Changes'
+import Colors from '../../../utils/Colors'
 
 class SeriesDetails extends Component {
   constructor (props) {
     super(props)
-    const { route } = props
+    const { route, books, series } = props
     const { isNewBook, id } = route.params
     let bookObj = {}
     if (isNewBook) {
       bookObj = cloneDeep(initialState.book)
     } else {
       if (id == 'series') {
-        bookObj = props.series
+        bookObj = series
       } else {
-        bookObj = props.books[`${id}`]
+        bookObj = books[`${id}`]
       }
     }
     this.state = {
@@ -167,6 +168,7 @@ class SeriesDetails extends Component {
 
 const styles = StyleSheet.create({
   label: {
+    backgroundColor: Colors.warmWhiteBG,
     marginBottom: 16
   },
   afterList: {

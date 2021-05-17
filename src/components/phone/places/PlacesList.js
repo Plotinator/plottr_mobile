@@ -71,9 +71,12 @@ class PlacesList extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+    backgroundColor: Colors.warmBG
+  },
   row: {
-    backgroundColor: 'white'
+    backgroundColor: Colors.warmWhiteBG
   },
   title: {
     paddingVertical: Metrics.baseMargin / 2
