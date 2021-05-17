@@ -22,11 +22,14 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     allowsDocumentCreation = true
     allowsPickingMultipleItems = false
     shouldShowFileExtensions = false
-    localizedCreateDocumentActionTitle = "New Project"
+    localizedCreateDocumentActionTitle = "New Plottr Project"
 
     // Update the style of the UIDocumentBrowserViewController
     //  browserUserInterfaceStyle = .dark
     view.tintColor = .orange
+    let cancelbutton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButton(sender:)))
+    additionalTrailingNavigationBarButtonItems = [cancelbutton]
+
   }
   
   @objc func openBrowser() -> Void {
@@ -43,6 +46,13 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     }
   }
   
+  @objc func cancelButton(sender: UIBarButtonItem) {
+    DispatchQueue.main.async {
+      let appDelegate = UIApplication.shared.delegate as! AppDelegate
+      appDelegate.closeDocumentBrowser()
+    }
+  }
+
   // MARK: UIDocumentBrowserViewControllerDelegate
 
   func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
