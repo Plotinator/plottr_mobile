@@ -80,10 +80,28 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         DocumentViewController._sharedInstance?.document = doc
         let basicJSON = "{\"storyName\":\"\(name)\", \"newFile\":true}"
         doc.updateStringContents(data: basicJSON)
-        doc.save(to: fileURL, for: .forCreating, completionHandler: { (saved) in
-          self.presentDocument(at: fileURL, json: basicJSON)
-          importHandler(fileURL, .move)
-        })
+        // doc.save(to: fileURL, for: .forCreating, completionHandler: { (saved) in
+        //   self.presentDocument(at: fileURL, json: basicJSON)
+        //   importHandler(fileURL, .move)
+        //   print("-------------------documentBrowser After save\(fileURL)")
+        // })
+        doc.save(to: fileURL, for: .forCreating) { (saveSuccess) in
+          // Make sure the document saved successfully.
+          guard saveSuccess else {
+              importHandler(nil, .none)
+              return
+          }
+          // Close the document.
+          doc.close(completionHandler: { (closeSuccess) in
+              guard closeSuccess else {
+                  importHandler(nil, .none)
+                  return
+              }
+              // Pass the document's temporary URL to the import handler.
+              importHandler(fileURL, .move)
+              // self.presentDocument(at: fileURL, json: basicJSON)
+          })
+        }
       } else { importHandler(nil, .none) }
     }))
 
@@ -115,6 +133,8 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
   // MARK: Document Presentation
 
   func presentDocument(at documentURL: URL, json: String) {
+    print("-------------------relativePath----\(documentURL.relativePath)")
+
     let initialData:NSDictionary = [
       "documentURL": documentURL.path,
       "data": json
