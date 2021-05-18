@@ -22,11 +22,14 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     allowsDocumentCreation = true
     allowsPickingMultipleItems = false
     shouldShowFileExtensions = false
-    localizedCreateDocumentActionTitle = "New Project"
+    localizedCreateDocumentActionTitle = "New Plottr Project"
 
     // Update the style of the UIDocumentBrowserViewController
     //  browserUserInterfaceStyle = .dark
     view.tintColor = .orange
+    let cancelbutton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButton(sender:)))
+    additionalTrailingNavigationBarButtonItems = [cancelbutton]
+
   }
   
   @objc func openBrowser() -> Void {
@@ -43,6 +46,13 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     }
   }
   
+  @objc func cancelButton(sender: UIBarButtonItem) {
+    DispatchQueue.main.async {
+      let appDelegate = UIApplication.shared.delegate as! AppDelegate
+      appDelegate.closeDocumentBrowser()
+    }
+  }
+
   // MARK: UIDocumentBrowserViewControllerDelegate
 
   func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
@@ -80,10 +90,28 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         DocumentViewController._sharedInstance?.document = doc
         let basicJSON = "{\"storyName\":\"\(name)\", \"newFile\":true}"
         doc.updateStringContents(data: basicJSON)
-        doc.save(to: fileURL, for: .forCreating, completionHandler: { (saved) in
-          self.presentDocument(at: fileURL, json: basicJSON)
-          importHandler(fileURL, .move)
-        })
+        // doc.save(to: fileURL, for: .forCreating, completionHandler: { (saved) in
+        //   self.presentDocument(at: fileURL, json: basicJSON)
+        //   importHandler(fileURL, .move)
+        //   print("-------------------documentBrowser After save\(fileURL)")
+        // })
+        doc.save(to: fileURL, for: .forCreating) { (saveSuccess) in
+          // Make sure the document saved successfully.
+          guard saveSuccess else {
+              importHandler(nil, .none)
+              return
+          }
+          // Close the document.
+          doc.close(completionHandler: { (closeSuccess) in
+              guard closeSuccess else {
+                  importHandler(nil, .none)
+                  return
+              }
+              // Pass the document's temporary URL to the import handler.
+              importHandler(fileURL, .move)
+              // self.presentDocument(at: fileURL, json: basicJSON)
+          })
+        }
       } else { importHandler(nil, .none) }
     }))
 
@@ -115,6 +143,8 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
   // MARK: Document Presentation
 
   func presentDocument(at documentURL: URL, json: String) {
+    print("-------------------relativePath----\(documentURL.relativePath)")
+
     let initialData:NSDictionary = [
       "documentURL": documentURL.path,
       "data": json
