@@ -72,7 +72,7 @@ export default class ModalBox extends Component {
     const shadeStyles = [
       styles.shade,
       { opacity: isVisible ? 1 : 0 },
-      { paddingBottom: ifIOS(shadeBase, 0) }
+      // { paddingBottom: ifIOS(shadeBase, 0) }
     ]
     return initial && !isVisible ? null : (
       <Animatable.View

@@ -162,7 +162,7 @@ export default class AlertDialog extends Component {
     const shadeStyles = [
       styles.shade,
       { opacity: visible ? 1 : 0 },
-      { paddingBottom: ifIOS(shadeBase, 0) }
+      // { paddingBottom: ifIOS(shadeBase, 0) }
     ]
     return initial && !visible ? null : (
       <Animatable.View
