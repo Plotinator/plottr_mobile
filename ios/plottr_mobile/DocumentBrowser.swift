@@ -90,11 +90,6 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         DocumentViewController._sharedInstance?.document = doc
         let basicJSON = "{\"storyName\":\"\(name)\", \"newFile\":true}"
         doc.updateStringContents(data: basicJSON)
-        // doc.save(to: fileURL, for: .forCreating, completionHandler: { (saved) in
-        //   self.presentDocument(at: fileURL, json: basicJSON)
-        //   importHandler(fileURL, .move)
-        //   print("-------------------documentBrowser After save\(fileURL)")
-        // })
         doc.save(to: fileURL, for: .forCreating) { (saveSuccess) in
           // Make sure the document saved successfully.
           guard saveSuccess else {
@@ -117,24 +112,32 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
     self.present(alert, animated: true)
   }
-  
-  func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {
-//    print("didPickDocumentsAt")
-    guard let sourceURL = documentURLs.first else { return }
-//    print(sourceURL.absoluteString)
-    
-    let doc = PlottrDocument(fileURL: sourceURL)
+
+  func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
+    let doc = PlottrDocument(fileURL: destinationURL)
     DocumentViewController._sharedInstance?.document = doc
-//    print("picked:", DocumentViewController._sharedInstance?.document)
-    
     // Access the document
     doc.open(completionHandler: { (success) in
       if success {
-        // Display the content of the document
+        self.presentDocument(at: destinationURL, json: doc.stringContents())
+
+      } else {
+        print("failed to open file")
+      }
+    })
+  }
+
+  
+  func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {
+    guard let sourceURL = documentURLs.first else { return }
+    let doc = PlottrDocument(fileURL: sourceURL)
+    DocumentViewController._sharedInstance?.document = doc
+    // Access the document
+    doc.open(completionHandler: { (success) in
+      if success {
         self.presentDocument(at: sourceURL, json: doc.stringContents())
 
       } else {
-        // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
         print("failed to open file")
       }
     })
@@ -143,8 +146,6 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
   // MARK: Document Presentation
 
   func presentDocument(at documentURL: URL, json: String) {
-    print("-------------------relativePath----\(documentURL.relativePath)")
-
     let initialData:NSDictionary = [
       "documentURL": documentURL.path,
       "data": json
