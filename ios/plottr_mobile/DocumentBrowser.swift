@@ -57,7 +57,6 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
   func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
     
-//    print("IN DOCUMENT BROWSER: didRequestDocumentCreationWithHandler")
     // Make sure the importHandler is always called, even if the user cancels the creation request.
     let alert = UIAlertController(title: "What is the project's name?", message: nil, preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
@@ -74,12 +73,14 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
         let fileManager = FileManager.default
         var documentDirectory = URL(fileURLWithPath: "")
-        do {
-          documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
-        } catch {
-          print("error getting document directory")
-          importHandler(nil, .none)
-        }
+        // do {
+          // documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+          documentDirectory = FileManager.default.temporaryDirectory
+          // documentDirectory = URL(fileURLWithPath:NSTemporaryDirectory())
+        // } catch {
+        //   print("error getting document directory")
+        //   importHandler(nil, .none)
+        // }
 
         var escapedFileName = name.replacingOccurrences(of: " ", with: "_")
         escapedFileName = "\(escapedFileName).pltr"
@@ -93,18 +94,18 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         doc.save(to: fileURL, for: .forCreating) { (saveSuccess) in
           // Make sure the document saved successfully.
           guard saveSuccess else {
-              importHandler(nil, .none)
-              return
+            importHandler(nil, .none)
+            return
           }
           // Close the document.
           doc.close(completionHandler: { (closeSuccess) in
-              guard closeSuccess else {
-                  importHandler(nil, .none)
-                  return
-              }
-              // Pass the document's temporary URL to the import handler.
-              importHandler(fileURL, .move)
-              // self.presentDocument(at: fileURL, json: basicJSON)
+            guard closeSuccess else {
+              importHandler(nil, .none)
+              return
+            }
+            // Pass the document's temporary URL to the import handler.
+            print("*** TESTING RESPONSE \(fileURL) ***\n")
+            importHandler(fileURL, .move)
           })
         }
       } else { importHandler(nil, .none) }
@@ -114,13 +115,13 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
   }
 
   func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
+    print("*** TRYING TO PRESENT \(destinationURL) ***\n")
     let doc = PlottrDocument(fileURL: destinationURL)
     DocumentViewController._sharedInstance?.document = doc
     // Access the document
     doc.open(completionHandler: { (success) in
       if success {
         self.presentDocument(at: destinationURL, json: doc.stringContents())
-
       } else {
         print("failed to open file")
       }
@@ -130,6 +131,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
   
   func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {
     guard let sourceURL = documentURLs.first else { return }
+    print("*** DOCUMENT PICKED \(sourceURL) ***\n")
     let doc = PlottrDocument(fileURL: sourceURL)
     DocumentViewController._sharedInstance?.document = doc
     // Access the document
@@ -143,14 +145,34 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     })
   }
   
+  func documentBrowser(_ controller: UIDocumentBrowserViewController, failedToImportDocumentAt documentURL: URL, error: Error?) {
+    // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
+    print("*** FAIL DOC \(error) ***\n")
+    print("*** FAIL DOC NAME \(documentURL) ***\n")
+
+  }
+
   // MARK: Document Presentation
 
   func presentDocument(at documentURL: URL, json: String) {
+    print("*** PRESENTING DOC \(documentURL) ***\n")
+    // documentURL.startAccessingSecurityScopedResource()
+    // guard documentURL.startAccessingSecurityScopedResource() else {
+    //   // Handle the failure here.
+    //   return
+    // }
+
+    // Make sure you release the security-scoped resource when you are done.
+    // defer { documentURL.stopAccessingSecurityScopedResource() }
+
+    // if documentURL.startAccessingSecurityScopedResource() {
     let initialData:NSDictionary = [
       "documentURL": documentURL.path,
       "data": json
     ]
     DocEvents.openDocument(data: initialData)
+      // documentURL.stopAccessingSecurityScopedResource()
+    // }
   }
   
   func closeDocument() {
