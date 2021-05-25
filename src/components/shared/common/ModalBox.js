@@ -5,6 +5,9 @@ import * as Animatable from 'react-native-animatable'
 import { Icon } from 'native-base'
 import Text from './Text'
 import ShellButton from './ShellButton'
+import Metrics from '../../../utils/Metrics'
+
+const { ifIOS } = Metrics
 
 export default class ModalBox extends Component {
   state = {
@@ -69,7 +72,7 @@ export default class ModalBox extends Component {
     const shadeStyles = [
       styles.shade,
       { opacity: isVisible ? 1 : 0 },
-      { paddingBottom: shadeBase }
+      // { paddingBottom: ifIOS(shadeBase, 0) }
     ]
     return initial && !isVisible ? null : (
       <Animatable.View
@@ -78,9 +81,10 @@ export default class ModalBox extends Component {
         duration={600}
         easing={'ease-out-expo'}
         pointerEvents={isVisible ? 'auto' : 'none'}
-        style={shadeStyles}>
+        style={shadeStyles}
+        >
         <Animatable.View
-          style={styles.dialogBox}
+          style={[styles.dialogBox]}
           animation={isVisible ? 'zoomIn' : 'zoomOut'}
           delay={isVisible ? 100 : 0}
           easing={'ease-out-expo'}

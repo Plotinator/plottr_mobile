@@ -18,6 +18,9 @@ import {
 import styles from './CardModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
+import Metrics from '../../../utils/Metrics'
+
+const { ifIOS } = Metrics
 
 class CardModal extends Component {
   state = {}
@@ -45,6 +48,19 @@ class CardModal extends Component {
   handleClose = () => {
     const { onClose } = this.props
     onClose && onClose()
+  }
+
+  handleChangeAttachments = (key, value) => {
+    console.log('handleChangeAttachments', key, value)
+    console.log('isNewCard', isNewCard)
+    const { isNewCard, card: stateCard } = this.state
+    if (isNewCard) {
+      const card = cloneDeep(stateCard)
+      card[key] = value
+      this.setState({
+        card
+      })
+    }
   }
 
   handleSaveChanges = () => {
@@ -176,7 +192,7 @@ class CardModal extends Component {
         transparent={true}
         onDismiss={this.props.onClose}
         onRequestClose={this.props.onClose}>
-        <KeyboardAvoidingView behavior='padding' style={styles.avoidingView}>
+        <KeyboardAvoidingView behavior={ifIOS('padding', 'height')} style={styles.avoidingView}>
           <View style={styles.window}>
             <ShellButton style={styles.closeButton} onPress={this.handleClose}>
               <Icon style={styles.closeIcon} type='FontAwesome5' name='times' />
@@ -232,17 +248,17 @@ class CardModal extends Component {
               </View>
               <View style={styles.form}>
                 <View style={styles.row}>
-                  <Text style={styles.label}>Title</Text>
+                  <Text style={styles.label}>{t('Title')}</Text>
                   <Input
                     value={title}
                     style={styles.input}
-                    inputStyle={styles.inputText}
+                    inputStyle={styles.inputBoldText}
                     onChangeText={this.handleSetTitle}
                     inset
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.label}>Description</Text>
+                  <Text style={styles.label}>{t('Description')}</Text>
                   <RichEditor
                     style={styles.multiInput}
                     initialValue={description}
@@ -251,7 +267,7 @@ class CardModal extends Component {
                 </View>
                 <View style={styles.row}>
                   <View style={styles.labels}>
-                    <Text style={styles.label}>Characters</Text>
+                    <Text style={styles.label}>{t('Characters')}</Text>
                     <View style={styles.count}>
                       <Text style={styles.countText}>{characters.length}</Text>
                     </View>
@@ -259,7 +275,7 @@ class CardModal extends Component {
                       style={styles.collapseButton}
                       onPress={this.toggleCollapse('showCharacters')}>
                       <Text style={styles.collapseText}>
-                        See {showCharacters ? 'More' : 'Less'}
+                        {t(`See ${showCharacters ? 'More' : 'Less'}`)}
                       </Text>
                       <Icon
                         style={[
@@ -276,13 +292,15 @@ class CardModal extends Component {
                       cardId={cardId}
                       attachments={characters}
                       type={'character'}
+                      objectKey={'characters'}
                       sourceType={'card'}
+                      onChange={this.handleChangeAttachments}
                     />
                   </Collapsible>
                 </View>
                 <View style={styles.row}>
                   <View style={styles.labels}>
-                    <Text style={styles.label}>Places</Text>
+                    <Text style={styles.label}>{t('Places')}</Text>
                     <View style={styles.count}>
                       <Text style={styles.countText}>{places.length}</Text>
                     </View>
@@ -290,7 +308,7 @@ class CardModal extends Component {
                       style={styles.collapseButton}
                       onPress={this.toggleCollapse('showPlaces')}>
                       <Text style={styles.collapseText}>
-                        See {showPlaces ? 'More' : 'Less'}
+                        {t(`See ${showPlaces ? 'More' : 'Less'}`)}
                       </Text>
                       <Icon
                         style={[
@@ -307,13 +325,15 @@ class CardModal extends Component {
                       cardId={cardId}
                       attachments={places}
                       type={'place'}
+                      objectKey={'places'}
                       sourceType={'card'}
+                      onChange={this.handleChangeAttachments}
                     />
                   </Collapsible>
                 </View>
                 <View style={styles.row}>
                   <View style={styles.labels}>
-                    <Text style={styles.label}>Tags</Text>
+                    <Text style={styles.label}>{t('Tags')}</Text>
                     <View style={styles.count}>
                       <Text style={styles.countText}>{tags.length}</Text>
                     </View>
@@ -321,7 +341,7 @@ class CardModal extends Component {
                       style={styles.collapseButton}
                       onPress={this.toggleCollapse('showTags')}>
                       <Text style={styles.collapseText}>
-                        See {showTags ? 'More' : 'Less'}
+                        {t(`See ${showTags ? 'More' : 'Less'}`)}
                       </Text>
                       <Icon
                         style={[
@@ -338,7 +358,9 @@ class CardModal extends Component {
                       cardId={cardId}
                       attachments={tags}
                       type={'tag'}
+                      objectKey={'tags'}
                       sourceType={'card'}
+                      onChange={this.handleChangeAttachments}
                     />
                   </Collapsible>
                 </View>
@@ -349,7 +371,7 @@ class CardModal extends Component {
                 tight
                 style={styles.action}
                 onPress={this.handleSaveChanges}>
-                Save
+                {t('Save')}
               </Button>
             </Collapsible>
           </View>
