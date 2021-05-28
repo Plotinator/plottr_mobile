@@ -14,6 +14,7 @@ import { Text, ShellButton } from '../common'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 import Fonts from '../../../fonts'
+import { cloneDeep } from 'lodash'
 
 class Chapter extends Component {
   state = { sortedCards: [] }
@@ -25,6 +26,10 @@ class Chapter extends Component {
       cards,
       lines
     )
+    if (chapter.autoOutlineSort)
+      sortedCards.sort((a, b) => a.id < b.id ? -1 : 1)
+    else
+      sortedCards.sort((a, b) => a.positionInBeat < b.positionInBeat ? -1 : 1)
     return { sortedCards }
   }
 
