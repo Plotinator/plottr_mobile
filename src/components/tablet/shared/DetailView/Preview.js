@@ -99,6 +99,7 @@ export default class DetailPreview extends Component {
   renderHeader = () => {
     const { object, objectMeta = {}, editMode, showImageModal } = this.state
     const { name, description, source, attributes = [] } = objectMeta
+    const isCharacter = source === 'character'
     return editMode ? (
       <React.Fragment>
         <View style={styles.detailsBlock}>
@@ -113,7 +114,7 @@ export default class DetailPreview extends Component {
             <DetailImage
               displayStyle={objectMeta.image.displayStyle}
               imageSourceType='default'
-              image={source === 'character' ? images.PROFILE : null}
+              image={isCharacter ? images.PROFILE : null}
               editMode={editMode}
               onPress={this.handleToggleImageModal}
             />
@@ -164,6 +165,7 @@ export default class DetailPreview extends Component {
           type={description.type}
           objectKey={description.key}
           onChange={this.handleChange}
+          centerText={isCharacter}
         />
       </React.Fragment>
     )

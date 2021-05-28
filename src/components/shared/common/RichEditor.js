@@ -7,6 +7,7 @@ import Text from './Text'
 import { Colors, HTMLToSlate, SlateToHTML } from '../../../utils'
 import Collapsible from 'react-native-collapsible'
 import Metrics from '../../../utils/Metrics'
+import { trim } from 'lodash'
 
 const { IS_ANDROID } = Metrics
 
@@ -58,9 +59,10 @@ export default class RichTextEditor extends Component {
       toolbarStyle,
       initialValue,
       initialHTMLText,
-      disabled
+      disabled,
+      hideOnEmpty
     } = this.props
-    const containerStyles = [styles.editorContainer]
+    const containerStyles = [styles.editorContainer, { minHeight: disabled ? 50 : 103 }]
     containerStyles.push(style)
     disabled && containerStyles.push(styles.containerDisabled)
 
@@ -74,11 +76,14 @@ export default class RichTextEditor extends Component {
     const placeholderText = placeholder || ''
     const html = initialHTMLText || initialValue
     const initialText = typeof html == 'object' ? SlateToHTML(html) : html
+    const isEmpty =
+      trim(String(initialText || '').replace(/(<([^>]+)>)/gi, "")) === ''
     const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color} !important; line-height: ${lineHeight}em; padding: 0 0 10px 0;`
     const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${
       Colors[bgColor] || bgColor
     } !important; }`
     return (
+      isEmpty && hideOnEmpty ? null :
       <TouchableWithoutFeedback onPress={this.handleFocusEditor}>
         <View style={containerStyles}>
           <RichEditor

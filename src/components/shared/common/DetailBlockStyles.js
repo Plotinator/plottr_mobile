@@ -34,5 +34,8 @@ export default ScaledSheet.create({
   inputText: {
     ...FormStyles.inputText,
     fontSize: Fonts.size.tiny
+  },
+  centerText: {
+    textAlign: 'center'
   }
 })

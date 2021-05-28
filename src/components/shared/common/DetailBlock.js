@@ -9,6 +9,7 @@ import RichEditor from './RichEditor'
 
 const DetailBlock = (props) => {
   const {
+    source,
     heading,
     headingStyle = 'bold',
     details,
@@ -16,6 +17,7 @@ const DetailBlock = (props) => {
     editMode = false,
     objectKey,
     onChange,
+    centerText
   } = props
   const isParagraph = type === 'paragraph'
 
@@ -32,19 +34,25 @@ const DetailBlock = (props) => {
       />
     )
   }
-
+  console.log('details', details)
   return (
     <View style={styles.container}>
       <View style={styles.heading}>
         <Text
           fontStyle={headingStyle}
-          style={[styles.headingText, editMode && styles.headingEditText]}>
+          style={[
+            styles.headingText,
+            editMode && styles.headingEditText,
+            centerText && styles.centerText
+          ]}
+          center={centerText}>
           {heading}
         </Text>
       </View>
       <View style={styles.details}>
         {isParagraph ? (
           <RichEditor
+            hideOnEmpty={!editMode}
             disabled={!editMode}
             fontSize={Fonts.size.tiny}
             initialValue={details}
@@ -54,7 +62,11 @@ const DetailBlock = (props) => {
           />
         ) : (
           !editMode ? (
-            <Text style={styles.detailsText}>{details}</Text>
+            <Text
+              style={[styles.detailsText, centerText && styles.centerText]}
+              center={centerText}>
+              {details}
+            </Text>
           ) : (
             <Input
               inset
@@ -78,7 +90,8 @@ DetailBlock.propTypes = {
   headingStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   details: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   type: PropTypes.string,
-  editMode: PropTypes.bool
+  editMode: PropTypes.bool,
+  centerText: PropTypes.bool
 }
 
 export default DetailBlock

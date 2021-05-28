@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actions, selectors } from 'pltr/v2'
 import { t } from 'plottr_locales'
-import { View, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, TouchableWithoutFeedback } from 'react-native'
 import Text from './Text'
 import ShellButton from './ShellButton'
 import AddButton from './AddButton'
@@ -108,6 +108,7 @@ class MainList extends Component {
 
   renderListItem = (item, i) => {
     const {
+      images = {},
       type = t('Item'),
       onPressItem,
       fontSize,
@@ -117,7 +118,7 @@ class MainList extends Component {
       alwaysShowDelete,
       onPressDelete
     } = this.props
-    const { title, name, colors } = item
+    const { title, name, colors, imageId } = item
     const itemName = title || name || `${t('New')} ${type} ${i+1}`
     const isActive = activeValue && item[activeKey] === activeValue
     const textStyles = [
@@ -125,6 +126,7 @@ class MainList extends Component {
       isActive && styles.textActive,
       fontSize && { fontSize }
     ]
+    const image = images[imageId] && { uri: images[imageId].data }
     return (
       <ShellButton
         key={i}
@@ -137,6 +139,9 @@ class MainList extends Component {
               {`${i + 1}. `}
             </Text>
           </View>
+        )}
+        {imageId && images[imageId] && (
+          <Image source={image} style={styles.image} />
         )}
         <Text style={textStyles}>
           {itemName}
@@ -185,6 +190,7 @@ class MainList extends Component {
 }
 
 MainList.propTypes = {
+  images: PropTypes.array.isRequired,
   title: PropTypes.string,
   // onPressAdd: PropTypes.funct,
   // onPressDelete: PropTypes.funct,
@@ -195,4 +201,10 @@ MainList.propTypes = {
   list: PropTypes.array
 }
 
-export default MainList
+function mapStateToProps (state) {
+  return {
+    images: state.images
+  }
+}
+
+export default connect(mapStateToProps, null)(MainList)

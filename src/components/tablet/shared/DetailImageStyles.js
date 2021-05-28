@@ -11,7 +11,8 @@ export default ScaledSheet.create({
   containerCircular: {
     alignSelf: 'center',
     width: 200,
-    height: 200
+    height: 200,
+    marginBottom: Metrics.baseMargin,
   },
   containerFullWidth: {
     alignSelf: 'center',

@@ -4,7 +4,7 @@ import Colors from '../../../utils/Colors'
 
 export default ScaledSheet.create({
   editorContainer: {
-    minHeight: 50,
+    minHeight: 103,
     marginTop: Metrics.baseMargin / 2,
     borderWidth: 1,
     borderColor: Colors.borderGray,

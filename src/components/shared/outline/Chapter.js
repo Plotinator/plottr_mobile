@@ -22,7 +22,7 @@ class Chapter extends Component {
   static getDerivedStateFromProps (nextProps, nextState) {
     const { chapter, cards, lines } = nextProps
     const sortedCards = helpers.card.sortCardsInBeat(
-      chapter.autoOutlineSort,
+      chapter.autoOutlineSort == true,
       cards,
       lines
     )

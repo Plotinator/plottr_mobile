@@ -10,6 +10,7 @@ const {
   white,
   whiteTone,
   grayTone,
+  borderGray,
   backgroundTone,
   lightGrayTone,
   textLightGrayTone,
@@ -107,5 +108,15 @@ export default ScaledSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: whiteTone
-  }
+  },
+  image: {
+    resizeMode: 'cover',
+    overflow: 'hidden',
+    borderRadius: 50,
+    marginRight: baseMargin,
+    width: 30,
+    height: 30,
+    borderWidth: 1,
+    borderColor: borderGray
+  },
 })

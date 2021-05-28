@@ -41,12 +41,14 @@ export default class Character extends Component {
       name: {
         title: t('Name'),
         key: 'name',
-        type: 'line'
+        type: 'line',
+        center: true
       },
       description: {
         title: t('Description'),
         key: 'description',
-        type: 'line'
+        type: 'line',
+        center: true
       },
       image: {
         displayStyle: 'circular',
