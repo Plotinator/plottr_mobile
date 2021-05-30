@@ -87,7 +87,7 @@ export default class RichTextEditor extends Component {
       <TouchableWithoutFeedback onPress={this.handleFocusEditor}>
         <View style={containerStyles}>
           <RichEditor
-            // pasteAsPlainText
+            pasteAsPlainText
             ref={this.setEditor}
             style={editorStyles}
             editorStyle={{
