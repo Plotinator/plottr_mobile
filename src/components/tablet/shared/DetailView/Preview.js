@@ -26,11 +26,9 @@ export default class DetailPreview extends Component {
       editMode: false,
       showImageModal: false
     }
-    console.log('CONSTRUCTED')
   }
 
   componentDidMount() {
-    console.log('MOUNTED')
     const { object, objectMeta } = this.props
     const { name } = objectMeta
 
@@ -38,7 +36,8 @@ export default class DetailPreview extends Component {
     this.setState({
       object: cloneDeep(object),
       objectMeta: cloneDeep(objectMeta),
-      editMode: editMode
+      editMode: editMode,
+      showImageModal: false
     })
   }
 
