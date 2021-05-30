@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Keyboard } from 'react-native'
+import { View, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import styles from './ModalBoxStyles'
 import * as Animatable from 'react-native-animatable'
 import { Icon } from 'native-base'
@@ -7,13 +7,17 @@ import Text from './Text'
 import ShellButton from './ShellButton'
 import Metrics from '../../../utils/Metrics'
 
+const AnimeTouchableNoFeedback = Animatable.createAnimatableComponent(
+  TouchableWithoutFeedback
+)
+
 const { ifIOS } = Metrics
 
 export default class ModalBox extends Component {
   state = {
     initial: true,
     shadeBase: 0
-  };
+  }
 
   componentDidMount () {
     Keyboard.addListener('keyboardDidShow', this.handleKeyboardShow)
@@ -33,21 +37,23 @@ export default class ModalBox extends Component {
       shadeBase: 0
     })
     onShow && onShow()
-  };
+  }
 
   hide = () => {
     const { onHide } = this.props
     Keyboard.dismiss()
     this.setState({
-      visible: false,
+      visible: false
     })
     onHide && onHide()
-  };
+  }
 
   handleKeyboardShow = (event) => {
     const { visible } = this.state
-    const { endCoordinates: { height } } = event
-    if(visible)
+    const {
+      endCoordinates: { height }
+    } = event
+    if (visible)
       this.setState({
         shadeBase: height
       })
@@ -55,7 +61,7 @@ export default class ModalBox extends Component {
 
   handleKeyboardHide = () => {
     const { visible } = this.state
-    if(visible)
+    if (visible)
       this.setState({
         shadeBase: 0
       })
@@ -63,7 +69,7 @@ export default class ModalBox extends Component {
 
   handleOnClose = () => {
     this.hide()
-  };
+  }
 
   render () {
     const { shadeBase, initial, visible: visibleState } = this.state
@@ -71,37 +77,42 @@ export default class ModalBox extends Component {
     const isVisible = visible === undefined ? visibleState : visible
     const shadeStyles = [
       styles.shade,
-      { opacity: isVisible ? 1 : 0 },
+      { opacity: isVisible ? 1 : 0 }
       // { paddingBottom: ifIOS(shadeBase, 0) }
     ]
     return initial && !isVisible ? null : (
-      <Animatable.View
-        transition={['opacity', 'paddingBottom']}
-        delay={isVisible ? 0 : 100}
-        duration={600}
-        easing={'ease-out-expo'}
-        pointerEvents={isVisible ? 'auto' : 'none'}
-        style={shadeStyles}
-        >
+      <AnimeTouchableNoFeedback onPress={this.handleOnClose}>
         <Animatable.View
-          style={[styles.dialogBox]}
-          animation={isVisible ? 'zoomIn' : 'zoomOut'}
-          delay={isVisible ? 100 : 0}
+          transition={['opacity', 'paddingBottom']}
+          delay={isVisible ? 0 : 100}
+          duration={600}
           easing={'ease-out-expo'}
-          duration={600}>
-          <ShellButton style={styles.closeButton} onPress={this.handleOnClose}>
-            <Icon type='FontAwesome5' name='times' style={styles.closeIcon} />
-          </ShellButton>
-          <View style={styles.dialogTitle}>
-            <Text style={styles.titleText} fontSize='h4' fontStyle='bold' center>
-              {title}
-            </Text>
-          </View>
-          <View style={styles.dialogBody}>
-            {children}
-          </View>
+          pointerEvents={isVisible ? 'auto' : 'none'}
+          style={shadeStyles}>
+          <Animatable.View
+            style={[styles.dialogBox]}
+            animation={isVisible ? 'zoomIn' : 'zoomOut'}
+            delay={isVisible ? 100 : 0}
+            easing={'ease-out-expo'}
+            duration={600}>
+            <ShellButton
+              style={styles.closeButton}
+              onPress={this.handleOnClose}>
+              <Icon type='FontAwesome5' name='times' style={styles.closeIcon} />
+            </ShellButton>
+            <View style={styles.dialogTitle}>
+              <Text
+                style={styles.titleText}
+                fontSize='h4'
+                fontStyle='bold'
+                center>
+                {title}
+              </Text>
+            </View>
+            <View style={styles.dialogBody}>{children}</View>
+          </Animatable.View>
         </Animatable.View>
-      </Animatable.View>
+      </AnimeTouchableNoFeedback>
     )
   }
 }

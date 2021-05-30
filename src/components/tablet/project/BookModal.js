@@ -10,7 +10,8 @@ import {
   ImageBackground,
   Modal,
   ScrollView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback
 } from 'react-native'
 import { t } from 'plottr_locales'
 import {
@@ -28,6 +29,11 @@ import styles from './BookModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
 import Book from '../../shared/project/Book'
+import * as Animatable from 'react-native-animatable'
+
+const AnimeTouchableNoFeedback = Animatable.createAnimatableComponent(
+  TouchableWithoutFeedback
+)
 
 export default class BookModal extends Component {
   state = {
@@ -116,7 +122,8 @@ export default class BookModal extends Component {
         transparent={true}
         onDismiss={this.handleClose}
         onRequestClose={this.handleClose}>
-        <KeyboardAvoidingView behavior='padding' style={styles.avoidingView}>
+        <AnimeTouchableNoFeedback onPress={this.handleClose}>
+          <KeyboardAvoidingView behavior='padding' style={styles.avoidingView}>
           <View style={styles.window}>
             <ShellButton style={styles.closeButton} onPress={this.handleClose}>
               <Icon style={styles.closeIcon} type='FontAwesome5' name='times' />
@@ -202,6 +209,7 @@ export default class BookModal extends Component {
             />
           </View>
         </KeyboardAvoidingView>
+        </AnimeTouchableNoFeedback>
       </Modal>
     )
   }

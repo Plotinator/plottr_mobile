@@ -101,6 +101,7 @@ export default class Character extends Component {
 
   render() {
     const { object, objectMeta } = this.state
+    console.log(object)
     return object ? (
       <DetailPreview
         object={object}

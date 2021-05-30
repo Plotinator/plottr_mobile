@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Keyboard } from 'react-native'
+import { View, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import styles from './AlertDialogStyles'
 import * as Animatable from 'react-native-animatable'
 import Text from './Text'
@@ -8,6 +8,10 @@ import Input from './Input'
 import { Icon } from 'native-base'
 import { t } from 'plottr_locales'
 import Metrics from '../../../utils/Metrics'
+
+const AnimeTouchableNoFeedback = Animatable.createAnimatableComponent(
+  TouchableWithoutFeedback
+)
 
 const { ifIOS } = Metrics
 let MasterAlert
@@ -161,51 +165,55 @@ export default class AlertDialog extends Component {
     } = this.state
     const shadeStyles = [
       styles.shade,
-      { opacity: visible ? 1 : 0 },
+      { opacity: visible ? 1 : 0 }
       // { paddingBottom: ifIOS(shadeBase, 0) }
     ]
     return initial && !visible ? null : (
-      <Animatable.View
-        transition={['opacity', 'paddingBottom']}
-        delay={visible ? 0 : 100}
-        duration={600}
-        easing={'ease-out-expo'}
-        pointerEvents={visible ? 'auto' : 'none'}
-        style={shadeStyles}>
+      <AnimeTouchableNoFeedback onPress={this.handleOnClose}>
         <Animatable.View
-          style={styles.dialogBox}
-          animation={visible ? 'zoomIn' : 'zoomOut'}
-          delay={visible ? 100 : 0}
+          transition={['opacity', 'paddingBottom']}
+          delay={visible ? 0 : 100}
           duration={600}
-          easing={'ease-out-expo'}>
-          <ShellButton style={styles.closeButton} onPress={this.handleOnClose}>
-            <Icon type='FontAwesome5' name='times' style={styles.closeIcon} />
-          </ShellButton>
-          <View style={styles.dialogTitle}>
-            <Text
-              style={styles.titleText}
-              fontSize='h3'
-              fontStyle='bold'
-              center>
-              {title}
-            </Text>
-          </View>
-          <View style={styles.dialogBody}>
-            <Text center>{message}</Text>
-            {isInput && this.renderInput(inputText)}
-          </View>
-          <View style={styles.dialogActions}>
-            {actions.map(this.renderActionButton)}
-            {actions.length === 0 && (
-              <ActionButton
-                key={'close'}
-                action={{ name: 'Close' }}
-                onPress={this.handleOnClose}
-              />
-            )}
-          </View>
+          easing={'ease-out-expo'}
+          pointerEvents={visible ? 'auto' : 'none'}
+          style={shadeStyles}>
+          <Animatable.View
+            style={styles.dialogBox}
+            animation={visible ? 'zoomIn' : 'zoomOut'}
+            delay={visible ? 100 : 0}
+            duration={600}
+            easing={'ease-out-expo'}>
+            <ShellButton
+              style={styles.closeButton}
+              onPress={this.handleOnClose}>
+              <Icon type='FontAwesome5' name='times' style={styles.closeIcon} />
+            </ShellButton>
+            <View style={styles.dialogTitle}>
+              <Text
+                style={styles.titleText}
+                fontSize='h3'
+                fontStyle='bold'
+                center>
+                {title}
+              </Text>
+            </View>
+            <View style={styles.dialogBody}>
+              <Text center>{message}</Text>
+              {isInput && this.renderInput(inputText)}
+            </View>
+            <View style={styles.dialogActions}>
+              {actions.map(this.renderActionButton)}
+              {actions.length === 0 && (
+                <ActionButton
+                  key={'close'}
+                  action={{ name: 'Close' }}
+                  onPress={this.handleOnClose}
+                />
+              )}
+            </View>
+          </Animatable.View>
         </Animatable.View>
-      </Animatable.View>
+      </AnimeTouchableNoFeedback>
     )
   }
 }
@@ -228,13 +236,17 @@ class ActionButton extends Component {
         style={[
           styles.actionButton,
           positive && styles.positiveButton,
-          !positive && styles.outlined,
+          !positive && styles.outlined
         ]}
         onPress={this.handlePress}>
         {icon && (
           <Icon type='FontAwesome5' name={icon} style={styles.actionIcon} />
         )}
-        <Text fontStyle={'bold'} white center style={!positive && styles.orangeText}>
+        <Text
+          fontStyle={'bold'}
+          white
+          center
+          style={!positive && styles.orangeText}>
           {name}
         </Text>
       </ShellButton>

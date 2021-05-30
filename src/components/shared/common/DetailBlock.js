@@ -34,7 +34,6 @@ const DetailBlock = (props) => {
       />
     )
   }
-  console.log('details', details)
   return (
     <View style={styles.container}>
       <View style={styles.heading}>
