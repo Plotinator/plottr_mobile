@@ -39,9 +39,11 @@ export default class Checkbox extends Component {
             )}
           </View>
           {children || (
-            <Text style={textStyles}>
-              {label}
-            </Text>
+            <View style={styles.textContainer}>
+              <Text style={textStyles} numberOfLines={3}>
+                {label}
+              </Text>
+            </View>
           )}
         </View>
       </ShellButton>

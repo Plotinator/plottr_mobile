@@ -11,7 +11,7 @@ export default ScaledSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     marginVertical: baseMargin / 4
   },
   checkBox: {
@@ -30,9 +30,17 @@ export default ScaledSheet.create({
     marginRight: '-2@ms',
     color: warmTextDarkGray
   },
+  textContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   label: {
     ...style.semiBold,
+    maxWidth: 150,
     fontSize: size.size9,
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignItems: 'flex-start',
     flexWrap: 'wrap',
     paddingBottom: 2,
     color: warmTextDarkGray
