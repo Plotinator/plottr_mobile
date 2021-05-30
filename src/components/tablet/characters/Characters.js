@@ -16,7 +16,13 @@ import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
-import { Text, MainList, AttributesButton } from '../../shared/common'
+import {
+  Text,
+  MainList,
+  HeaderAttributes,
+  AttributesButton,
+  HeaderButtonOptions
+} from '../../shared/common'
 import styles from './CharactersStyles'
 
 class Characters extends Component {
@@ -158,7 +164,11 @@ class Characters extends Component {
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewCharacter} />
           <View style={styles.additionals}>
-            <AttributesButton onPress={this.navigateToCustomAttributes} />
+            <HeaderButtonOptions
+              title={t('Attributes')}
+              button={<AttributesButton />}>
+              <HeaderAttributes type={'characters'} />
+            </HeaderButtonOptions>
           </View>
         </Toolbar>
         <Grid style={styles.grid}>

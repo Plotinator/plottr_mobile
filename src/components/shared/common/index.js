@@ -22,6 +22,7 @@ import Title, { RenderTitle } from './Title'
 import WelcomeToPlottr from './WelcomeToPlottr'
 import GoToPlottrDotCom from './GoToPlottrDotCom'
 import AttributesButton from './AttributesButton'
+import HeaderAttributes from './HeaderAttributes'
 import HeaderButtonOptions from './HeaderButtonOptions'
 
 export {
@@ -50,5 +51,6 @@ export {
   WelcomeToPlottr,
   GoToPlottrDotCom,
   AttributesButton,
+  HeaderAttributes,
   HeaderButtonOptions
 }

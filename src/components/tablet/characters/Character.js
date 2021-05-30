@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { t } from 'plottr_locales'
-import { StyleSheet } from 'react-native'
 import DetailPreview from '../shared/DetailView/Preview'
 import { cloneDeep } from 'lodash'
 
@@ -12,6 +11,7 @@ export default class Character extends Component {
       objectMeta: null
     }
   }
+
   componentDidMount() {
     const { character } = this.props
     let objectMeta = this.getObjectMeta()
@@ -111,24 +111,3 @@ export default class Character extends Component {
     ) : null
   }
 }
-
-const styles = StyleSheet.create({
-  buttonFooter: {
-    marginTop: 16,
-    marginRight: 16,
-    marginBottom: 8
-  },
-  label: {
-    marginBottom: 16
-  },
-  afterList: {
-    marginTop: 16
-  },
-  detailsRightItems: {
-    paddingRight: 8
-  },
-  rceView: {
-    marginBottom: 16
-  },
-  tagStyle: {}
-})

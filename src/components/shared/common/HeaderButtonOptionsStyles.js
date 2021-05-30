@@ -3,7 +3,7 @@ import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
 const { baseMargin, cornerRadius } = Metrics
-const { warmBG } = Colors
+const { warmWhiteBG } = Colors
 
 export default ScaledSheet.create({
   container: {
@@ -13,6 +13,6 @@ export default ScaledSheet.create({
   menuPopover: {
     borderRadius: cornerRadius,
     paddingVertical: baseMargin,
-    backgroundColor: warmBG
+    backgroundColor: warmWhiteBG
   }
 })
