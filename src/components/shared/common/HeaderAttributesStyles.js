@@ -27,13 +27,15 @@ export default ScaledSheet.create({
   },
   rowItems: {
     flex: 1,
-    padding: baseMargin
+    padding: baseMargin,
+    paddingTop: baseMargin * 1.5
   },
   rowItem: {
     backgroundColor: warmBG,
     borderRadius: cornerRadius,
     overflow: 'hidden',
     width: '100%',
+    height: 51,
     flexDirection: 'row',
     alignItems: 'center',
     // padding: baseMargin,
@@ -61,7 +63,7 @@ export default ScaledSheet.create({
   rowAction: {
     justifyContent: 'center'
   },
-  trash: {
+  icon: {
     padding: baseMargin,
     fontSize: size.tiny,
     color: lightenGray
