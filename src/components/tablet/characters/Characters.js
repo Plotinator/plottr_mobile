@@ -31,7 +31,7 @@ class Characters extends Component {
     data: []
   }
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     let returnVal = { ...state }
     const { visibleCharactersByCategory, characters, categories } = props
     returnVal.activeCharacterId = Characters.findActiveCharacter(
@@ -131,7 +131,7 @@ class Characters extends Component {
     this.setState({ activeCharacterId: id })
   }
 
-  renderCharacterDetail () {
+  renderCharacterDetail() {
     const { characters, customAttributes, navigation, images = [] } = this.props
     let character = characters.find(
       (char) => char.id == this.state.activeCharacterId
@@ -157,7 +157,7 @@ class Characters extends Component {
     })
   }
 
-  render () {
+  render() {
     const { openDrawer } = this.props
     return (
       <View style={styles.container}>
@@ -206,7 +206,7 @@ Characters.propTypes = {
   navigation: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     images: state.images || [],
     visibleCharactersByCategory: selectors.visibleSortedCharactersByCategorySelector(
@@ -223,7 +223,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.character, dispatch),
     customAttributeActions: bindActionCreators(

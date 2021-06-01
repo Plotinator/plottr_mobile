@@ -1,8 +1,8 @@
 import { ScaledSheet } from 'react-native-size-matters'
 import Fonts from '../../../fonts'
-import Metrics from '../../../utils/Metrics'
-import Colors from '../../../utils/Colors'
+import { Metrics, Colors, Constants } from '../../../utils'
 
+const { ATTRIBUTE_HEIGHT } = Constants
 const { baseMargin, doubleBaseMargin, cornerRadius, screenWidth } = Metrics
 const { style, size } = Fonts
 const { warmBG, warmTextGray, warmWhiteBG, lightenGray } = Colors
@@ -36,7 +36,7 @@ export default ScaledSheet.create({
     borderRadius: cornerRadius,
     overflow: 'hidden',
     width: '100%',
-    height: 51,
+    height: ATTRIBUTE_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
     // padding: baseMargin,

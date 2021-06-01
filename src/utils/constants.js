@@ -7,6 +7,9 @@ export const MIGRATION_VERSION = '2021.4.28'
 export const RCE_URL = 'https://plottr-web-rce.vercel.app/'
 // export const RCE_URL = Platform.select({android: 'http://10.0.2.2:3000', ios: 'http://localhost:3000'})
 
+// attributes
+export const ATTRIBUTE_HEIGHT = 51
+
 // timeline cells
 export const CELL_WIDTH = 175
 export const CELL_HEIGHT = 93

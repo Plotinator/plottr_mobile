@@ -15,8 +15,9 @@ import { cloneDeep } from 'lodash'
 import { t } from 'plottr_locales'
 import Collapsible from 'react-native-collapsible'
 import * as Animatable from 'react-native-animatable'
+import { Constants } from '../../../utils'
 
-const ATTRIBUTE_HEIGHT = 51
+const { ATTRIBUTE_HEIGHT } = Constants
 
 class HeaderAttributes extends Component {
   state = {
@@ -84,14 +85,19 @@ class HeaderAttributes extends Component {
   }
 
   render() {
-    const { style, attributes = [], actions } = this.props
+    const { style, attributes = [], actions, type } = this.props
     const { addingNew } = this.state
+    const capitalType = `${type.substring(0, 1).toUpperCase()}${type.substring(
+      1
+    )}`
     return (
       <View style={styles.container}>
         <View style={styles.container}>
-          <Text style={styles.title}>Custom Attributes for Characters</Text>
+          <Text style={styles.title}>
+            {t('Custom Attributes for { type }', { type: 'capitalType' })}
+          </Text>
           <Text style={styles.subtitle}>
-            Choose what you want to track about your characters
+            {t('Choose what you want to track about your { type }', { type })}
           </Text>
           <ScrollerView
             scrollerProps={{ bounces: false, style: styles.scroller }}>
