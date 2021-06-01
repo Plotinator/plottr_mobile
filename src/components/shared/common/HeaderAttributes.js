@@ -94,7 +94,7 @@ class HeaderAttributes extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <Text style={styles.title}>
-            {t('Custom Attributes for { type }', { type: 'capitalType' })}
+            {t('Custom Attributes for { type }', { type: capitalType })}
           </Text>
           <Text style={styles.subtitle}>
             {t('Choose what you want to track about your { type }', { type })}
