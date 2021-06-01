@@ -12,6 +12,7 @@ export default (props) => {
     hitSize = 10,
     size = 12,
     onPress,
+    disabled,
     data
   } = props
   const actualColor = Colors[color] || color
@@ -27,7 +28,8 @@ export default (props) => {
       onPress={onPress}
       style={buttonStyle}
       hitSlop={hitArea}
-      noninteractive={!onPress}>
+      disabled={disabled}
+      noninteractive={!onPress || disabled}>
       <Icon name={name} color={actualColor} size={size} style={style} />
     </ShellButton>
   )

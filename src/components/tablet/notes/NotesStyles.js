@@ -55,5 +55,10 @@ export default ScaledSheet.create({
   buttonWrapper: {
     flexDirection: 'row',
     marginLeft: 'auto'
+  },
+  additionals: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   }
 })

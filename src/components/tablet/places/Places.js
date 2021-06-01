@@ -16,7 +16,13 @@ import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
-import { Text, MainList, AttributesButton } from '../../shared/common'
+import {
+  Text,
+  MainList,
+  AttributesButton,
+  HeaderButtonOptions,
+  HeaderAttributes
+} from '../../shared/common'
 import styles from './PlacesStyles'
 
 class Places extends Component {
@@ -24,7 +30,7 @@ class Places extends Component {
     activePlaceId: null
   }
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     const activePlaceId = Places.findActivePlace(
       props.visiblePlaces,
       state.activePlaceId
@@ -32,7 +38,7 @@ class Places extends Component {
     return { activePlaceId }
   }
 
-  static findActivePlace (places, activePlaceId) {
+  static findActivePlace(places, activePlaceId) {
     if (places.length == 0) return null
 
     let newId = places[0].id
@@ -78,7 +84,7 @@ class Places extends Component {
     )
   }
 
-  renderPlaceDetail () {
+  renderPlaceDetail() {
     const { visiblePlaces, customAttributes, navigation } = this.props
     let place = visiblePlaces.find((pl) => pl.id == this.state.activePlaceId)
     if (!place) return null
@@ -98,7 +104,7 @@ class Places extends Component {
     )
   }
 
-  render () {
+  render() {
     const { visiblePlaces, openDrawer } = this.props
     const { activePlaceId } = this.state
 
@@ -107,7 +113,13 @@ class Places extends Component {
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewPlace} />
           <View style={styles.additionals}>
-            <AttributesButton onPress={this.navigateToCustomAttributes} />
+            <View style={styles.additionals}>
+              <HeaderButtonOptions
+                title={t('Attributes')}
+                button={<AttributesButton />}>
+                <HeaderAttributes type={'places'} />
+              </HeaderButtonOptions>
+            </View>
           </View>
         </Toolbar>
         <Grid style={styles.grid}>
@@ -143,7 +155,7 @@ Places.propTypes = {
   uiActions: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     images: state.images,
     places: state.places,
@@ -158,7 +170,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.place, dispatch),
     customAttributeActions: bindActionCreators(

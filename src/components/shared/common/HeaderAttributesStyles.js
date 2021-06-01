@@ -6,10 +6,11 @@ import Colors from '../../../utils/Colors'
 const { baseMargin, doubleBaseMargin, cornerRadius, screenWidth } = Metrics
 const { style, size } = Fonts
 const { warmBG, warmTextGray, warmWhiteBG, lightenGray } = Colors
+const windowWidth = screenWidth * 0.75
 
 export default ScaledSheet.create({
   container: {
-    maxWidth: screenWidth * 0.75,
+    maxWidth: windowWidth,
     alignItems: 'center',
     justifyContent: 'center',
     padding: baseMargin,
@@ -26,7 +27,7 @@ export default ScaledSheet.create({
     color: warmTextGray
   },
   rowItems: {
-    flex: 1,
+    // flex: 1,
     padding: baseMargin,
     paddingTop: baseMargin * 1.5
   },
@@ -47,7 +48,13 @@ export default ScaledSheet.create({
   },
   rowName: {
     flex: 1,
-    justifyContent: 'center'
+    flexDirection: 'row',
+    alignItems: 'center'
+    // justifyContent: 'center'
+  },
+  nameInput: {
+    // maxWidth: windowWidth * 0.53,
+    marginRight: -doubleBaseMargin
   },
   nameText: {
     ...style.bold,
@@ -65,8 +72,11 @@ export default ScaledSheet.create({
   },
   icon: {
     padding: baseMargin,
-    fontSize: size.tiny,
-    color: lightenGray
+    fontSize: size.tiny
+  },
+  iconLarger: {
+    padding: baseMargin * 1.1,
+    fontSize: size.small
   },
   footer: {
     width: '100%',
