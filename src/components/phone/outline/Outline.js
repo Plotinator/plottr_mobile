@@ -13,6 +13,7 @@ import Chapter from '../../shared/outline/Chapter'
 import TrashButton from '../../ui/TrashButton'
 import RenameButton from '../../ui/RenameButton'
 import AddButton from '../../ui/AddButton'
+import BeatItemTitle from '../../shared/BeatItemTitle'
 import { Text } from '../../shared/common'
 import styles from './OutlineStyles'
 import { showAlert, showInputAlert } from '../../shared/common/AlertDialog'
@@ -48,7 +49,7 @@ class Outline extends Component {
     const { position, title, id: chapterId, bookId } = chapter
     const isAuto = title == 'auto'
     const chapterNumber = position + 1
-    const autoChapter = t('Chapter {number}', { number: chapterNumber })
+    const autoChapter = <BeatItemTitle beat={chapter} />
     const chapterName = isAuto ? autoChapter : title
 
     showAlert({
@@ -72,7 +73,7 @@ class Outline extends Component {
     const { position, title, id: chapterId, bookId } = chapter
     const chapterNumber = position + 1
     const isAuto = title == 'auto'
-    const autoChapter = t('Chapter {number}', { number: chapterNumber })
+    const autoChapter = <BeatItemTitle beat={chapter} />
     const chapterName = isAuto ? autoChapter : title
 
     showInputAlert({
