@@ -268,7 +268,7 @@ export default class Main extends Component {
       .replace(/[^a-zA-Z0-9_\-]/gi)
     let filePath = DocumentDirectoryPath + `/${fileName}.pltr`
     if (!IS_IOS) {
-      filePath = ExternalStorageDirectoryPath + `/Plottr/${fileName}.pltr`
+      filePath = url
     }
     // let finalURL = rnfs.DocumentDirectoryPath + '/' + name.replace(/ /g,"_") + '.pltr';
     this.readDocumentFile(filePath)

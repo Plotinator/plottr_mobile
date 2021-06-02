@@ -165,7 +165,7 @@ export default class App extends Component {
 
         console.log('FAIL', reasonForError, unverifiedUser)
         this.setUserInfo(null)
-        this.showError(reason)
+        this.showError(reasonForError)
       }
     } else {
       this.showError('That code was invalid. Try again.')

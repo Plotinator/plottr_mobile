@@ -56,6 +56,12 @@ public class DocumentBrowser extends ReactContextBaseJavaModule {
             if (uri == null) {
               browserPromise.reject(E_NO_DOCUMENT_DATA_FOUND, "No document data found");
             } else {
+              // Make permission persistant
+              final int takeFlags = intent.getFlags()
+                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+              activity.getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
               WritableMap map = getFileData(uri, false);
               sendEvent(reactContext, "onOpenDocument", map);
             }
