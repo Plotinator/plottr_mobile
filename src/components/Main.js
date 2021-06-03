@@ -105,9 +105,10 @@ export default class Main extends Component {
     if (IS_IOS) DocumentBrowser.closeBrowser()
     this.setDocument(data)
     if (setRecent) {
-      if (!IS_IOS || (IS_IOS && data.isInDocuments)) {
-        this.addRecentDocument(data)
-      }
+      this.addRecentDocument(data)
+      // if (!IS_IOS || (IS_IOS && data.isInDocuments)) {
+      //   this.addRecentDocument(data)
+      // }
     }
     this.setLoading(false)
   }
@@ -263,15 +264,16 @@ export default class Main extends Component {
   }
 
   readDocument = ({ url, name }) => {
-    let fileName = String(name)
-      .replace(/\s+/gi, '_')
-      .replace(/[^a-zA-Z0-9_\-]/gi)
-    let filePath = DocumentDirectoryPath + `/${fileName}.pltr`
-    if (!IS_IOS) {
-      filePath = url
-    }
+    // console.log("**********READ DOCUMENT -------", url)
+    // let fileName = String(name)
+    //   .replace(/\s+/gi, '_')
+    //   .replace(/[^a-zA-Z0-9_\-]/gi)
+    // let filePath = DocumentDirectoryPath + `/${fileName}.pltr`
+    // if (!IS_IOS) {
+    //   filePath = url
+    // }
     // let finalURL = rnfs.DocumentDirectoryPath + '/' + name.replace(/ /g,"_") + '.pltr';
-    this.readDocumentFile(filePath)
+    this.readDocumentFile(url)
   }
 
   // selectDocument = () => {
