@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import Config from 'react-native-config'
+import NetInfo from "@react-native-community/netinfo";
 import { getDeviceName } from 'react-native-device-info'
 import {
   LICENSE_PRODUCT_IDS,
@@ -9,8 +10,10 @@ import {
   BASE_URL,
   USER_KEY,
   SKIP_VERIFICATION_KEY,
+  LAST_VERIFIED_KEY,
   OLD_PRODUCT_IDS,
-  PRO_PRODUCT_IDS
+  PRO_PRODUCT_IDS,
+  MAX_VERIFICATION_DURATION
 } from './constants'
 
 export async function getUserVerification () {
@@ -51,6 +54,7 @@ export async function verifyUser (userInfo) {
 export async function reset () {
   await AsyncStorage.removeItem(USER_KEY)
   await AsyncStorage.removeItem(SKIP_VERIFICATION_KEY)
+  await AsyncStorage.removeItem(LAST_VERIFIED_KEY)
   return null
 }
 
@@ -210,19 +214,52 @@ function hasActivationsLeft (body) {
 }
 
 async function checkIfActiveLicense (license, productId, device) {
-  const url = licenseURL('check_license', license, productId, device)
-  try {
-    let response = await fetch(url, {
-      headers: { 'User-Agent': 'mobile;mobile-app' },
-      cache: 'no-cache',
-    })
-    let json = await response.json()
-    if (json.success) return { ...json, key: license, productId }
-    return false
-  } catch (error) {
-    console.error(error)
-    return false // maybe not?
-  }
+  let returnValue;
+  await NetInfo.fetch().then(async state => {
+    if (state.isConnected) {
+      const url = licenseURL('check_license', license, productId, device)
+      try {
+        let response = await fetch(url, {
+          headers: { 'User-Agent': 'mobile;mobile-app' },
+          cache: 'no-cache',
+        })
+        let json = await response.json()
+        if (json.success) {
+          let lastVerified = {
+            lastVerifiedTime: new Date().getTime()
+          }
+          AsyncStorage.setItem(
+            LAST_VERIFIED_KEY,
+            JSON.stringify(lastVerified)
+          )
+          returnValue = { ...json, key: license, productId }
+          return
+        }
+        returnValue = false;
+        return
+      } catch (error) {
+        console.error(error)
+        returnValue = false;
+        return
+        // return false // maybe not?
+      }
+    } else {
+      let lastVerifiedJSON = await AsyncStorage.getItem(LAST_VERIFIED_KEY);
+      const lastVerified = lastVerifiedJSON ? JSON.parse(lastVerifiedJSON) : null;
+      if (lastVerified) {
+        let timeLapsedSeconds = (parseInt(new Date().getTime()) - parseInt(lastVerified.lastVerifiedTime)) / 1000;
+        if ( timeLapsedSeconds > MAX_VERIFICATION_DURATION ) {
+          returnValue = false;
+        } else {
+          returnValue = { success: true, key: license, productId };
+        }
+      } else {
+        returnValue = false;
+      }
+      return;
+    }
+  });
+  return returnValue;
 }
 
 function isOneOfOldProducts (ids) {

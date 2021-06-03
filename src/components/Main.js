@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Component } from 'react'
-import { NativeModules, NativeEventEmitter } from 'react-native'
+import { NativeModules, NativeEventEmitter, PermissionsAndroid } from 'react-native'
 import { Provider } from 'react-redux'
 import { AppState } from 'react-native'
 import DocumentRoot from './DocumentRoot'
@@ -10,7 +10,7 @@ import { t } from 'plottr_locales'
 import Metrics from '../utils/Metrics'
 import Dashboard from './screens/dashboard'
 import DocumentPicker from 'react-native-document-picker'
-import rnfs, { DocumentDirectoryPath } from 'react-native-fs'
+import rnfs, { DocumentDirectoryPath, ExternalStorageDirectoryPath } from 'react-native-fs'
 import { showAlert, showInputAlert } from './shared/common/AlertDialog'
 import AsyncStorage from '@react-native-community/async-storage'
 import { setDocumentURL } from '../middlewares/DocumentSaver'
@@ -101,6 +101,7 @@ export default class Main extends Component {
   }
 
   handleDocumentOpened = (data, setRecent = true) => {
+    // console.log("I am Opening an existing document---", JSON.stringify(data))
     if (IS_IOS) DocumentBrowser.closeBrowser()
     this.setDocument(data)
     if (setRecent) {
@@ -111,12 +112,24 @@ export default class Main extends Component {
     this.setLoading(false)
   }
 
-  handleNewProject = ({ input }) => {
+  handleNewProject = async ({ input }) => {
     this.setLoading(true)
     const fileName = String(input || 'New Story')
       .replace(/\s+/gi, '_')
       .replace(/[^a-zA-Z0-9_\-]/gi)
-    const filePath = DocumentDirectoryPath + `/${fileName}.pltr`
+    let filePath = DocumentDirectoryPath + `/${fileName}.pltr`
+
+    if (!IS_IOS) {
+      const readGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+      const writeGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+      if (!readGranted || !writeGranted) {
+        console.log('Read and write permissions have not been granted');
+        this.showNoPermissionError();
+        return;
+      }
+      rnfs.mkdir(`${ExternalStorageDirectoryPath}/Plottr`)
+      filePath = ExternalStorageDirectoryPath + `/Plottr/${fileName}.pltr`
+    }
     const fileData = `{"storyName": "${input}", "newFile": true}`
     const writeProjectFile = () => {
       rnfs
@@ -162,6 +175,7 @@ export default class Main extends Component {
 
     AsyncStorage.getItem('recentDocuments').then((data) => {
       if (data) {
+        // console.log("GETTING RECENT DOCS ----- ", data)
         try {
           const recentDocuments = JSON.parse(data || '[]')
           this.setState({ recentDocuments })
@@ -219,6 +233,14 @@ export default class Main extends Component {
     this.setLoading(false)
   }
 
+  showNoPermissionError() {
+    showAlert({
+      title: t('UH-OH!'),
+      message: t('Read and write permissions have not been granted. Please change the app permissions in the Settings.')
+    })
+    this.setLoading(false)
+  }
+
   readDocumentFile(uri, setRecent = true) {
     this.setLoading(true)
     // if (IS_IOS) {
@@ -244,7 +266,10 @@ export default class Main extends Component {
     let fileName = String(name)
       .replace(/\s+/gi, '_')
       .replace(/[^a-zA-Z0-9_\-]/gi)
-    const filePath = rnfs.DocumentDirectoryPath + `/${fileName}.pltr`
+    let filePath = DocumentDirectoryPath + `/${fileName}.pltr`
+    if (!IS_IOS) {
+      filePath = url
+    }
     // let finalURL = rnfs.DocumentDirectoryPath + '/' + name.replace(/ /g,"_") + '.pltr';
     this.readDocumentFile(filePath)
   }
@@ -294,7 +319,17 @@ export default class Main extends Component {
     }
   }
 
-  createDocument = () => {
+  createDocument = async () => {
+    if (!IS_IOS) {
+      try {
+        const granted = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        ]);
+      } catch (err) {
+        console.warn(err);
+      }
+    }
     showInputAlert({
       title: t('New Project'),
       message: t('Enter the name of your project'),

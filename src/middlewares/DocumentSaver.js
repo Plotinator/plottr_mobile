@@ -1,5 +1,5 @@
 import { ActionTypes } from 'pltr/v2'
-import rnfs, { DocumentDirectoryPath } from 'react-native-fs'
+import rnfs, { DocumentDirectoryPath, ExternalStorageDirectoryPath } from 'react-native-fs'
 import { Platform, NativeModules } from 'react-native'
 const { DocumentViewController } = NativeModules
 
@@ -15,7 +15,7 @@ export const saveDocument = (documentData, successCallback, errorCallback) => {
     if (Platform.OS === 'ios') {
       DocumentViewController.updateDocument(documentURL, documentData)
     } else if (Platform.OS === 'android') {
-      if (documentURL.includes(DocumentDirectoryPath)) {
+      if (documentURL.includes(ExternalStorageDirectoryPath)) {
         rnfs
           .writeFile(documentURL, documentData, 'utf8')
           .then(() => successCallback && successCallback())
