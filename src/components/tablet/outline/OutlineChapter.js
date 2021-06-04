@@ -16,6 +16,7 @@ import {
 } from '../../shared/common'
 import Fonts from '../../../fonts'
 import OutlineCard from './OutlineCard'
+import BeatItemTitle from '../../shared/BeatItemTitle'
 
 class OutlineChapter extends Component {
   handleAutoSortChapter = () => {
@@ -96,7 +97,7 @@ class OutlineChapter extends Component {
     const { chapter, cardMap } = this.props
     const { id, autoOutlineSort } = chapter
     const { positionOffset, lines } = this.props
-    const chapterTitle = helpers.beats.beatTitle(chapter, positionOffset)
+    const chapterTitle = <BeatItemTitle beat={chapter} />
     const cards = cardMap[id] || []
     const sortedCards = helpers.card.sortCardsInBeat(
       autoOutlineSort,
