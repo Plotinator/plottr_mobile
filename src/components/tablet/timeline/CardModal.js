@@ -25,6 +25,7 @@ import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
 import Metrics from '../../../utils/Metrics'
 import * as Animatable from 'react-native-animatable'
+import BeatItemTitle from '../../shared/BeatItemTitle'
 
 const AnimeTouchableNoFeedback = Animatable.createAnimatableComponent(
   TouchableWithoutFeedback
@@ -117,13 +118,6 @@ class CardModal extends Component {
   }
 
   renderBeatMenuItem = (beat, i) => {
-    const {
-      positionOffset,
-      beatTree,
-      hierarchyLevels,
-      isSeries,
-      hierarchyEnabled
-    } = this.props
     const { card = {} } = this.state
     const isSelected = card.beatId == beat.id
     const color = isSelected ? 'orange' : 'textGray'
@@ -135,14 +129,7 @@ class CardModal extends Component {
         style={styles.menuItem}
         onPress={this.changeChapter}>
         <Text fontStyle={fontStyle} color={color}>
-          {helpers.beats.beatTitle(
-            beatTree,
-            beat,
-            hierarchyLevels,
-            positionOffset,
-            hierarchyEnabled,
-            isSeries
-          )}
+          <BeatItemTitle beat={beat} />
         </Text>
       </ShellButton>
     )
@@ -190,7 +177,8 @@ class CardModal extends Component {
       beatTree,
       hierarchyLevels,
       isSeries,
-      hierarchyEnabled
+      hierarchyEnabled,
+      beatIndex,
     } = this.props
     const { id: cardId, title, description, beatId, characters, places, tags } =
       card || {}
@@ -225,6 +213,7 @@ class CardModal extends Component {
                       <ShellButton style={styles.crumb}>
                         <Text numberOfLines={1} style={styles.chapterText}>
                           {helpers.beats.beatTitle(
+                            beatIndex,
                             beatTree,
                             beat,
                             hierarchyLevels,
@@ -419,10 +408,11 @@ CardModal.propTypes = {
   beatTree: PropTypes.object.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
-  hierarchyEnabled: PropTypes.bool
+  hierarchyEnabled: PropTypes.bool,
+  beatIndex: PropTypes.number.isRequired,
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state, ownProps) {
   return {
     positionOffset: selectors.positionOffsetSelector(state),
     beats: selectors.sortedBeatsByBookSelector(state),
@@ -432,7 +422,8 @@ function mapStateToProps(state) {
     beatTree: selectors.beatsByBookSelector(state),
     hierarchyLevels: selectors.sortedHierarchyLevels(state),
     isSeries: selectors.isSeriesSelector(state),
-    hierarchyEnabled: selectors.beatHierarchyIsOn(state)
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state),
+    beatIndex: selectors.beatIndexSelector(state, ownProps.beatId),
   }
 }
 

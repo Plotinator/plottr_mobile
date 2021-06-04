@@ -11,6 +11,7 @@ import SeriesPicker from '../shared/SeriesPicker'
 import styles from './OutlineStyles'
 import { Text, MainList } from '../../shared/common'
 import OutlineChapter from './OutlineChapter'
+import BeatItemTitle from '../../shared/BeatItemTitle'
 
 class Outline extends Component {
   state = { linesById: {}, currentLine: null, selectedLine: null }
@@ -64,7 +65,7 @@ class Outline extends Component {
     )
     const outlines = chapters.map((chapter, i) => ({
       ...chapter,
-      title: helpers.beats.beatTitle(chapter, positionOffset),
+      title: <BeatItemTitle beat={chapter} />,
       colors: cardMap[chapter.id].map(({ lineId }) => linesById[lineId].color)
     }))
     return (
@@ -110,7 +111,7 @@ Outline.propTypes = {
   beatTree: PropTypes.object.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
-  hierarchyEnabled: PropTypes.bool
+  hierarchyEnabled: PropTypes.bool,
 }
 
 function mapStateToProps(state) {

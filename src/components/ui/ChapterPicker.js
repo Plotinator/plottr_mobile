@@ -9,6 +9,7 @@ import { t } from 'plottr_locales'
 import Popover from 'react-native-popover-view'
 import Fonts from '../../fonts'
 import Colors from '../../utils/Colors'
+import BeatItemTitle from '../shared/BeatItemTitle'
 
 class ChapterPicker extends Component {
   renderTablet () {
@@ -19,7 +20,8 @@ class ChapterPicker extends Component {
       beatTree,
       hierarchyLevels,
       isSeries,
-      hierarchyEnabled
+      hierarchyEnabled,
+      beatIndex,
     } = this.props
     const selected = chapters.find(ch => ch.id == selectedId)
     return (
@@ -28,14 +30,7 @@ class ChapterPicker extends Component {
           <Button bordered dark iconRight style={styles.picker}>
             <Text>
               {selected
-                ? helpers.beats.beatTitle(
-                    beatTree,
-                    selected,
-                    hierarchyLevels,
-                    positionOffset,
-                    hierarchyEnabled,
-                    isSeries
-                  )
+                ? <BeatItemTitle beat={selected} />
                 : t('Select a Chapter')}
             </Text>
             <Icon
@@ -59,7 +54,7 @@ class ChapterPicker extends Component {
       beatTree,
       hierarchyLevels,
       isSeries,
-      hierarchyEnabled
+      hierarchyEnabled,
     } = this.props
     return chapters.map(ch => {
       return (
@@ -69,15 +64,9 @@ class ChapterPicker extends Component {
           onPress={() => onChange(ch.id)}
           noIndent
           selected={ch.id == selectedId}>
-          <Text>{
-            helpers.beats.beatTitle(
-              beatTree,
-              ch,
-              hierarchyLevels,
-              positionOffset,
-              hierarchyEnabled,
-              isSeries
-            )}</Text>
+          <Text>
+            <BeatItemTitle beat={ch} />
+          </Text>
         </ListItem>
       )
     })
@@ -90,20 +79,14 @@ class ChapterPicker extends Component {
       beatTree,
       hierarchyLevels,
       isSeries,
-      hierarchyEnabled
+      hierarchyEnabled,
     } = this.props
     return chapters.map(ch => {
+      const beatTitle = <BeatItemTitle beat={ch} />
       return (
         <Picker.Item
           key={ch.id}
-          label={helpers.beats.beatTitle(
-            beatTree,
-            ch,
-            hierarchyLevels,
-            positionOffset,
-            hierarchyEnabled,
-            isSeries
-          )}
+          label={beatTitle}
           value={ch.id}
         />
       )
@@ -174,7 +157,7 @@ ChapterPicker.propTypes = {
   beatTree: PropTypes.object.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
-  hierarchyEnabled: PropTypes.bool
+  hierarchyEnabled: PropTypes.bool,
 }
 
 function mapStateToProps (state) {
@@ -184,7 +167,7 @@ function mapStateToProps (state) {
     beatTree: selectors.beatsByBookSelector(state),
     hierarchyLevels: selectors.sortedHierarchyLevels(state),
     isSeries: selectors.isSeriesSelector(state),
-    hierarchyEnabled: selectors.beatHierarchyIsOn(state)
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state),
   }
 }
 
