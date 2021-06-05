@@ -47,6 +47,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
   }
   
   @objc func cancelButton(sender: UIBarButtonItem) {
+    DocEvents.reloadRecentDocs()
     DispatchQueue.main.async {
       let appDelegate = UIApplication.shared.delegate as! AppDelegate
       appDelegate.closeDocumentBrowser()
