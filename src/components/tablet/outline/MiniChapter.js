@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
+import { connect } from 'react-redux'
 import { StyleSheet, TouchableHighlight } from 'react-native'
 import { View, Text, Button } from 'native-base'
-import { helpers } from 'pltr/v2'
+import { helpers, selectors } from 'pltr/v2'
 import cx from 'classnames'
 import tinycolor from 'tinycolor2'
 import { grays } from 'pltr/v2/constants/CSScolors'
@@ -18,7 +19,8 @@ function MiniChapter (props) {
     beatTree,
     hierarchyLevels,
     isSeries,
-    hierarchyEnabled
+    hierarchyEnabled,
+    beatIndex,
   } = props
   const [sortedCards, setSortedCards] = useState([])
 
@@ -59,6 +61,7 @@ function MiniChapter (props) {
           <Text style={styles.indexText}>{`${idx + 1}.  `}</Text>
           <Text style={styles.titleText}>
             {helpers.beats.beatTitle(
+              beatIndex,
               beatTree,
               chapter,
               hierarchyLevels,
@@ -115,7 +118,12 @@ MiniChapter.propTypes = {
   beatTree: PropTypes.object.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
-  hierarchyEnabled: PropTypes.bool
+  hierarchyEnabled: PropTypes.bool,
+  beatIndex: PropTypes.number.isRequired,
 }
 
-export default MiniChapter
+const mapStateToProps = (state, ownProps) => ({
+  beatIndex: selectors.beatIndexSelector(state, ownProps.chapter.id),
+})
+
+export default connect(mapStateToProps)(MiniChapter)

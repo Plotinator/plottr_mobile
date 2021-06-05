@@ -36,6 +36,7 @@ class Outline extends Component {
   }
 
   renderCardDots () {
+    // FIXME: sortedCards and findCard aren't defined(!?)
     return sortedCards.map((c) => {
       let line = findCard(c)
       if (!line) return null
@@ -62,7 +63,7 @@ class Outline extends Component {
       beatTree,
       hierarchyLevels,
       isSeries,
-      hierarchyEnabled
+      hierarchyEnabled,
     } = this.props
 
     return (
@@ -204,7 +205,7 @@ Outline.propTypes = {
   beatTree: PropTypes.object.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
-  hierarchyEnabled: PropTypes.bool
+  hierarchyEnabled: PropTypes.bool,
 }
 
 function mapStateToProps (state) {
@@ -218,7 +219,7 @@ function mapStateToProps (state) {
     beatTree: selectors.beatsByBookSelector(state),
     hierarchyLevels: selectors.sortedHierarchyLevels(state),
     isSeries: selectors.isSeriesSelector(state),
-    hierarchyEnabled: selectors.beatHierarchyIsOn(state)
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state),
   }
 }
 

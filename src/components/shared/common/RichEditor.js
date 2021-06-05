@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, TouchableWithoutFeedback } from 'react-native'
 import styles from './RichEditorStyles'
 import { actions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor'
 import { moderateScale } from 'react-native-size-matters'
 import Text from './Text'
 import { Colors, HTMLToSlate, SlateToHTML } from '../../../utils'
 import Collapsible from 'react-native-collapsible'
+import Metrics from '../../../utils/Metrics'
+
+const { IS_ANDROID } = Metrics
 
 export default class RichTextEditor extends Component {
   getEditor = () => this.richText
@@ -20,6 +23,10 @@ export default class RichTextEditor extends Component {
     const { onChange } = this.props
     const SLATE = HTMLToSlate(HTML)
     onChange && onChange(SLATE)
+  }
+
+  handleFocusEditor = () => {
+    IS_ANDROID && this.richText.focusContentEditor()
   }
 
   renderTitleIcons = (title, size = 18, style = 'bold', props = {}) => ({
@@ -72,52 +79,54 @@ export default class RichTextEditor extends Component {
       Colors[bgColor] || bgColor
     } !important; }`
     return (
-      <View style={containerStyles}>
-        <RichEditor
-          pasteAsPlainText
-          ref={this.setEditor}
-          style={editorStyles}
-          editorStyle={{
-            color: Colors.darkGray,
-            cssText,
-            contentCSSText
-          }}
-          placeholder={placeholderText}
-          onFocus={onFocus}
-          initialContentHTML={initialText}
-          onChange={this.handleOnChange}
-          editorInitializedCallback={this.handleEditorInitialized}
-          disabled={!!disabled}
-        />
-        <Collapsible collapsed={!!disabled}>
-          <RichToolbar
-            style={toolbarStyles}
-            iconSize={20}
-            iconMap={{
-              bold: this.renderTitleIcons('B', 20),
-              italic: this.renderTitleIcons('I', 20, 'semiBoldItalic'),
-              underline: this.renderTitleIcons('U', 18, 'semiBold', {
-                underlined: true
-              }),
-              heading2: this.renderTitleIcons('H1'),
-              heading3: this.renderTitleIcons('H2')
+      <TouchableWithoutFeedback onPress={this.handleFocusEditor}>
+        <View style={containerStyles}>
+          <RichEditor
+            pasteAsPlainText
+            ref={this.setEditor}
+            style={editorStyles}
+            editorStyle={{
+              color: Colors.darkGray,
+              cssText,
+              contentCSSText
             }}
-            editor={this.richText}
-            getEditor={this.getEditor}
-            selectedIconTint={Colors.orange}
-            actions={[
-              actions.setBold,
-              actions.setItalic,
-              actions.setUnderline,
-              actions.setStrikethrough,
-              actions.heading2,
-              actions.heading3,
-              actions.insertOrderedList,
-              actions.insertBulletsList
-            ]}
+            placeholder={placeholderText}
+            onFocus={onFocus}
+            initialContentHTML={initialText}
+            onChange={this.handleOnChange}
+            editorInitializedCallback={this.handleEditorInitialized}
+            disabled={!!disabled}
           />
-        </Collapsible>
-      </View>
+          <Collapsible collapsed={!!disabled}>
+            <RichToolbar
+              style={toolbarStyles}
+              iconSize={20}
+              iconMap={{
+                bold: this.renderTitleIcons('B', 20),
+                italic: this.renderTitleIcons('I', 20, 'semiBoldItalic'),
+                underline: this.renderTitleIcons('U', 18, 'semiBold', {
+                  underlined: true
+                }),
+                heading2: this.renderTitleIcons('H1'),
+                heading3: this.renderTitleIcons('H2')
+              }}
+              editor={this.richText}
+              getEditor={this.getEditor}
+              selectedIconTint={Colors.orange}
+              actions={[
+                actions.setBold,
+                actions.setItalic,
+                actions.setUnderline,
+                actions.setStrikethrough,
+                actions.heading2,
+                actions.heading3,
+                actions.insertOrderedList,
+                actions.insertBulletsList
+              ]}
+            />
+          </Collapsible>
+        </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
