@@ -16,7 +16,14 @@ import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
 import SideButton from '../shared/SideButton'
-import { Text, MainList } from '../../shared/common'
+import {
+  Text,
+  MainList,
+  HeaderFilter,
+  HeaderAttributes,
+  AttributesButton,
+  HeaderButtonOptions
+} from '../../shared/common'
 import styles from './NotesStyles'
 
 class Notes extends Component {
@@ -26,7 +33,7 @@ class Notes extends Component {
     viewableNotes: []
   }
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     let returnVal = { ...state }
     const { notes } = props
     const viewableNotes = Notes.viewableNotes(notes, state.filter)
@@ -39,7 +46,7 @@ class Notes extends Component {
     return returnVal
   }
 
-  static viewableNotes (notes, filter) {
+  static viewableNotes(notes, filter) {
     const filterIsEmpty = Notes.staticFilterIsEmpty(filter)
     let viewableNotes = notes
     if (!filterIsEmpty) {
@@ -50,7 +57,7 @@ class Notes extends Component {
     return sortedNotes
   }
 
-  static findActiveNote (notes, activeNoteId) {
+  static findActiveNote(notes, activeNoteId) {
     if (notes.length == 0) return null
 
     let newId = notes[0].id
@@ -65,7 +72,7 @@ class Notes extends Component {
   }
 
   // this is a hack for now
-  static staticFilterIsEmpty (filter) {
+  static staticFilterIsEmpty(filter) {
     return (
       filter == null ||
       (filter['tag'].length === 0 &&
@@ -75,7 +82,7 @@ class Notes extends Component {
     )
   }
 
-  static isViewable (filter, note) {
+  static isViewable(filter, note) {
     if (!note) return false
     let visible = false
     if (note.tags) {
@@ -140,12 +147,12 @@ class Notes extends Component {
     )
   }
 
-  renderNoteDetail () {
+  renderNoteDetail() {
     let note = this.props.notes.find(
       (note) => note.id == this.state.activeNoteId
     )
     if (!note) return null
-    const { images = [] } = this.props
+    const { images = [], customAttributes } = this.props
     const image = images[note.imageId]
 
     return (
@@ -155,18 +162,36 @@ class Notes extends Component {
           note={{ ...note, image }}
           onSave={this.saveNote}
           navigation={this.props.navigation}
+          customAttributes={customAttributes}
         />
       </ErrorBoundary>
     )
   }
 
-  render () {
+  render() {
     const { activeNoteId, viewableNotes } = this.state
-    const { openDrawer } = this.props
+    const { openDrawer, filters } = this.props
+    const filterCount = Object.values(filters || {}).map(
+      (filter) => filter.length
+    )
+    const count = filterCount.length ? filterCount.reduce((a, b) => a + b) : 0
     return (
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewNote} />
+          <View style={styles.additionals}>
+            <HeaderButtonOptions
+              title={t('Filter')}
+              icon='filter'
+              count={count}>
+              <HeaderFilter filters={filters} type='notes' />
+            </HeaderButtonOptions>
+            <HeaderButtonOptions
+              title={t('Attributes')}
+              button={<AttributesButton />}>
+              <HeaderAttributes type={'notes'} />
+            </HeaderButtonOptions>
+          </View>
         </Toolbar>
         <Grid style={styles.grid}>
           <Col size={5}>
@@ -194,20 +219,23 @@ Notes.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
-  ui: PropTypes.object.isRequired
+  ui: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     images: state.images,
-    notes: state.notes,
+    notes: selectors.allNotesSelector(state),
     characters: state.characters,
     places: state.places,
-    tags: state.tags
+    tags: state.tags,
+    filters: state.ui.noteFilter || {},
+    customAttributes: state.customAttributes.notes
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.note, dispatch)
   }

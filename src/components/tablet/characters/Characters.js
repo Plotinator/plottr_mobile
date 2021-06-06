@@ -212,7 +212,8 @@ Characters.propTypes = {
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
   uiActions: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {

@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 import DetailPreview from '../shared/DetailView/Preview'
 import { cloneDeep } from 'lodash'
 
-export default class Character extends Component {
+export default class Note extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -22,6 +22,8 @@ export default class Character extends Component {
   }
 
   getObjectMeta = () => {
+    const { customAttributes } = this.props
+
     let objectMeta = {
       source: 'note',
       name: {
@@ -40,8 +42,23 @@ export default class Character extends Component {
       },
       attributes: []
     }
+    objectMeta = this.addCustomAttributes(objectMeta, customAttributes)
     objectMeta = this.addAttachments(objectMeta)
     return objectMeta
+  }
+
+  addCustomAttributes = (objectMeta, customAttributes) => {
+    let newMeta = cloneDeep(objectMeta)
+    customAttributes.map((attr, idx) => {
+      const { name, type } = attr
+      let newAttr = {
+        title: name,
+        key: name,
+        type: type == 'paragraph' ? 'paragraph' : 'line'
+      }
+      newMeta.attributes.push(newAttr)
+    })
+    return newMeta
   }
 
   addAttachments = (objectMeta) => {
