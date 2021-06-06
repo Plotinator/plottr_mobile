@@ -111,7 +111,7 @@ function mapStateToProps(state, { type }) {
   const noteCategories = sortedNoteCategoriesSelector(state)
   const filterOptions = []
   const parseFilterOptions = (options) => {
-    return options
+    return Object.values(options)
       .filter(({ name, title }) => name || title)
       .map(({ id, name, title }) => ({ id, label: name || title }))
   }

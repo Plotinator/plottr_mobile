@@ -21,7 +21,8 @@ import {
   MainList,
   AttributesButton,
   HeaderButtonOptions,
-  HeaderAttributes
+  HeaderAttributes,
+  HeaderFilter
 } from '../../shared/common'
 import styles from './PlacesStyles'
 
@@ -105,15 +106,22 @@ class Places extends Component {
   }
 
   render() {
-    const { visiblePlaces, openDrawer } = this.props
+    const { visiblePlaces, openDrawer, filters } = this.props
     const { activePlaceId } = this.state
-
+    const filterCount = Object.values(filters).map((filter) => filter.length)
+    const count = filterCount.length ? filterCount.reduce((a, b) => a + b) : 0
     return (
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewPlace} />
           <View style={styles.additionals}>
             <View style={styles.additionals}>
+              <HeaderButtonOptions
+                title={t('Filter')}
+                icon='filter'
+                count={count}>
+                <HeaderFilter filters={filters} type='places' />
+              </HeaderButtonOptions>
               <HeaderButtonOptions
                 title={t('Attributes')}
                 button={<AttributesButton />}>
@@ -152,7 +160,8 @@ Places.propTypes = {
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
-  uiActions: PropTypes.object.isRequired
+  uiActions: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
@@ -166,7 +175,8 @@ function mapStateToProps(state) {
       state
     ),
     restrictedValues: selectors.placeCustomAttributesRestrictedValues(state),
-    ui: state.ui
+    ui: state.ui,
+    filters: state.ui.placeFilter
   }
 }
 
