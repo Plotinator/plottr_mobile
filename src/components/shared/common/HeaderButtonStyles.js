@@ -7,10 +7,10 @@ export default ScaledSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: Metrics.baseMargin * .73,
+    padding: Metrics.baseMargin * 0.73,
     paddingHorizontal: Metrics.baseMargin,
     borderRadius: Metrics.cornerRadius / 2,
-    marginRight: Metrics.baseMargin,
+    marginRight: Metrics.baseMargin
     // backgroundColor: 'white',
     // shadowColor: '#000',
     // shadowOffset: {
@@ -30,5 +30,23 @@ export default ScaledSheet.create({
     fontSize: Fonts.size.h7,
     paddingLeft: Metrics.baseMargin / 2,
     color: Colors.textGray
+  },
+  selected: {
+    color: Colors.orange
+  },
+  count: {
+    top: -7,
+    right: -4,
+    backgroundColor: Colors.orange,
+    borderRadius: Metrics.cornerRadius,
+    width: 25,
+    height: 25,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  countText: {
+    color: Colors.white,
+    fontSize: Fonts.size.tiny,
+    ...Fonts.style.bold
   }
 })
