@@ -19,6 +19,7 @@ import SideButton from '../shared/SideButton'
 import {
   Text,
   MainList,
+  HeaderFilter,
   HeaderAttributes,
   AttributesButton,
   HeaderButtonOptions
@@ -158,12 +159,20 @@ class Characters extends Component {
   }
 
   render() {
-    const { openDrawer } = this.props
+    const { openDrawer, filters } = this.props
+    const filterCount = Object.values(filters).map((filter) => filter.length)
+    const count = filterCount.length ? filterCount.reduce((a, b) => a + b) : 0
     return (
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewCharacter} />
           <View style={styles.additionals}>
+            <HeaderButtonOptions
+              title={t('Filter')}
+              icon='filter'
+              count={count}>
+              <HeaderFilter filters={filters} type='characters' />
+            </HeaderButtonOptions>
             <HeaderButtonOptions
               title={t('Attributes')}
               button={<AttributesButton />}>
@@ -219,7 +228,8 @@ function mapStateToProps(state) {
     customAttributesThatCanChange: selectors.characterCustomAttributesThatCanChangeSelector(
       state
     ),
-    ui: state.ui
+    ui: state.ui,
+    filters: state.ui.characterFilter
   }
 }
 

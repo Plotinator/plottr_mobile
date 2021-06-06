@@ -39,7 +39,7 @@ class HeaderFilter extends Component {
     const { onFilter, filteredItems, updateFilter } = this.props
     const newSelected = cloneDeep(selected)
     const selects = newSelected[type] || []
-    const isFound = selects.indexOf(3)
+    const isFound = selects.indexOf(id)
 
     if (active && isFound == -1) selects.push(id)
     else if (isFound > -1) selects.splice(isFound, 1)
@@ -174,6 +174,7 @@ function mapStateToProps(state, { type }) {
   const showBooks = isNotes || isCharacters || isPlaces
   const showTags = isCards || isNotes || isCharacters || isPlaces
 
+  if (showBooks) filterOptions.push(parseFilterGroup(t('Books'), books, 'book'))
   if (showCharacters)
     filterOptions.push(
       parseFilterGroup(t('Characters'), characters, 'character')
@@ -188,7 +189,6 @@ function mapStateToProps(state, { type }) {
     filterOptions.push(
       parseFilterGroup(t('Categories'), noteCategories, 'category')
     )
-  if (showBooks) filterOptions.push(parseFilterGroup(t('Books'), books, 'book'))
   if (showTags) filterOptions.push(parseFilterGroup(t('Tags'), tags, 'tag'))
 
   return {
