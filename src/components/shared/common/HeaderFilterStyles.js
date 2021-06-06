@@ -14,7 +14,7 @@ export default ScaledSheet.create({
   filterBase: {
     flexDirection: 'row',
     width: 'auto',
-    padding: baseMargin,
+    padding: baseMargin
   },
   filterColumn: {
     alignItems: 'flex-start',
@@ -31,7 +31,8 @@ export default ScaledSheet.create({
     paddingVertical: baseMargin
   },
   clearText: {
+    ...style.semiBold,
     fontSize: size.size9,
     color: Colors.orange
-  },
+  }
 })

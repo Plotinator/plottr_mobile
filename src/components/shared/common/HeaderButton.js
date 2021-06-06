@@ -17,13 +17,17 @@ export default class HeaderButton extends Component {
     } = this.props
     return (
       <ShellButton {...otherProps} style={[styles.container, style]}>
-        <Icon type='FontAwesome5' name={icon} style={styles.icon} />
-        <Text style={styles.text}>{title}</Text>
-        {count && (
+        <Icon
+          type='FontAwesome5'
+          name={icon}
+          style={[styles.icon, count && styles.selected]}
+        />
+        <Text style={[styles.text, count && styles.selected]}>{title}</Text>
+        {count ? (
           <View style={styles.count}>
             <Text style={styles.countText}>{count}</Text>
           </View>
-        )}
+        ) : null}
       </ShellButton>
     )
   }

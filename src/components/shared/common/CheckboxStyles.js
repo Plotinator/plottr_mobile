@@ -5,7 +5,7 @@ import Colors from '../../../utils/Colors'
 
 const { baseMargin, cornerRadius } = Metrics
 const { size, style } = Fonts
-const { textGray, warmTextDarkGray } = Colors
+const { textGray, warmTextDarkGray, orange } = Colors
 
 export default ScaledSheet.create({
   container: {
@@ -22,7 +22,10 @@ export default ScaledSheet.create({
     borderRadius: cornerRadius / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: baseMargin * .75
+    marginRight: baseMargin * 0.75
+  },
+  selectedCheckBox: {
+    borderColor: orange
   },
   checkTick: {
     fontSize: size.micro,
@@ -30,9 +33,12 @@ export default ScaledSheet.create({
     marginRight: '-2@ms',
     color: warmTextDarkGray
   },
+  selectedTick: {
+    color: orange
+  },
   textContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   label: {
     ...style.semiBold,
@@ -44,5 +50,8 @@ export default ScaledSheet.create({
     flexWrap: 'wrap',
     paddingBottom: 2,
     color: warmTextDarkGray
+  },
+  selectedLabel: {
+    color: orange
   }
 })

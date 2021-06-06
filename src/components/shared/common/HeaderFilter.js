@@ -13,49 +13,59 @@ import { t } from 'plottr_locales'
 import Collapsible from 'react-native-collapsible'
 
 class HeaderFilter extends Component {
-  state = {
-    filters: [],
-    selected: {}
+  constructor(props) {
+    super(props)
+    this.state = {
+      selected: props.filters || {}
+    }
   }
 
-  handleClearFilter = () => {
-    const { onFilter } = this.props
+  handleClearFilter = async () => {
+    const { onFilter, updateFilter } = this.props
     this.setState(
       {
         selected: {}
       },
-      () => onFilter && onFilter({})
+      () => {
+        onFilter && onFilter({})
+        updateFilter({})
+      }
     )
   }
 
-  handleSelect = (active, checkbox) => {
-    const { label, selectIndex } = checkbox
+  handleSelect = async (active, checkbox) => {
+    const { label, type, id } = checkbox
     const { selected } = this.state
-    const { onFilter } = this.props
+    const { onFilter, filteredItems, updateFilter } = this.props
     const newSelected = cloneDeep(selected)
-    if (active) newSelected[selectIndex] = checkbox
-    else delete newSelected[selectIndex]
-    this.setState(
-      { selected: newSelected },
-      () => onFilter && onFilter(newSelected)
-    )
+    const selects = newSelected[type] || []
+    const isFound = selects.indexOf(3)
+
+    if (active && isFound == -1) selects.push(id)
+    else if (isFound > -1) selects.splice(isFound, 1)
+    newSelected[type] = selects
+    this.setState({ selected: newSelected }, () => {
+      onFilter && onFilter(newSelected)
+      updateFilter(newSelected)
+    })
   }
 
-  renderGroup = ({ title, data = [] }, k) => {
+  renderGroup = ({ title, type, data = [] }, k) => {
     return (
       <View style={styles.filterColumn} key={k}>
         {title ? <Text style={styles.columnTitle}>{title}</Text> : null}
         {data.map((checkbox, i) => {
-          const { label } = checkbox
+          const { id, label } = checkbox
           const { selected } = this.state
-          const selectIndex = `${title}:${label}`
-          const isActive = selected[selectIndex]
+          const { filteredItems } = this.props
+          const selects = selected[type] || []
+          const isActive = selects.indexOf(id) > -1
           return (
             <Checkbox
               key={i}
               index={i}
               active={isActive}
-              data={{ ...checkbox, selectIndex }}
+              data={{ ...checkbox, type }}
               onChange={this.handleSelect}
               label={label}
             />
@@ -105,9 +115,10 @@ function mapStateToProps(state, { type }) {
       .filter(({ name, title }) => name || title)
       .map(({ id, name, title }) => ({ id, label: name || title }))
   }
-  const parseFilterGroup = (groupName, options) => {
+  const parseFilterGroup = (groupName, options, type) => {
     return {
       title: groupName,
+      type,
       data: parseFilterOptions(options)
     }
   }
@@ -148,7 +159,7 @@ function mapStateToProps(state, { type }) {
     }
   }
 
-  // const filteredItems = chooseFilteredItems(type)
+  const filteredItems = chooseFilteredItems(type)
   // const customAttributes = chooseCustomAttributes(type)
 
   const isNotes = type === 'notes'
@@ -164,18 +175,25 @@ function mapStateToProps(state, { type }) {
   const showTags = isCards || isNotes || isCharacters || isPlaces
 
   if (showCharacters)
-    filterOptions.push(parseFilterGroup(t('Characters'), characters))
-  if (showPlaces) filterOptions.push(parseFilterGroup(t('Places'), places))
+    filterOptions.push(
+      parseFilterGroup(t('Characters'), characters, 'character')
+    )
+  if (showPlaces)
+    filterOptions.push(parseFilterGroup(t('Places'), places, 'place'))
   if (showCategory)
-    filterOptions.push(parseFilterGroup(t('Categories'), categories))
+    filterOptions.push(
+      parseFilterGroup(t('Categories'), categories, 'category')
+    )
   if (showNoteCategory)
-    filterOptions.push(parseFilterGroup(t('Categories'), noteCategories))
-  if (showBooks) filterOptions.push(parseFilterGroup(t('Books'), books))
-  if (showTags) filterOptions.push(parseFilterGroup(t('Tags'), tags))
+    filterOptions.push(
+      parseFilterGroup(t('Categories'), noteCategories, 'category')
+    )
+  if (showBooks) filterOptions.push(parseFilterGroup(t('Books'), books, 'book'))
+  if (showTags) filterOptions.push(parseFilterGroup(t('Tags'), tags, 'tag'))
 
   return {
-    // filteredItems,
     // customAttributes,
+    filteredItems,
     filterOptions
   }
 }
@@ -208,6 +226,8 @@ function mapDispatchToProps(dispatch, { type }) {
 
 HeaderFilter.propTypes = {
   onFilter: PropTypes.func,
+  filters: PropTypes.object.isRequired,
+  filteredItems: PropTypes.object.isRequired,
   filterOptions: PropTypes.array.isRequired
 }
 

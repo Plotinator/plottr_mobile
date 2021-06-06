@@ -12,20 +12,10 @@ import SeriesPicker from '../shared/SeriesPicker'
 import Timeline from './Timeline'
 
 class TimelineWrapper extends Component {
-  state = {
-    hasFilter: false
-  }
-
-  handleFilterTimeline = (filters) => {
-    console.log('filters', filters)
-    this.setState({
-      hasFilter: Objects.keys(filters).length
-    })
-  }
-
   render() {
-    const { hasFilter } = this.state
-    const { openDrawer } = this.props
+    const { openDrawer, filters = {} } = this.props
+    const filterCount = Object.values(filters).map((filter) => filter.length)
+    const count = filterCount.length ? filterCount.reduce((a, b) => a + b) : 0
     return (
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
@@ -34,8 +24,8 @@ class TimelineWrapper extends Component {
             <HeaderButtonOptions
               title={t('Filter')}
               icon='filter'
-              count={hasFilter}>
-              <HeaderFilter type='cards' onFilter={this.handleFilterTimeline} />
+              count={count}>
+              <HeaderFilter filters={filters} type='cards' />
             </HeaderButtonOptions>
           </View>
         </Toolbar>
@@ -61,18 +51,16 @@ const styles = StyleSheet.create({
 TimelineWrapper.propTypes = {
   lines: PropTypes.array.isRequired,
   card2Dmap: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
   return {
     lines: selectors.sortedLinesByBookSelector(state),
-    card2Dmap: selectors.cardMapSelector(state)
+    card2Dmap: selectors.cardMapSelector(state),
+    filters: state.ui.timelineFilter
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(TimelineWrapper)
+export default connect(mapStateToProps, null)(TimelineWrapper)

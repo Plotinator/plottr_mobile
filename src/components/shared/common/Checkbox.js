@@ -10,8 +10,8 @@ export default class Checkbox extends Component {
     const { onPress, onChange, active, data, index } = this.props
     if (onPress) onPress(active, data, index)
     if (onChange) onChange(!active, data, index)
-  };
-  render () {
+  }
+  render() {
     const {
       style,
       textStyle,
@@ -20,13 +20,19 @@ export default class Checkbox extends Component {
       onPress,
       children,
       disabled,
-      nonInteractive
+      nonInteractive,
+      colored = true
     } = this.props
     const tickStyles = [styles.checkTick]
     const checkBoxStyles = [styles.checkBox]
     const checkStyles = [style]
     const textStyles = [textStyle, styles.label]
     if (disabled) checkStyles.push({ opacity: 0.5 })
+    if (active && colored) {
+      checkBoxStyles.push(styles.selectedCheckBox)
+      tickStyles.push(styles.selectedTick)
+      textStyles.push(styles.selectedLabel)
+    }
     return (
       <ShellButton
         style={checkStyles}
