@@ -150,11 +150,13 @@ class Chapter extends Component {
       positionOffset,
       isSeries,
       hierarchyEnabled,
-      hierarchyLevels
+      hierarchyLevels,
+      beatIndex,
     } = this.props
     if (activeFilter && !cards.length) return null
 
     const chapterTitle = helpers.beats.beatTitle(
+      beatIndex,
       beatTree,
       chapter,
       hierarchyLevels,
@@ -220,6 +222,7 @@ const styles = StyleSheet.create({
 })
 
 Chapter.propTypes = {
+  beatIndex: PropTypes.number.isRequired,
   chapter: PropTypes.object.isRequired,
   beatTree: PropTypes.object.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
@@ -231,10 +234,10 @@ Chapter.propTypes = {
   positionOffset: PropTypes.number.isRequired,
   navigation: PropTypes.object.isRequired,
   render: PropTypes.func.isRequired,
-  hierarchyEnabled: PropTypes.bool
+  hierarchyEnabled: PropTypes.bool,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state, ownProps) {
   return {
     ui: state.ui,
     lines: selectors.sortedLinesByBookSelector(state),
@@ -242,7 +245,8 @@ function mapStateToProps (state) {
     beatTree: selectors.beatsByBookSelector(state),
     hierarchyLevels: selectors.sortedHierarchyLevels(state),
     isSeries: selectors.isSeriesSelector(state),
-    hierarchyEnabled: selectors.beatHierarchyIsOn(state)
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state),
+    beatIndex: selectors.beatIndexSelector(state, ownProps.chapter.id),
   }
 }
 

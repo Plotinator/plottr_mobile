@@ -26,6 +26,7 @@ import { Icon } from 'native-base'
 import tinycolor from 'tinycolor2'
 import LineTitleCell from './LineTitleCell'
 import ColorPickerModal from '../shared/ColorPickerModal'
+import BeatItemTitle from '../../shared/BeatItemTitle'
 import { Text, Input, Button, ShellButton, ModalBox } from '../../shared/common'
 import styles from './TimelineStyles'
 import { showAlert } from '../../shared/common/AlertDialog'
@@ -239,16 +240,10 @@ class Timeline extends Component {
       beatTree,
       hierarchyLevels,
       isSeries,
-      hierarchyEnabled
-    } = this.props
-    const name = helpers.beats.beatTitle(
-      beatTree,
-      currentBeat,
-      hierarchyLevels,
-      positionOffset,
       hierarchyEnabled,
-      isSeries
-    )
+      beatIndex
+    } = this.props
+    const name = <BeatItemTitle beat={currentBeat} />
     showAlert({
       title: t('Delete Chapter'),
       message: t('Delete Chapter {name}?', { name }),
@@ -458,6 +453,7 @@ class Timeline extends Component {
     if (!showCardModal) return null
     return (
       <CardModal
+        beatId={card.beatId}
         card={card}
         navigation={navigation}
         onClose={this.handleHideCardModal}

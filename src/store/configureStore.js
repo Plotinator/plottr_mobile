@@ -4,9 +4,11 @@ import DocumentSaver from '../middlewares/DocumentSaver'
 
 let store = null
 
+const dataRepairers = {}
+
 export function configureStore (initialState) {
   const enhancer = compose(applyMiddleware(DocumentSaver))
-  store = createStore(rootReducer, initialState, enhancer)
+  store = createStore(rootReducer(dataRepairers), initialState, enhancer)
   return store
 }
 
