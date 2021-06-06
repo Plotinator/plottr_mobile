@@ -25,11 +25,11 @@ class HeaderFilter extends Component {
     const { onFilter, updateFilter } = this.props
     this.setState(
       {
-        selected: {}
+        selected: []
       },
       () => {
         onFilter && onFilter({})
-        updateFilter({})
+        updateFilter([])
       }
     )
   }
@@ -38,16 +38,19 @@ class HeaderFilter extends Component {
     const { label, type, id } = checkbox
     const { selected } = this.state
     const { onFilter, filteredItems, updateFilter } = this.props
-    const newSelected = cloneDeep(selected)
-    const selects = newSelected[type] || []
+    let newSelected = cloneDeep(selected)
+    const selects = (type ? newSelected[type] : newSelected) || []
     const isFound = selects.indexOf(id)
 
     if (active && isFound == -1) selects.push(id)
     else if (isFound > -1) selects.splice(isFound, 1)
-    newSelected[type] = selects
+    console.log('selects', selects)
+    if (type) newSelected[type] = selects
+    else newSelected = selects
+    console.log('newSelected', newSelected)
     this.setState({ selected: newSelected }, () => {
       onFilter && onFilter(newSelected)
-      updateFilter(newSelected)
+      updateFilter(Object.values(newSelected).length ? newSelected : null)
     })
   }
 
@@ -60,7 +63,7 @@ class HeaderFilter extends Component {
           const { id, label } = checkbox
           const { selected } = this.state
           const { filteredItems } = this.props
-          const selects = selected[type] || []
+          const selects = (type ? selected[type] : selected) || []
           const isActive = selects.indexOf(id) > -1
           return (
             <Checkbox
@@ -106,13 +109,15 @@ class HeaderFilter extends Component {
 function mapStateToProps(state, { type }) {
   const {
     sortedTagsSelector,
-    sortedCharacterCategoriesSelector,
-    sortedNoteCategoriesSelector
+    sortedLinesByBookSelector,
+    sortedNoteCategoriesSelector,
+    sortedCharacterCategoriesSelector
   } = selectors
   const { books, places, characters } = state
   const tags = sortedTagsSelector(state)
   const categories = sortedCharacterCategoriesSelector(state)
   const noteCategories = sortedNoteCategoriesSelector(state)
+  const lines = sortedLinesByBookSelector(state)
   const filterOptions = []
   const parseFilterOptions = (options) => {
     return Object.values(options)
@@ -137,6 +142,8 @@ function mapStateToProps(state, { type }) {
         return state.ui.timelineFilter
       case 'notes':
         return state.ui.noteFilter
+      case 'outlines':
+        return state.ui.outlineFilter
       default:
         console.error(
           `Trying to get filter for unsuported filter type: ${type}`
@@ -155,6 +162,8 @@ function mapStateToProps(state, { type }) {
         return state.customAttributes.scenes
       case 'notes':
         return state.customAttributes.notes
+      case 'outlines':
+        return state.customAttributes.lines
       default:
         console.error(
           `Trying to get custom attributes unsuported type: ${type}`
@@ -170,6 +179,7 @@ function mapStateToProps(state, { type }) {
   const isCharacters = type === 'characters'
   const isPlaces = type === 'places'
   const isCards = type === 'cards'
+  const isOutlines = type === 'outlines'
 
   const showCharacters = isCards || isNotes
   const showPlaces = isCards || isNotes
@@ -177,6 +187,7 @@ function mapStateToProps(state, { type }) {
   const showNoteCategory = isNotes
   const showBooks = isNotes || isCharacters || isPlaces
   const showTags = isCards || isNotes || isCharacters || isPlaces
+  const showLines = isOutlines
 
   if (showBooks) filterOptions.push(parseFilterGroup(t('Books'), books, 'book'))
   if (showCharacters)
@@ -194,6 +205,7 @@ function mapStateToProps(state, { type }) {
       parseFilterGroup(t('Categories'), noteCategories, 'category')
     )
   if (showTags) filterOptions.push(parseFilterGroup(t('Tags'), tags, 'tag'))
+  if (showLines) filterOptions.push(parseFilterGroup(t('Plotlines'), lines, ''))
 
   return {
     // customAttributes,
@@ -221,6 +233,9 @@ function mapDispatchToProps(dispatch, { type }) {
       break
     case 'notes':
       updateFilter = uiActions.setNoteFilter
+      break
+    case 'outlines':
+      updateFilter = uiActions.setOutlineFilter
       break
   }
   return {

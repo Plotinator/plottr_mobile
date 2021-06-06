@@ -172,5 +172,10 @@ export default ScaledSheet.create({
   },
   reorderDownIcon: {
     marginTop: -baseMargin / 4
+  },
+  additionals: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   }
 })

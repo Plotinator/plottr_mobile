@@ -9,7 +9,14 @@ import { Col, Grid } from 'react-native-easy-grid'
 import Toolbar from '../shared/Toolbar'
 import SeriesPicker from '../shared/SeriesPicker'
 import styles from './OutlineStyles'
-import { Text, MainList } from '../../shared/common'
+import {
+  Text,
+  MainList,
+  HeaderFilter,
+  HeaderAttributes,
+  AttributesButton,
+  HeaderButtonOptions
+} from '../../shared/common'
 import OutlineChapter from './OutlineChapter'
 import BeatItemTitle from '../../shared/BeatItemTitle'
 
@@ -54,7 +61,8 @@ class Outline extends Component {
       chapters,
       card2Dmap,
       openDrawer,
-      positionOffset
+      positionOffset,
+      filters
     } = this.props
     const { linesById, currentLine, selectedLineId } = this.state
     const cardMap = helpers.card.cardMapping(
@@ -68,10 +76,23 @@ class Outline extends Component {
       title: <BeatItemTitle beat={chapter} />,
       colors: cardMap[chapter.id].map(({ lineId }) => linesById[lineId].color)
     }))
+    // TODO find out why outline filters
+    // structure are different than the others
+    const lastFilters = (filters && filters[filters.length - 1]) || []
+    const count = lastFilters.length
+
     return (
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
           <SeriesPicker />
+          <View style={styles.additionals}>
+            <HeaderButtonOptions
+              title={t('Filter')}
+              icon='filter'
+              count={count}>
+              <HeaderFilter filters={lastFilters} type='outlines' />
+            </HeaderButtonOptions>
+          </View>
         </Toolbar>
         <Grid>
           <Col size={5}>
@@ -112,6 +133,7 @@ Outline.propTypes = {
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
   hierarchyEnabled: PropTypes.bool,
+  filters: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
@@ -119,7 +141,8 @@ function mapStateToProps(state) {
     chapters: selectors.sortedBeatsByBookSelector(state),
     lines: selectors.sortedLinesByBookSelector(state),
     card2Dmap: selectors.cardMapSelector(state),
-    positionOffset: selectors.positionOffsetSelector(state)
+    positionOffset: selectors.positionOffsetSelector(state),
+    filters: state.ui.outlineFilter
   }
 }
 

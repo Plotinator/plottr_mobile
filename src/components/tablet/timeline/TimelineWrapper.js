@@ -14,7 +14,9 @@ import Timeline from './Timeline'
 class TimelineWrapper extends Component {
   render() {
     const { openDrawer, filters = {} } = this.props
-    const filterCount = Object.values(filters).map((filter) => filter.length)
+    const filterCount = Object.values(filters || {}).map(
+      (filter) => filter.length
+    )
     const count = filterCount.length ? filterCount.reduce((a, b) => a + b) : 0
     return (
       <View style={styles.container}>

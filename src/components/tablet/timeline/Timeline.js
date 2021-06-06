@@ -496,7 +496,6 @@ class Timeline extends Component {
         const key = `${cards ? 'card' : 'blank'}-${
           beat.position
         }-${linePosition}`
-        console.log('cards', cards)
         if (cards) {
           cards.forEach((c, idx) =>
             acc.push(
