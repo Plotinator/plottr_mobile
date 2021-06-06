@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { actions, selectors } from 'pltr/v2'
 import Text from './Text'
 import ShellButton from './ShellButton'
+import ScrollerView from './ScrollerView'
 import Checkbox from './Checkbox'
 import styles from './HeaderFilterStyles'
 import { cloneDeep } from 'lodash'
@@ -51,7 +52,8 @@ class HeaderFilter extends Component {
   }
 
   renderGroup = ({ title, type, data = [] }, k) => {
-    return (
+    const isEmpty = data.length == 0
+    return isEmpty ? null : (
       <View style={styles.filterColumn} key={k}>
         {title ? <Text style={styles.columnTitle}>{title}</Text> : null}
         {data.map((checkbox, i) => {
@@ -82,9 +84,11 @@ class HeaderFilter extends Component {
     const hasFilter = Object.keys(selected).length
     return (
       <View style={styles.container}>
-        <View style={styles.filterBase}>
-          {filterOptions.map(this.renderGroup)}
-        </View>
+        <ScrollerView>
+          <View style={styles.filterBase}>
+            {filterOptions.map(this.renderGroup)}
+          </View>
+        </ScrollerView>
         <Collapsible collapsed={!hasFilter}>
           <ShellButton
             onPress={this.handleClearFilter}

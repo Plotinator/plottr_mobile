@@ -13,13 +13,16 @@ export default ScaledSheet.create({
   },
   filterBase: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     width: 'auto',
-    padding: baseMargin
+    padding: baseMargin,
+    marginBottom: -baseMargin
   },
   filterColumn: {
     alignItems: 'flex-start',
     maxWidth: 230,
-    paddingHorizontal: baseMargin * 1.5
+    paddingHorizontal: baseMargin * 1.5,
+    paddingBottom: doubleBaseMargin
   },
   columnTitle: {
     ...style.bold,
@@ -28,7 +31,7 @@ export default ScaledSheet.create({
   },
   clearButton: {
     paddingHorizontal: doubleBaseMargin,
-    paddingVertical: baseMargin
+    paddingBottom: baseMargin
   },
   clearText: {
     ...style.semiBold,

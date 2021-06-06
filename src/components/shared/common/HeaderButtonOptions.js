@@ -26,5 +26,6 @@ export default class HeaderButtonOptions extends Component {
 
 HeaderButtonOptions.propTypes = {
   title: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired
+  button: PropTypes.object,
+  icon: PropTypes.string
 }
