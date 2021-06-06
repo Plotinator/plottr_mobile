@@ -17,7 +17,11 @@ import { BlankCell } from './BlankCell'
 import Cell from '../shared/Cell'
 import CardCell from './CardCell'
 import CardModal from './CardModal'
-import { CELL_HEIGHT, CELL_WIDTH, MIGRATION_VERSION } from '../../../utils/constants'
+import {
+  CELL_HEIGHT,
+  CELL_WIDTH,
+  MIGRATION_VERSION
+} from '../../../utils/constants'
 import { Icon } from 'native-base'
 import tinycolor from 'tinycolor2'
 import LineTitleCell from './LineTitleCell'
@@ -31,7 +35,7 @@ import { actions, selectors, helpers, newIds } from 'pltr/v2'
 import Migrator from '../../../../lib/pltr/v2/migrator/migrator'
 const {
   beats: { nextId },
-  lists: { reorderList },
+  lists: { reorderList }
 } = helpers
 
 const {
@@ -41,7 +45,7 @@ const {
 } = selectors
 
 class Timeline extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.headerScrollView = null
     this.scrollPosition = new Animated.Value(0)
@@ -61,12 +65,12 @@ class Timeline extends Component {
       lineMapKeys: {},
       showColorPicker: false,
       currentLine: {},
-      currentBeat: {},
+      currentBeat: {}
     }
     this.dropCoordinates = []
   }
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     const { lineMap } = props
     return {
       lineMapKeys: Object.keys(lineMap),
@@ -74,7 +78,7 @@ class Timeline extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.listener = this.scrollPosition.addListener((position) => {
       this.scrollX = position.value
       this.headerScrollView.scrollTo({ x: position.value, animated: false })
@@ -84,9 +88,14 @@ class Timeline extends Component {
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.scrollPosition.removeAllListeners()
     this.verticalScrollPosition.removeAllListeners()
+  }
+
+  handleClearTimelineFilter = () => {
+    const { actions } = this.props
+    actions.setTimelineFilter({ tag: [], character: [], place: [], color: [] })
   }
 
   handleAppendLine = () => {
@@ -118,7 +127,7 @@ class Timeline extends Component {
     const success = this.dropCoordinates.some((coord) => {
       // using .some to short circuit once we find one
       // check if it's within this one's bounds
-      if (this.isWithinCell (trueX, trueY, coord)) {
+      if (this.isWithinCell(trueX, trueY, coord)) {
         // do nothing for dropping on itself
         if (
           coord.beatId != droppedCard.beatId ||
@@ -204,7 +213,9 @@ class Timeline extends Component {
   }
 
   handleSaveBeat = () => {
-    const { currentBeat: { id, bookId, title } } = this.state
+    const {
+      currentBeat: { id, bookId, title }
+    } = this.state
     const {
       beatActions,
       beatTree,
@@ -219,7 +230,10 @@ class Timeline extends Component {
 
   handleAskToDeleteBeat = () => {
     // delay for 1 sec
-    const { currentBeat, currentBeat: { title } } = this.state
+    const {
+      currentBeat,
+      currentBeat: { title }
+    } = this.state
     const {
       positionOffset,
       beatTree,
@@ -238,20 +252,24 @@ class Timeline extends Component {
     showAlert({
       title: t('Delete Chapter'),
       message: t('Delete Chapter {name}?', { name }),
-      actions: [{
-        icon: 'trash',
-        danger: true,
-        name: t('Delete Chapter'),
-        callback: this.handleDeleteBeat
-      },
-      {
-        name: t('Cancel')
-      }]
+      actions: [
+        {
+          icon: 'trash',
+          danger: true,
+          name: t('Delete Chapter'),
+          callback: this.handleDeleteBeat
+        },
+        {
+          name: t('Cancel')
+        }
+      ]
     })
   }
 
   handleDeleteBeat = () => {
-    const { currentBeat: { id, bookId } } = this.state
+    const {
+      currentBeat: { id, bookId }
+    } = this.state
     const { beatActions } = this.props
     this._BeatModal.hide()
     beatActions.deleteBeat(id, bookId)
@@ -349,7 +367,8 @@ class Timeline extends Component {
 
   handleMoveBeat = (unboundedBeatPosition, beat) => {
     const { beats, bookId } = this.props
-    const newBeatPosition = unboundedBeatPosition < 0 ? 0 : unboundedBeatPosition;
+    const newBeatPosition =
+      unboundedBeatPosition < 0 ? 0 : unboundedBeatPosition
     if (!beats[newBeatPosition]) return
     this.props.beatActions.reorderBeats(
       beat.id,
@@ -425,7 +444,7 @@ class Timeline extends Component {
     })
   }
 
-  getMaxCards (id) {
+  getMaxCards(id) {
     const { linesMaxCards } = this.props
     return (linesMaxCards[id] || 1) - 1
   }
@@ -433,7 +452,7 @@ class Timeline extends Component {
   setPlotModalRef = (ref) => (this._PlotModal = ref)
   setBeatModalRef = (ref) => (this._BeatModal = ref)
 
-  renderCardModal () {
+  renderCardModal() {
     const { showCardModal, card } = this.state
     const { navigation } = this.props
     if (!showCardModal) return null
@@ -446,15 +465,15 @@ class Timeline extends Component {
     )
   }
 
-  renderBlankLineTitleCell (key) {
+  renderBlankLineTitleCell(key) {
     return <Cell key={key} style={styles.lineTitleCell} />
   }
 
-  renderSpacerCard (key) {
+  renderSpacerCard(key) {
     return <Cell key={key} />
   }
 
-  renderPlusButton (id, onPress) {
+  renderPlusButton(id, onPress) {
     return (
       <Cell key={id} style={styles.addCell} onPress={onPress}>
         <Icon type='FontAwesome5' name='plus' style={styles.plusButton} />
@@ -462,7 +481,7 @@ class Timeline extends Component {
     )
   }
 
-  renderCornerCell () {
+  renderCornerCell() {
     return <Cell key='corner-cell' style={styles.cornerCell} />
   }
 
@@ -530,7 +549,7 @@ class Timeline extends Component {
     return <View style={styles.column}>{cells}</View>
   }
 
-  renderBeatTitles () {
+  renderBeatTitles() {
     const { beats, bookId } = this.props
     let cols = beats.map((ch) => (
       <ChapterTitleCell
@@ -560,7 +579,7 @@ class Timeline extends Component {
     )
   }
 
-  renderLineTitles () {
+  renderLineTitles() {
     const { lines, linesMaxCards } = this.props
     let cells = lines.reduce((acc, line) => {
       acc.push(
@@ -582,7 +601,7 @@ class Timeline extends Component {
     return <View style={styles.lineTitlesColumn}>{cells}</View>
   }
 
-  renderPlotlineModal () {
+  renderPlotlineModal() {
     const {
       currentLine: { title, color }
     } = this.state
@@ -642,7 +661,7 @@ class Timeline extends Component {
     )
   }
 
-  renderBeatModal () {
+  renderBeatModal() {
     const {
       currentBeat: { title }
     } = this.state
@@ -653,7 +672,7 @@ class Timeline extends Component {
         onHide={this.handleClearCurrentBeat}>
         <View style={styles.row}>
           <Text center fontStyle='semiBold' fontSize='tiny'>
-            {t('Enter Chapter\'s name or enter')}
+            {t("Enter Chapter's name or enter")}
           </Text>
         </View>
         <View style={styles.row}>
@@ -671,10 +690,7 @@ class Timeline extends Component {
         </View>
         <View style={[styles.row, styles.last]}>
           <View style={styles.ctaButtons}>
-            <Button
-              center
-              style={styles.button}
-              onPress={this.handleSaveBeat}>
+            <Button center style={styles.button} onPress={this.handleSaveBeat}>
               {t('Save Chapter')}
             </Button>
             <Button
@@ -690,7 +706,7 @@ class Timeline extends Component {
     )
   }
 
-  renderColorPicker () {
+  renderColorPicker() {
     const {
       showColorPicker,
       currentLine: { color = 'red' }
@@ -705,7 +721,7 @@ class Timeline extends Component {
     )
   }
 
-  renderBody () {
+  renderBody() {
     const { beats } = this.props
     const cells = [...beats, { id: 'new' }] // 'new' is needed to show the + chapter cell
 
@@ -732,7 +748,7 @@ class Timeline extends Component {
     return item.render
   }
 
-  render () {
+  render() {
     let body = this.renderBody()
     let data = [{ key: 'body', render: body }]
     const { showCardModal } = this.state
@@ -766,11 +782,12 @@ Timeline.propTypes = {
   beatTree: PropTypes.object.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
-  hierarchyEnabled: PropTypes.bool
+  hierarchyEnabled: PropTypes.bool,
+  filterIsEmpty: PropTypes.bool
 }
 
-function mapStateToProps (state) {
-   let nextBeatId = -1
+function mapStateToProps(state) {
+  let nextBeatId = -1
   const bookId = selectors.currentTimelineSelector(state)
   nextBeatId = nextId(state.beats)
   return {
@@ -786,11 +803,12 @@ function mapStateToProps (state) {
     beatTree: selectors.beatsByBookSelector(state),
     hierarchyLevels: selectors.sortedHierarchyLevels(state),
     isSeries: selectors.isSeriesSelector(state),
-    hierarchyEnabled: selectors.beatHierarchyIsOn(state)
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state),
+    filterIsEmpty: selectors.timelineFilterIsEmptySelector(state)
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.ui, dispatch),
     lineActions: bindActionCreators(actions.line, dispatch),
