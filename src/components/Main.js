@@ -186,7 +186,7 @@ export default class Main extends Component {
               existingDocs.push(dataArray[i])
             }
           }
-          const recentDocuments = existingDocs
+          const recentDocuments = IS_IOS ? existingDocs : dataArray;
           this.setState({ recentDocuments })
         } catch (e) {
           console.log('corrupt recent docs', e)
