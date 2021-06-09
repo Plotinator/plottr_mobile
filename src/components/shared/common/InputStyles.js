@@ -21,10 +21,11 @@ const { size, style } = Fonts
 export default ScaledSheet.create({
   container: {
     width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
     borderBottomWidth: 0.5,
-    borderColor: inputBorder
+    borderColor: inputBorder,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
   },
   input: {
     ...style.inputText,
@@ -32,7 +33,7 @@ export default ScaledSheet.create({
     paddingVertical: IS_IOS ? 5 : null,
     minHeight: '35@ms',
     fontSize: size.h4,
-    flex: 1
+    width: '100%'
   },
   multiline: {
     height: 'auto',
@@ -70,11 +71,15 @@ export default ScaledSheet.create({
   },
   label: {
     paddingRight: baseMargin / 1.75,
-    paddingVertical: baseMargin * 1.125
+    paddingTop: baseMargin / 2,
+    marginBottom: -baseMargin * (onTablet ? 1.5 : 1.25),
+    // paddingVertical: baseMargin * 1.125,
+    width: '100%'
   },
   labelText: {
     ...style.semiBold,
     marginTop: -3,
+    fontSize: size.small,
     paddingBottom: 1
   },
   reset: {
@@ -96,7 +101,9 @@ export default ScaledSheet.create({
   insetText: {
     paddingVertical: baseMargin * 1,
     paddingBottom: baseMargin * 1.2,
-    color: textBlack
+    color: textBlack,
+    minHeight: '44@ms',
+    marginBottom: -(onTablet ? doubleBaseMargin : baseMargin) / 2.25
   },
   labelUp: {
     marginTop: 0,

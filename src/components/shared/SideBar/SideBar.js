@@ -26,7 +26,7 @@ export default function SideBar (props) {
   }, [])
 
   const goToDocs = () => {
-    Linking.openURL('https://getplottr.com/docs')
+    Linking.openURL('https://docs.plottr.com')
   }
 
   const goToHelp = () => {

@@ -64,6 +64,7 @@ export default class Main extends Component {
   componentDidMount() {
     console.log('Changes', Changes)
     DocumentEvents.addListener('onOpenDocument', this.handleDocumentOpened)
+    DocumentEvents.addListener('onReloadRecentDocs', this.reloadDocs)
     this.getRecentDocuments()
     // set app state
     AppState.addEventListener('change', this.handleAppState)
@@ -72,6 +73,10 @@ export default class Main extends Component {
   componentWillUnmount() {
     // clean up
     AppState.removeEventListener('change', this.handleAppState)
+  }
+
+  reloadDocs = () => {
+    this.getRecentDocuments();
   }
 
   handleAppState = (newState) => {
@@ -100,14 +105,12 @@ export default class Main extends Component {
     this.setState(state)
   }
 
-  handleDocumentOpened = (data, setRecent = true) => {
-    // console.log("I am Opening an existing document---", JSON.stringify(data))
+  handleDocumentOpened = async (data, setRecent = true) => {
     if (IS_IOS) DocumentBrowser.closeBrowser()
+    await this.getRecentDocuments();
     this.setDocument(data)
     if (setRecent) {
-      if (!IS_IOS || (IS_IOS && data.isInDocuments)) {
-        this.addRecentDocument(data)
-      }
+      this.addRecentDocument(data)
     }
     this.setLoading(false)
   }
@@ -169,15 +172,21 @@ export default class Main extends Component {
     })
   }
 
-  getRecentDocuments() {
+  getRecentDocuments = async () => {
     // used to reset recents
     // AsyncStorage.setItem('recentDocuments', JSON.stringify([]))
 
-    AsyncStorage.getItem('recentDocuments').then((data) => {
+    await AsyncStorage.getItem('recentDocuments').then(async (data) => {
       if (data) {
-        // console.log("GETTING RECENT DOCS ----- ", data)
         try {
-          const recentDocuments = JSON.parse(data || '[]')
+          let existingDocs = []
+          let dataArray = JSON.parse(data || [])
+          for (let i = 0; i < dataArray.length; i++) {
+            if (await rnfs.exists(dataArray[i].url)) {
+              existingDocs.push(dataArray[i])
+            }
+          }
+          const recentDocuments = IS_IOS ? existingDocs : dataArray;
           this.setState({ recentDocuments })
         } catch (e) {
           console.log('corrupt recent docs', e)
@@ -263,15 +272,16 @@ export default class Main extends Component {
   }
 
   readDocument = ({ url, name }) => {
-    let fileName = String(name)
-      .replace(/\s+/gi, '_')
-      .replace(/[^a-zA-Z0-9_\-]/gi)
-    let filePath = DocumentDirectoryPath + `/${fileName}.pltr`
-    if (!IS_IOS) {
-      filePath = url
-    }
+    // console.log("**********READ DOCUMENT -------", url)
+    // let fileName = String(name)
+    //   .replace(/\s+/gi, '_')
+    //   .replace(/[^a-zA-Z0-9_\-]/gi)
+    // let filePath = DocumentDirectoryPath + `/${fileName}.pltr`
+    // if (!IS_IOS) {
+    //   filePath = url
+    // }
     // let finalURL = rnfs.DocumentDirectoryPath + '/' + name.replace(/ /g,"_") + '.pltr';
-    this.readDocumentFile(filePath)
+    this.readDocumentFile(url)
   }
 
   // selectDocument = () => {
