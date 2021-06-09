@@ -21,7 +21,10 @@ export default ScaledSheet.create({
   container: {
     width: '100%',
     borderBottomWidth: 0.5,
-    borderColor: inputBorder
+    borderColor: inputBorder,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
   },
   input: {
     ...style.inputText,
@@ -29,8 +32,7 @@ export default ScaledSheet.create({
     paddingVertical: IS_IOS ? 5 : null,
     minHeight: '35@ms',
     fontSize: size.h4,
-    flex: 1,
-    marginBottom: onTablet ? 0 : -baseMargin / 2.25
+    width: '100%'
   },
   multiline: {
     height: 'auto',
@@ -69,7 +71,7 @@ export default ScaledSheet.create({
   label: {
     paddingRight: baseMargin / 1.75,
     paddingTop: baseMargin / 2,
-    marginBottom: -baseMargin * 1.25,
+    marginBottom: -baseMargin * (onTablet ? 1.5 : 1.25),
     // paddingVertical: baseMargin * 1.125,
     width: '100%'
   },
@@ -88,7 +90,9 @@ export default ScaledSheet.create({
   insetText: {
     paddingVertical: baseMargin * 1,
     paddingBottom: baseMargin * 1.2,
-    color: textBlack
+    color: textBlack,
+    minHeight: '44@ms',
+    marginBottom: -(onTablet ? doubleBaseMargin : baseMargin) / 2.25
   },
   labelUp: {
     marginTop: 0,
