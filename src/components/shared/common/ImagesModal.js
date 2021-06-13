@@ -177,19 +177,19 @@ class ImagesModal extends Component {
               style={styles.bottomLeftIcon}
             />
           </ShellButton>,
-          <ShellButton
-            data={imageId}
-            key='pen'
-            hitSlop={hitArea}
-            style={styles.bottomRightButton}
-            onPress={this.handleRenameImage}>
-            <View style={[styles.bottomRightShape, colorStyle]} />
-            <Icon
-              type='FontAwesome5'
-              name={'pen'}
-              style={styles.bottomRightIcon}
-            />
-          </ShellButton>
+          // <ShellButton
+          //   data={imageId}
+          //   key='pen'
+          //   hitSlop={hitArea}
+          //   style={styles.bottomRightButton}
+          //   onPress={this.handleRenameImage}>
+          //   <View style={[styles.bottomRightShape, colorStyle]} />
+          //   <Icon
+          //     type='FontAwesome5'
+          //     name={'pen'}
+          //     style={styles.bottomRightIcon}
+          //   />
+          // </ShellButton>
         ]}
       </ShellButton>
     )
