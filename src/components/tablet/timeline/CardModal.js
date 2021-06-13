@@ -8,6 +8,7 @@ import { selectors, actions, helpers, initialState } from 'pltr/v2'
 import {
   Modal,
   Alert,
+  Keyboard,
   ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback
@@ -37,7 +38,7 @@ const { ifIOS } = Metrics
 class CardModal extends Component {
   state = {}
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     const { cards, card, isNewCard, beatId, lineId } = props
     let cardObj = {}
     if (isNewCard) {
@@ -57,26 +58,31 @@ class CardModal extends Component {
     }
   }
 
+  handleDismissKeyboard = () => {
+    Keyboard.dismiss()
+    return false
+  }
+
   handleClose = () => {
     const { changes } = this.state
     const { onClose } = this.props
     if (changes)
-      Alert.alert(
-        t('Save Changes?'),
-        t('Save before closing"?'),
-        [
-          {
-            text: t('Yes, Save'),
-            onPress: () => {
-              this.handleSaveChanges()
-              onClose && onClose()
-            }
-          },
-          { text: t('No'), onPress: () => {
+      Alert.alert(t('Save Changes?'), t('Save before closing"?'), [
+        {
+          text: t('Yes, Save'),
+          onPress: () => {
+            this.handleSaveChanges()
             onClose && onClose()
-          }, style: 'cancel' }
-        ]
-      )
+          }
+        },
+        {
+          text: t('No'),
+          onPress: () => {
+            onClose && onClose()
+          },
+          style: 'cancel'
+        }
+      ])
     else onClose && onClose()
   }
 
@@ -116,13 +122,13 @@ class CardModal extends Component {
     this.props.actions.changeLine(this.state.card.id, val, this.props.bookId)
   }
 
-  getBeatById (id) {
+  getBeatById(id) {
     const { beats } = this.props
     const beat = beats.filter(({ id: beatId }) => beatId == id)[0]
     return beat
   }
 
-  toggleCollapse (stateName) {
+  toggleCollapse(stateName) {
     return () => this.setState({ [stateName]: !this.state[stateName] })
   }
 
@@ -173,7 +179,7 @@ class CardModal extends Component {
     )
   }
 
-  renderLineTitle () {
+  renderLineTitle() {
     const { lines = [] } = this.props
     const { card } = this.state
     const { lineId } = card
@@ -182,7 +188,7 @@ class CardModal extends Component {
     return lineTitle
   }
 
-  render () {
+  render() {
     const {
       card,
       changes,
@@ -198,7 +204,7 @@ class CardModal extends Component {
       hierarchyLevels,
       isSeries,
       hierarchyEnabled,
-      beatIndex,
+      beatIndex
     } = this.props
     const { id: cardId, title, description, beatId, characters, places, tags } =
       card || {}
@@ -217,6 +223,7 @@ class CardModal extends Component {
             style={styles.avoidingView}>
             <View style={styles.window}>
               <ShellButton
+                hitSize={20}
                 style={styles.closeButton}
                 onPress={this.handleClose}>
                 <Icon
@@ -226,176 +233,182 @@ class CardModal extends Component {
                 />
               </ShellButton>
               <ScrollView>
-                <View style={styles.breadCrumbs}>
-                  <Popover
-                    popoverStyle={styles.menuPopover}
-                    placement={PopoverPlacement.RIGHT}
-                    from={
-                      <ShellButton style={styles.crumb}>
-                        <Text numberOfLines={1} style={styles.chapterText}>
-                          {helpers.beats.beatTitle(
-                            beatIndex,
-                            beatTree,
-                            beat,
-                            hierarchyLevels,
-                            positionOffset,
-                            hierarchyEnabled,
-                            isSeries
-                          )}
-                        </Text>
-                        <Icon
-                          style={styles.crumbIcon}
-                          type='FontAwesome5'
-                          name='chevron-down'
-                        />
-                      </ShellButton>
-                    }>
-                    <ScrollView style={styles.menuScroller}>
-                      {beats.map(this.renderBeatMenuItem)}
-                    </ScrollView>
-                  </Popover>
-                  <View style={styles.divider} />
-                  <Popover
-                    popoverStyle={styles.menuPopover}
-                    // placement={PopoverPlacement.RIGHT}
-                    from={
-                      <ShellButton style={styles.crumb}>
-                        <Text numberOfLines={1} style={styles.chapterText}>
-                          {this.renderLineTitle()}
-                        </Text>
-                        <Icon
-                          style={styles.crumbIcon}
-                          type='FontAwesome5'
-                          name='chevron-down'
-                        />
-                      </ShellButton>
-                    }>
-                    <ScrollView style={styles.menuScroller}>
-                      {lines.map(this.renderLineMenuItem)}
-                    </ScrollView>
-                  </Popover>
-                </View>
-                <View style={styles.form}>
-                  <View style={styles.row}>
-                    <Text style={styles.label}>{t('Title')}</Text>
-                    <Input
-                      rounded
-                      value={title}
-                      style={styles.input}
-                      inputStyle={styles.inputBoldText}
-                      onChangeText={this.handleSetTitle}
-                    />
-                  </View>
-                  <View style={styles.row}>
-                    <Text style={styles.label}>{t('Description')}</Text>
-                    <RichEditor
-                      style={styles.multiInput}
-                      initialValue={description}
-                      onChange={this.handleSetDescription}
-                    />
-                  </View>
-                  <View style={styles.row}>
-                    <View style={styles.labels}>
-                      <Text style={styles.label}>{t('Characters')}</Text>
-                      <View style={styles.count}>
-                        <Text style={styles.countText}>
-                          {characters.length}
-                        </Text>
-                      </View>
-                      <ShellButton
-                        style={styles.collapseButton}
-                        onPress={this.toggleCollapse('showCharacters')}>
-                        <Text style={styles.collapseText}>
-                          {t(`See ${showCharacters ? 'More' : 'Less'}`)}
-                        </Text>
-                        <Icon
-                          style={[
-                            styles.collapseIcon,
-                            showCharacters && styles.collapsedIcon
-                          ]}
-                          type='FontAwesome5'
-                          name='chevron-down'
-                        />
-                      </ShellButton>
+                <TouchableWithoutFeedback onPress={this.handleDismissKeyboard}>
+                  <View>
+                    <View style={styles.breadCrumbs}>
+                      <Popover
+                        popoverStyle={styles.menuPopover}
+                        placement={PopoverPlacement.RIGHT}
+                        from={
+                          <ShellButton style={styles.crumb}>
+                            <Text numberOfLines={1} style={styles.chapterText}>
+                              {helpers.beats.beatTitle(
+                                beatIndex,
+                                beatTree,
+                                beat,
+                                hierarchyLevels,
+                                positionOffset,
+                                hierarchyEnabled,
+                                isSeries
+                              )}
+                            </Text>
+                            <Icon
+                              style={styles.crumbIcon}
+                              type='FontAwesome5'
+                              name='chevron-down'
+                            />
+                          </ShellButton>
+                        }>
+                        <ScrollView style={styles.menuScroller}>
+                          {beats.map(this.renderBeatMenuItem)}
+                        </ScrollView>
+                      </Popover>
+                      <View style={styles.divider} />
+                      <Popover
+                        popoverStyle={styles.menuPopover}
+                        // placement={PopoverPlacement.RIGHT}
+                        from={
+                          <ShellButton style={styles.crumb}>
+                            <Text numberOfLines={1} style={styles.chapterText}>
+                              {this.renderLineTitle()}
+                            </Text>
+                            <Icon
+                              style={styles.crumbIcon}
+                              type='FontAwesome5'
+                              name='chevron-down'
+                            />
+                          </ShellButton>
+                        }>
+                        <ScrollView style={styles.menuScroller}>
+                          {lines.map(this.renderLineMenuItem)}
+                        </ScrollView>
+                      </Popover>
                     </View>
-                    <Collapsible collapsed={showCharacters}>
-                      <Attachments
-                        cardId={cardId}
-                        attachments={characters}
-                        type={'character'}
-                        objectKey={'characters'}
-                        sourceType={'card'}
-                        onChange={this.handleChangeAttachments}
-                      />
-                    </Collapsible>
-                  </View>
-                  <View style={styles.row}>
-                    <View style={styles.labels}>
-                      <Text style={styles.label}>{t('Places')}</Text>
-                      <View style={styles.count}>
-                        <Text style={styles.countText}>{places.length}</Text>
-                      </View>
-                      <ShellButton
-                        style={styles.collapseButton}
-                        onPress={this.toggleCollapse('showPlaces')}>
-                        <Text style={styles.collapseText}>
-                          {t(`See ${showPlaces ? 'More' : 'Less'}`)}
-                        </Text>
-                        <Icon
-                          style={[
-                            styles.collapseIcon,
-                            showPlaces && styles.collapsedIcon
-                          ]}
-                          type='FontAwesome5'
-                          name='chevron-down'
+                    <View style={styles.form}>
+                      <View style={styles.row}>
+                        <Text style={styles.label}>{t('Title')}</Text>
+                        <Input
+                          rounded
+                          value={title}
+                          style={styles.input}
+                          inputStyle={styles.inputBoldText}
+                          onChangeText={this.handleSetTitle}
                         />
-                      </ShellButton>
-                    </View>
-                    <Collapsible collapsed={showPlaces}>
-                      <Attachments
-                        cardId={cardId}
-                        attachments={places}
-                        type={'place'}
-                        objectKey={'places'}
-                        sourceType={'card'}
-                        onChange={this.handleChangeAttachments}
-                      />
-                    </Collapsible>
-                  </View>
-                  <View style={styles.row}>
-                    <View style={styles.labels}>
-                      <Text style={styles.label}>{t('Tags')}</Text>
-                      <View style={styles.count}>
-                        <Text style={styles.countText}>{tags.length}</Text>
                       </View>
-                      <ShellButton
-                        style={styles.collapseButton}
-                        onPress={this.toggleCollapse('showTags')}>
-                        <Text style={styles.collapseText}>
-                          {t(`See ${showTags ? 'More' : 'Less'}`)}
-                        </Text>
-                        <Icon
-                          style={[
-                            styles.collapseIcon,
-                            showTags && styles.collapsedIcon
-                          ]}
-                          type='FontAwesome5'
-                          name='chevron-down'
+                      <View style={styles.row}>
+                        <Text style={styles.label}>{t('Description')}</Text>
+                        <RichEditor
+                          style={styles.multiInput}
+                          initialValue={description}
+                          onChange={this.handleSetDescription}
                         />
-                      </ShellButton>
+                      </View>
+                      <View style={styles.row}>
+                        <View style={styles.labels}>
+                          <Text style={styles.label}>{t('Characters')}</Text>
+                          <View style={styles.count}>
+                            <Text style={styles.countText}>
+                              {characters.length}
+                            </Text>
+                          </View>
+                          <ShellButton
+                            style={styles.collapseButton}
+                            onPress={this.toggleCollapse('showCharacters')}>
+                            <Text style={styles.collapseText}>
+                              {t(`See ${showCharacters ? 'More' : 'Less'}`)}
+                            </Text>
+                            <Icon
+                              style={[
+                                styles.collapseIcon,
+                                showCharacters && styles.collapsedIcon
+                              ]}
+                              type='FontAwesome5'
+                              name='chevron-down'
+                            />
+                          </ShellButton>
+                        </View>
+                        <Collapsible collapsed={showCharacters}>
+                          <Attachments
+                            cardId={cardId}
+                            attachments={characters}
+                            type={'character'}
+                            objectKey={'characters'}
+                            sourceType={'card'}
+                            onChange={this.handleChangeAttachments}
+                          />
+                        </Collapsible>
+                      </View>
+                      <View style={styles.row}>
+                        <View style={styles.labels}>
+                          <Text style={styles.label}>{t('Places')}</Text>
+                          <View style={styles.count}>
+                            <Text style={styles.countText}>
+                              {places.length}
+                            </Text>
+                          </View>
+                          <ShellButton
+                            style={styles.collapseButton}
+                            onPress={this.toggleCollapse('showPlaces')}>
+                            <Text style={styles.collapseText}>
+                              {t(`See ${showPlaces ? 'More' : 'Less'}`)}
+                            </Text>
+                            <Icon
+                              style={[
+                                styles.collapseIcon,
+                                showPlaces && styles.collapsedIcon
+                              ]}
+                              type='FontAwesome5'
+                              name='chevron-down'
+                            />
+                          </ShellButton>
+                        </View>
+                        <Collapsible collapsed={showPlaces}>
+                          <Attachments
+                            cardId={cardId}
+                            attachments={places}
+                            type={'place'}
+                            objectKey={'places'}
+                            sourceType={'card'}
+                            onChange={this.handleChangeAttachments}
+                          />
+                        </Collapsible>
+                      </View>
+                      <View style={styles.row}>
+                        <View style={styles.labels}>
+                          <Text style={styles.label}>{t('Tags')}</Text>
+                          <View style={styles.count}>
+                            <Text style={styles.countText}>{tags.length}</Text>
+                          </View>
+                          <ShellButton
+                            style={styles.collapseButton}
+                            onPress={this.toggleCollapse('showTags')}>
+                            <Text style={styles.collapseText}>
+                              {t(`See ${showTags ? 'More' : 'Less'}`)}
+                            </Text>
+                            <Icon
+                              style={[
+                                styles.collapseIcon,
+                                showTags && styles.collapsedIcon
+                              ]}
+                              type='FontAwesome5'
+                              name='chevron-down'
+                            />
+                          </ShellButton>
+                        </View>
+                        <Collapsible collapsed={showTags}>
+                          <Attachments
+                            cardId={cardId}
+                            attachments={tags}
+                            type={'tag'}
+                            objectKey={'tags'}
+                            sourceType={'card'}
+                            onChange={this.handleChangeAttachments}
+                          />
+                        </Collapsible>
+                      </View>
                     </View>
-                    <Collapsible collapsed={showTags}>
-                      <Attachments
-                        cardId={cardId}
-                        attachments={tags}
-                        type={'tag'}
-                        objectKey={'tags'}
-                        sourceType={'card'}
-                        onChange={this.handleChangeAttachments}
-                      />
-                    </Collapsible>
                   </View>
-                </View>
+                </TouchableWithoutFeedback>
               </ScrollView>
               <Collapsible style={styles.actions} collapsed={!changes}>
                 <Button
@@ -430,10 +443,10 @@ CardModal.propTypes = {
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
   hierarchyEnabled: PropTypes.bool,
-  beatIndex: PropTypes.number.isRequired,
+  beatIndex: PropTypes.number.isRequired
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     positionOffset: selectors.positionOffsetSelector(state),
     beats: selectors.sortedBeatsByBookSelector(state),
@@ -444,7 +457,7 @@ function mapStateToProps (state, ownProps) {
     hierarchyLevels: selectors.sortedHierarchyLevels(state),
     isSeries: selectors.isSeriesSelector(state),
     hierarchyEnabled: selectors.beatHierarchyIsOn(state),
-    beatIndex: selectors.beatIndexSelector(state, ownProps.beatId),
+    beatIndex: selectors.beatIndexSelector(state, ownProps.beatId)
   }
 }
 

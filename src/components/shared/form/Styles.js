@@ -60,11 +60,12 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    top: -baseMargin,
-    right: -baseMargin,
+    top: -baseMargin * 0.9,
+    right: -baseMargin * 0.9,
     borderRadius: 50,
-    width: '25@ms',
-    height: '25@ms'
+    width: '27@ms',
+    height: '27@ms',
+    zIndex: 99
   },
   closeIcon: {
     fontSize: size.tiny,
@@ -103,7 +104,7 @@ export default {
   },
   input: {
     backgroundColor: 'transparent',
-    height: '40@mvs',
+    height: '48@mvs',
     borderRadius: cornerRadius * 1.25
   },
   inputText: {

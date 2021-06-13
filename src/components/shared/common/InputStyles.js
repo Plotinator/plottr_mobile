@@ -41,7 +41,8 @@ export default ScaledSheet.create({
     maxHeight: '120@ms'
   },
   inputSmall: {
-    fontSize: size.small
+    fontSize: size.small,
+    lineHeight: size.small * 1.6
   },
   bordered: {
     borderColor: inputBorder,
@@ -78,9 +79,9 @@ export default ScaledSheet.create({
   },
   labelText: {
     ...style.semiBold,
-    marginTop: -3,
+    marginTop: onTablet ? 0 : -3,
     fontSize: size.small,
-    paddingBottom: 1
+    paddingBottom: 2
   },
   reset: {
     borderBottomWidth: 0,
@@ -99,11 +100,12 @@ export default ScaledSheet.create({
     paddingHorizontal: baseMargin
   },
   insetText: {
-    paddingVertical: baseMargin * 1,
+    paddingVertical: baseMargin,
     paddingBottom: baseMargin * 1.2,
     color: textBlack,
-    minHeight: '44@ms',
-    marginBottom: -(onTablet ? doubleBaseMargin : baseMargin) / 2.25
+    minHeight: onTablet ? '35@ms' : '44@ms',
+    marginTop: onTablet ? baseMargin / 4 : 0,
+    marginBottom: -baseMargin / 2.25
   },
   rounded: {
     backgroundColor: warmWhiteBG,

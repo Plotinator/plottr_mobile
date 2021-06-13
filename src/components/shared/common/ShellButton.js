@@ -16,7 +16,8 @@ export default class ShellButton extends Component {
     const { data, onPress } = this.props
     onPress && onPress(data)
   }
-  render () {
+
+  render() {
     const {
       style,
       faded,
@@ -25,19 +26,26 @@ export default class ShellButton extends Component {
       disabled,
       noFeedback,
       noninteractive,
+      hitSize = 5,
       ...otherProps
     } = this.props
     const stylesArray = [style]
     const TouchableComponent = noFeedback
       ? AnimeTouchableNoFeedback
       : AnimeTouchableOpacity
-
+    const hitArea = {
+      top: hitSize,
+      bottom: hitSize,
+      left: hitSize,
+      right: hitSize
+    }
     if (disabled || faded) stylesArray.push({ opacity: 0.5 })
     if (padded) stylesArray.push({ padding: baseMargin })
 
     return (
       <TouchableComponent
         {...otherProps}
+        hitSlop={hitArea}
         style={stylesArray}
         disabled={disabled || noninteractive}
         onPress={this.handlePress}>

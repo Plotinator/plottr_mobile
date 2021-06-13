@@ -6,10 +6,10 @@ import { bindActionCreators } from 'redux'
 import { Icon } from 'native-base'
 import { selectors, actions, helpers, initialState } from 'pltr/v2'
 import {
+  Dimensions,
   View,
   ImageBackground,
   Modal,
-  ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback
 } from 'react-native'
@@ -18,6 +18,7 @@ import {
   Input,
   Text,
   Button,
+  ScrollerView,
   AddButton,
   IconButton,
   RichEditor,
@@ -43,10 +44,21 @@ export default class BookModal extends Component {
     title: '',
     premise: '',
     genre: '',
-    theme: ''
+    theme: '',
+    height: Dimensions.get('window').height
   }
 
-  setChangeValue (stateName, callback) {
+  componentDidMount() {
+    Dimensions.addEventListener('change', this.onDimensionChange)
+  }
+
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', this.onDimensionChange)
+  }
+
+  onDimensionChange = ({ height }) => this.setState({ height })
+
+  setChangeValue(stateName, callback) {
     if (!this.functs) this.functs = {}
     if (!this.functs[stateName]) {
       this.functs[stateName] = (textValue) => {
@@ -100,7 +112,7 @@ export default class BookModal extends Component {
     this.setState({ visible: false, changes: false })
   }
 
-  render () {
+  render() {
     const {
       showImageModal,
       changes,
@@ -110,7 +122,8 @@ export default class BookModal extends Component {
       title,
       premise,
       genre,
-      theme
+      theme,
+      height
     } = this.state
     const { book, images } = this.props
     const bookImage = imageId &&
@@ -124,91 +137,106 @@ export default class BookModal extends Component {
         onRequestClose={this.handleClose}>
         <AnimeTouchableNoFeedback onPress={this.handleClose}>
           <KeyboardAvoidingView behavior='padding' style={styles.avoidingView}>
-          <View style={styles.window}>
-            <ShellButton style={styles.closeButton} onPress={this.handleClose}>
-              <Icon style={styles.closeIcon} type='FontAwesome5' name='times' />
-            </ShellButton>
-            <ScrollView>
-              <View style={styles.form}>
-                <View style={styles.centerTitle}>
-                  <Text fontStyle='bold'>
-                    {t('Edit Book')}: {title}
-                  </Text>
+            <View style={styles.window}>
+              <ShellButton
+                style={styles.closeButton}
+                onPress={this.handleClose}
+                hitSize={20}>
+                <Icon
+                  style={styles.closeIcon}
+                  type='FontAwesome5'
+                  name='times'
+                />
+              </ShellButton>
+              <ScrollerView>
+                <View style={styles.form}>
+                  <View style={styles.centerTitle}>
+                    <Text fontStyle='bold'>
+                      {t('Edit Book')}: {title}
+                    </Text>
+                  </View>
+                  <View style={styles.bookContainer}>
+                    <Book
+                      size={200}
+                      book={{ id, title }}
+                      image={bookImage}
+                      noTimeline
+                      noOutline
+                      onPress={this.handleChangeImage}>
+                      <View style={styles.cameraContainer}>
+                        <AddButton
+                          icon='camera'
+                          size={40}
+                          onPress={this.handleChangeImage}
+                          style={styles.cameraButton}
+                        />
+                      </View>
+                    </Book>
+                  </View>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>{t('Name')}</Text>
+                    <Input
+                      inset
+                      value={title}
+                      style={styles.input}
+                      inputStyle={styles.inputText}
+                      onChangeText={this.setChangeValue('title')}
+                    />
+                  </View>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>{t('Premise')}</Text>
+                    <Input
+                      inset
+                      value={premise}
+                      style={styles.input}
+                      inputStyle={styles.inputText}
+                      onChangeText={this.setChangeValue('premise')}
+                    />
+                  </View>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>{t('Genre')}</Text>
+                    <Input
+                      inset
+                      value={genre}
+                      style={styles.input}
+                      inputStyle={styles.inputText}
+                      onChangeText={this.setChangeValue('genre')}
+                    />
+                  </View>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>{t('Theme')}</Text>
+                    <Input
+                      inset
+                      value={theme}
+                      style={styles.input}
+                      inputStyle={styles.inputText}
+                      onChangeText={this.setChangeValue('theme')}
+                    />
+                  </View>
                 </View>
-                <View style={styles.bookContainer}>
-                  <Book
-                    book={{ id, title }}
-                    image={bookImage}
-                    noTimeline
-                    noOutline
-                    onPress={this.handleChangeImage}>
-                    <View style={styles.cameraContainer}>
-                      <AddButton
-                        icon='camera'
-                        size={40}
-                        onPress={this.handleChangeImage}
-                        style={styles.cameraButton}
-                      />
-                    </View>
-                  </Book>
-                </View>
-                <View style={styles.row}>
-                  <Text style={styles.label}>{t('Title')}</Text>
-                  <Input
-                    inset
-                    value={title}
-                    style={styles.input}
-                    inputStyle={styles.inputText}
-                    onChangeText={this.setChangeValue('title')}
-                  />
-                </View>
-                <View style={styles.row}>
-                  <Text style={styles.label}>{t('Premise')}</Text>
-                  <Input
-                    inset
-                    value={premise}
-                    style={styles.input}
-                    inputStyle={styles.inputText}
-                    onChangeText={this.setChangeValue('premise')}
-                  />
-                </View>
-                <View style={styles.row}>
-                  <Text style={styles.label}>{t('Genre')}</Text>
-                  <Input
-                    inset
-                    value={genre}
-                    style={styles.input}
-                    inputStyle={styles.inputText}
-                    onChangeText={this.setChangeValue('genre')}
-                  />
-                </View>
-                <View style={styles.row}>
-                  <Text style={styles.label}>{t('Theme')}</Text>
-                  <Input
-                    inset
-                    value={theme}
-                    style={styles.input}
-                    inputStyle={styles.inputText}
-                    onChangeText={this.setChangeValue('theme')}
-                  />
-                </View>
-              </View>
-            </ScrollView>
-            <Collapsible style={styles.actions} collapsed={!changes}>
-              <Button
-                tight
-                style={styles.action}
-                onPress={this.handleSaveChanges}>
-                {t('Save Book')}
-              </Button>
-            </Collapsible>
-            <ImagesModal
-              visible={showImageModal}
-              onChooseImage={this.handleChooseImage}
-              onClose={this.handleToggleImageModal}
-            />
-          </View>
-        </KeyboardAvoidingView>
+              </ScrollerView>
+              <Collapsible style={styles.actions} collapsed={!changes}>
+                <Button
+                  tight
+                  style={styles.action}
+                  onPress={this.handleSaveChanges}>
+                  {t('Save Book')}
+                </Button>
+                <Button
+                  tight
+                  bordered
+                  style={styles.action}
+                  onPress={this.handleClose}>
+                  {t('Cancel')}
+                </Button>
+              </Collapsible>
+              <ImagesModal
+                visible={showImageModal}
+                onChooseImage={this.handleChooseImage}
+                onClose={this.handleToggleImageModal}
+              />
+            </View>
+          </KeyboardAvoidingView>
         </AnimeTouchableNoFeedback>
       </Modal>
     )

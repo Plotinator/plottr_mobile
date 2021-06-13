@@ -15,6 +15,7 @@ export default function Book (props) {
     noTimeline,
     noOutline,
     book,
+    size = '33%',
     image = null,
     book: { id, title },
     navigateToOutline,
@@ -36,7 +37,7 @@ export default function Book (props) {
   const deleteBook = () => {
     onDeleteBook(id, bookTitle)
   }
-  const bookStyles = [styles.book, style]
+  const bookStyles = [styles.book, { width: size }, style]
   const fontSize = isTablet() ? 'tiny' : 'regular'
   const bookTitle = title || t('Untitled')
   const actions = (

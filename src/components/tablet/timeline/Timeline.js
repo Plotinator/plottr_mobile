@@ -607,11 +607,9 @@ class Timeline extends Component {
         onHide={this.handleClearCurrentLine}>
         <View style={styles.row}>
           <Input
-            inset
+            rounded
             small
-            multiline
-            numberOfLines={3}
-            label={t('Title')}
+            placeholder={t('Title')}
             value={title}
             autoCapitalize='sentences'
             onChangeText={this.handleSetPlotTitle}
@@ -619,9 +617,11 @@ class Timeline extends Component {
         </View>
         <View style={styles.row}>
           <Input
-            inset
+            rounded
             small
-            label={t('Color')}
+            multiline
+            numberOfLines={1}
+            placeholder={t('Color')}
             style={styles.input}
             value={color}
             onChangeText={this.handleSetPlotColor}
@@ -672,13 +672,12 @@ class Timeline extends Component {
         </View>
         <View style={styles.row}>
           <Input
-            inset
+            rounded
             small
-            multiline
-            // numberOfLines={3}
-            label={t('Title')}
+            placeholder={t('Title')}
             value={title}
             placeholder='auto'
+            style={styles.input}
             autoCapitalize='sentences'
             onChangeText={this.handleSetBeatTitle}
           />

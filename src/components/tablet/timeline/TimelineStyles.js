@@ -49,7 +49,6 @@ export default ScaledSheet.create({
     marginBottom: 0
   },
   input: {
-    height: 60,
     flex: 1
   },
   colorSwatch: {
