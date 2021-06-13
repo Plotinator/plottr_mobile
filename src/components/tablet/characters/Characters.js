@@ -55,7 +55,6 @@ class Characters extends Component {
         data: sortBy(characters, 'id')
       }
     })
-
     return returnVal
   }
 
@@ -170,6 +169,11 @@ class Characters extends Component {
           <NewButton onPress={this.createNewCharacter} />
           <View style={styles.additionals}>
             <HeaderButtonOptions
+              title={t('Categories')}
+              icon={'list'}>
+              <HeaderAttributes type={'characterCategories'} />
+            </HeaderButtonOptions>
+            <HeaderButtonOptions
               title={t('Filter')}
               icon='filter'
               count={count}>
@@ -209,7 +213,6 @@ Characters.propTypes = {
   characters: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
   customAttributes: PropTypes.array.isRequired,
-  customAttributesThatCanChange: PropTypes.array,
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
@@ -226,11 +229,8 @@ function mapStateToProps(state) {
     ),
     filterIsEmpty: selectors.characterFilterIsEmptySelector(state),
     characters: state.characters,
-    categories: selectors.sortedCharacterCategoriesSelector(state),
+    categories: selectors.characterCategoriesSelector(state), //selectors.sortedCharacterCategoriesSelector(state),
     customAttributes: state.customAttributes.characters,
-    customAttributesThatCanChange: selectors.characterCustomAttributesThatCanChangeSelector(
-      state
-    ),
     ui: state.ui,
     filters: state.ui.characterFilter
   }

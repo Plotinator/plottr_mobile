@@ -65,12 +65,13 @@ class HeaderAttributes extends Component {
 
   renderAttribute = (attribute, i) => {
     const { editingIndex } = this.state
-    const { attributesThatCanChange } = this.props
+    const { attributesThatCanChange, isCategory } = this.props
     const { actions } = this.props
     const isEditing = editingIndex === i
     const canChangeType = attributesThatCanChange.includes(attribute.name)
     return (
       <AttributeItem
+        isCategory={isCategory}
         isEditing={isEditing}
         canChangeType={canChangeType}
         offset={this.parseOffset(i)}
@@ -85,7 +86,7 @@ class HeaderAttributes extends Component {
   }
 
   render() {
-    const { style, attributes = [], actions, type } = this.props
+    const { style, attributes = [], actions, type, isCategory } = this.props
     const { addingNew } = this.state
     const capitalType = `${type.substring(0, 1).toUpperCase()}${type.substring(
       1
@@ -107,6 +108,7 @@ class HeaderAttributes extends Component {
                 <AttributeItem
                   isNew
                   isEditing
+                  isCategory={isCategory}
                   canChangeType={true}
                   offset={0}
                   position={attributes.length}
@@ -196,8 +198,10 @@ class AttributeItem extends Component {
 
   handleDelete = () => {
     const {
+      attribute,
       attribute: { name },
-      removeAttribute
+      removeAttribute,
+      isCategory
     } = this.props
     Alert.alert(
       t('Delete Attribute', { name }),
@@ -207,7 +211,7 @@ class AttributeItem extends Component {
           text: t('Yes, Delete'),
           onPress: () => {
             this.view.transitionTo({ height: 0, marginBottom: 0, padding: 0 })
-            setTimeout(() => removeAttribute(name), 300)
+            setTimeout(() => removeAttribute(isCategory ? attribute : name), 300)
           }
         },
         { text: t('No'), onPress: () => {}, style: 'cancel' }
@@ -242,9 +246,11 @@ class AttributeItem extends Component {
       editAttribute,
       setEditing,
       isNew,
+      isCategory,
       addAttribute
     } = this.props
-    if (isNew) addAttribute({ ...attribute, name: stateName })
+    console.log('isCategory', isCategory)
+    if (isNew) addAttribute(isCategory ? stateName : { ...attribute, name: stateName })
     else editAttribute(position, attribute, { ...attribute, name: stateName })
     this.setState({
       stateName: ''
@@ -281,7 +287,8 @@ class AttributeItem extends Component {
       offset = 0,
       isEditing,
       canChangeType,
-      isNew
+      isNew,
+      isCategory
     } = this.props
     const { name, type, title } = attribute
     const itemName = name || title
@@ -327,14 +334,16 @@ class AttributeItem extends Component {
             style={[styles.icon, styles.check]}
           />
         </ShellButton>
-        <View style={styles.rowType}>
-          <ShellButton
-            padded
-            onPress={this.handleToggleType}
-            disabled={!canChangeType || isEditing}>
-            <Text style={styles.typeText}>{this.renderTypeText(type)}</Text>
-          </ShellButton>
-        </View>
+        {!isCategory && (
+          <View style={styles.rowType}>
+            <ShellButton
+              padded
+              onPress={this.handleToggleType}
+              disabled={!canChangeType || isEditing}>
+              <Text style={styles.typeText}>{this.renderTypeText(type)}</Text>
+            </ShellButton>
+          </View>
+        )}
         <ShellButton
           style={styles.rowAction}
           onPress={isNew ? this.handleCancel : this.handleDelete}>
@@ -352,8 +361,9 @@ class AttributeItem extends Component {
 function mapStateToProps(state, { type }) {
   let canChange = []
   let restrictedValues = []
+  let attributes = []
+  let isCategory = false
   switch (type) {
-    case 'character':
     case 'characters':
       canChange = selectors.characterCustomAttributesThatCanChangeSelector(
         state
@@ -362,22 +372,29 @@ function mapStateToProps(state, { type }) {
       //   state
       // )
       break
-    case 'place':
     case 'places':
       canChange = selectors.placeCustomAttributesThatCanChangeSelector(state)
       // restrictedValues = selectors.placeCustomAttributesRestrictedValues(state)
       break
-    case 'note':
     case 'notes':
       canChange = selectors.notesCustomAttributesThatCanChangeSelector(state)
       // restrictedValues = selectors.notesCustomAttributesRestrictedValues(state)
       break
-    case 'card':
     case 'cards':
-    case 'scene':
-    case 'scenes':
       canChange = selectors.cardsCustomAttributesThatCanChangeSelector(state)
       // restrictedValues = selectors.cardsCustomAttributesRestrictedValues(state)
+      break
+    case 'characterCategories':
+      attributes = selectors.characterCategoriesSelector(state)
+      isCategory = true
+      break
+    case 'noteCategories':
+      attributes = selectors.noteCategoriesSelector(state)
+      isCategory = true
+      break
+    case 'tagCategories':
+      attributes = selectors.tagCategoriesSelector(state)
+      isCategory = true
       break
     default:
       canChange = () => {
@@ -389,19 +406,26 @@ function mapStateToProps(state, { type }) {
       break
   }
   return {
-    attributes: state.customAttributes[type] || [],
-    attributesThatCanChange: canChange
+    attributes: attributes.length
+      ? attributes
+      : state.customAttributes[type] || [],
+    attributesThatCanChange: canChange,
     // restrictedValues: restrictedValues
+    isCategory
   }
 }
 
 function mapDispatchToProps(dispatch, { type }) {
-  const customAttributeActions = bindActionCreators(
-    actions.customAttribute,
-    dispatch
-  )
+  const customAttributeActions = {
+    ...bindActionCreators(
+      {
+        ...actions.customAttribute,
+        ...actions.category
+      },
+      dispatch
+    )
+  }
   let attributesActions = {}
-  console.log(`GETTING ATTRIBUTE ACTIONS FOR ${type}`)
 
   switch (type) {
     case 'characters':
@@ -420,7 +444,7 @@ function mapDispatchToProps(dispatch, { type }) {
         reorderAttribute: customAttributeActions.reorderPlacesAttribute
       }
       break
-    case 'scenes':
+    case 'cards':
       attributesActions = {
         addAttribute: customAttributeActions.addCardAttr,
         removeAttribute: customAttributeActions.removeCardAttr,
@@ -434,6 +458,30 @@ function mapDispatchToProps(dispatch, { type }) {
         removeAttribute: customAttributeActions.removeNoteAttr,
         editAttribute: customAttributeActions.editNoteAttr,
         reorderAttribute: customAttributeActions.reorderNotesAttribute
+      }
+      break
+    case 'characterCategories':
+      attributesActions = {
+        addAttribute: customAttributeActions.addCharacterCategory,
+        removeAttribute: customAttributeActions.deleteCharacterCategory,
+        editAttribute: customAttributeActions.updateCharacterCategory,
+        reorderAttribute: customAttributeActions.reorderCharacterCategory
+      }
+      break
+    case 'noteCategories':
+      attributesActions = {
+        addAttribute: customAttributeActions.addNoteCategory,
+        removeAttribute: customAttributeActions.deleteNoteCategory,
+        editAttribute: customAttributeActions.updateNoteCategory,
+        reorderAttribute: customAttributeActions.reorderNoteCategory
+      }
+      break
+    case 'tagCategories':
+      attributesActions = {
+        addAttribute: customAttributeActions.addTagCategory,
+        removeAttribute: customAttributeActions.deleteTagCategory,
+        editAttribute: customAttributeActions.updateTagCategory,
+        reorderAttribute: customAttributeActions.reorderTagCategory
       }
       break
     default:
