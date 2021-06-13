@@ -101,8 +101,8 @@ class OutlineCard extends Component {
             <View style={styles.cardTitle}>
               {editMode ? (
                 <Input
-                  inset
-                  label={`${t('Title')}:`}
+                  rounded
+                  placeholder={`${t('Title')}:`}
                   value={title}
                   style={styles.input}
                   inputStyle={styles.inputText}
@@ -116,6 +116,7 @@ class OutlineCard extends Component {
           </View>
           <View style={styles.cardBody}>
             <RichEditor
+              key={editMode ? 'editor' : 'display'}
               disabled={!editMode}
               fontSize={Fonts.size.tiny}
               initialValue={description}

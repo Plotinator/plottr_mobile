@@ -31,7 +31,7 @@ export default function SlateToHTML (slate) {
           HTML += `<div>${SlateToHTML(obj.children)}</div>`
           break
         case 'span':
-          HTML += `<span>${SlateToHTML(obj.children)}</span>`
+          HTML += `<span>${obj.text || SlateToHTML(obj.children)}</span>`
           break
         default:
           if (obj.text == '') {

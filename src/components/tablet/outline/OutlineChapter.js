@@ -62,11 +62,6 @@ class OutlineChapter extends Component {
       newOrderInBeat,
       newOrderWithinLine
     )
-
-    console.log('chapterId', chapterId)
-    console.log('lineId', lineId)
-    console.log('newOrderInBeat', newOrderInBeat)
-    console.log('newOrderWithinLine', newOrderWithinLine)
   }
 
   renderManuallySorted (isManuallSorted) {

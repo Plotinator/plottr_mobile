@@ -143,6 +143,8 @@ export default ScaledSheet.create({
   },
   inputText: {
     ...FormStyles.inputText,
+    ...style.bold,
+    color: warmTextGray,
     paddingHorizontal: 0,
     fontSize: Fonts.size.tiny
   },
