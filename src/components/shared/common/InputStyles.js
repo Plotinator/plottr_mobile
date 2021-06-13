@@ -105,6 +105,18 @@ export default ScaledSheet.create({
     minHeight: '44@ms',
     marginBottom: -(onTablet ? doubleBaseMargin : baseMargin) / 2.25
   },
+  rounded: {
+    backgroundColor: warmWhiteBG,
+    borderColor: inputBorderWhite,
+    borderRadius: cornerRadius,
+    borderWidth: 1,
+    paddingHorizontal: baseMargin,
+    minHeight: '35@ms',
+  },
+  roundedText: {
+    paddingBottom: baseMargin * 1.2,
+    color: textBlack,
+  },
   labelUp: {
     marginTop: 0,
     marginBottom: 0

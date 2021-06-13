@@ -3,12 +3,12 @@ import Metrics from '../../../utils/Metrics'
 import Fonts from '../../../fonts'
 import FormStyles from '../form/Styles'
 
-const { baseMargin } = Metrics
+const { baseMargin, doubleBaseMargin } = Metrics
 
 export default ScaledSheet.create({
   ...FormStyles,
   container: {
-    marginBottom: baseMargin
+    marginBottom: doubleBaseMargin
   },
   heading: {
     marginBottom: baseMargin * 0.05

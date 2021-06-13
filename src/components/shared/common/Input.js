@@ -24,6 +24,7 @@ export default class Input extends Component {
     const {
       reset,
       inset,
+      rounded,
       small,
       label,
       labelStyle,
@@ -70,6 +71,11 @@ export default class Input extends Component {
       placeholderColor = 'lightgray'
       containerStyles.push(styles.inset)
       inputStyles.push(styles.insetText)
+    }
+    if (rounded) {
+      placeholderColor = 'lightgray'
+      containerStyles.push(styles.rounded)
+      inputStyles.push(styles.roundedText)
     }
     if (multiline) {
       inputStyles.push(styles.multiline)

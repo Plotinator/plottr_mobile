@@ -26,7 +26,7 @@ const DetailBlock = (props) => {
       <Text style={styles.detailsText}>{details}</Text>
     ) : (
       <Input
-        inset
+        rounded
         value={details}
         style={styles.input}
         inputStyle={styles.inputText}
@@ -68,7 +68,7 @@ const DetailBlock = (props) => {
             </Text>
           ) : (
             <Input
-              inset
+              rounded
               value={details}
               style={styles.input}
               inputStyle={styles.inputText}
