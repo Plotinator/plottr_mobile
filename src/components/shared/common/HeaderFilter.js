@@ -25,11 +25,11 @@ class HeaderFilter extends Component {
     const { onFilter, updateFilter } = this.props
     this.setState(
       {
-        selected: []
+        selected: {}
       },
       () => {
         onFilter && onFilter({})
-        updateFilter([])
+        updateFilter({})
       }
     )
   }
@@ -38,19 +38,23 @@ class HeaderFilter extends Component {
     const { label, type, id } = checkbox
     const { selected } = this.state
     const { onFilter, filteredItems, updateFilter } = this.props
-    let newSelected = cloneDeep(selected)
-    const selects = (type ? newSelected[type] : newSelected) || []
+    console.log('selected b4', selected)
+    const newSelected = Object.assign({}, {...selected})
+    console.log('selected aftr', newSelected)
+    const selects = newSelected[type] || []
     const isFound = selects.indexOf(id)
-
+    console.log('newSelected[type]', newSelected[type])
+    console.log('selected', selected)
+    console.log('type', type)
+    console.log('isFound', isFound)
     if (active && isFound == -1) selects.push(id)
     else if (isFound > -1) selects.splice(isFound, 1)
+    newSelected[type] = selects
     console.log('selects', selects)
-    if (type) newSelected[type] = selects
-    else newSelected = selects
     console.log('newSelected', newSelected)
     this.setState({ selected: newSelected }, () => {
       onFilter && onFilter(newSelected)
-      updateFilter(Object.values(newSelected).length ? newSelected : null)
+      updateFilter(newSelected)
     })
   }
 
@@ -63,7 +67,7 @@ class HeaderFilter extends Component {
           const { id, label } = checkbox
           const { selected } = this.state
           const { filteredItems } = this.props
-          const selects = (type ? selected[type] : selected) || []
+          const selects = selected[type] || []
           const isActive = selects.indexOf(id) > -1
           return (
             <Checkbox
@@ -156,14 +160,19 @@ function mapStateToProps(state, { type }) {
     switch (type) {
       case 'characters':
         return state.customAttributes.characters
+        break
       case 'places':
         return state.customAttributes.places
+        break
       case 'cards':
         return state.customAttributes.scenes
+        break
       case 'notes':
         return state.customAttributes.notes
+        break
       case 'outlines':
         return state.customAttributes.lines
+        break
       default:
         console.error(
           `Trying to get custom attributes unsuported type: ${type}`
@@ -205,7 +214,7 @@ function mapStateToProps(state, { type }) {
       parseFilterGroup(t('Categories'), noteCategories, 'category')
     )
   if (showTags) filterOptions.push(parseFilterGroup(t('Tags'), tags, 'tag'))
-  if (showLines) filterOptions.push(parseFilterGroup(t('Plotlines'), lines, ''))
+  if (showLines) filterOptions.push(parseFilterGroup(t('Plotlines'), lines, 'line'))
 
   return {
     // customAttributes,

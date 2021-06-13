@@ -76,10 +76,10 @@ class Outline extends Component {
       title: <BeatItemTitle beat={chapter} />,
       colors: cardMap[chapter.id].map(({ lineId }) => linesById[lineId].color)
     }))
-    // TODO find out why outline filters
-    // structure are different than the others
-    const lastFilters = (filters && filters[filters.length - 1]) || []
-    const count = lastFilters.length
+    const filterCount = Object.values(filters || {}).map(
+      (filter) => filter.length
+    )
+    const count = filterCount.length ? filterCount.reduce((a, b) => a + b) : 0
 
     return (
       <View style={styles.container}>
@@ -90,7 +90,7 @@ class Outline extends Component {
               title={t('Filter')}
               icon='filter'
               count={count}>
-              <HeaderFilter filters={lastFilters} type='outlines' />
+              <HeaderFilter filters={filters} type='outlines' />
             </HeaderButtonOptions>
           </View>
         </Toolbar>

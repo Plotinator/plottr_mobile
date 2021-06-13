@@ -13,7 +13,7 @@ export default ScaledSheet.create({
   },
   filterBase: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    // flexWrap: 'wrap',
     width: 'auto',
     padding: baseMargin,
     marginBottom: -baseMargin
