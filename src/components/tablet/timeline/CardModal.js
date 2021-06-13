@@ -7,6 +7,7 @@ import { View, Icon } from 'native-base'
 import { selectors, actions, helpers, initialState } from 'pltr/v2'
 import {
   Modal,
+  Alert,
   ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback
@@ -57,8 +58,26 @@ class CardModal extends Component {
   }
 
   handleClose = () => {
+    const { changes } = this.state
     const { onClose } = this.props
-    onClose && onClose()
+    if (changes)
+      Alert.alert(
+        t('Save Changes?'),
+        t('Save before closing"?'),
+        [
+          {
+            text: t('Yes, Save'),
+            onPress: () => {
+              this.handleSaveChanges()
+              onClose && onClose()
+            }
+          },
+          { text: t('No'), onPress: () => {
+            onClose && onClose()
+          }, style: 'cancel' }
+        ]
+      )
+    else onClose && onClose()
   }
 
   handleChangeAttachments = (key, value) => {
@@ -114,6 +133,7 @@ class CardModal extends Component {
 
   handleSetDescription = (description) => {
     const { card } = this.state
+    console.log('description', description)
     this.setState({ card: { ...card, description }, changes: true })
   }
 
@@ -183,6 +203,7 @@ class CardModal extends Component {
     const { id: cardId, title, description, beatId, characters, places, tags } =
       card || {}
     const beat = this.getBeatById(beatId)
+    console.log('description', description)
     return (
       <Modal
         visible={true}
@@ -258,11 +279,11 @@ class CardModal extends Component {
                   <View style={styles.row}>
                     <Text style={styles.label}>{t('Title')}</Text>
                     <Input
+                      rounded
                       value={title}
                       style={styles.input}
                       inputStyle={styles.inputBoldText}
                       onChangeText={this.handleSetTitle}
-                      inset
                     />
                   </View>
                   <View style={styles.row}>

@@ -30,6 +30,9 @@ export default function SlateToHTML (slate) {
         case 'paragraph':
           HTML += `<div>${SlateToHTML(obj.children)}</div>`
           break
+        case 'span':
+          HTML += `<span>${SlateToHTML(obj.children)}</span>`
+          break
         default:
           if (obj.text == '') {
             HTML += '<div><br/></div>'

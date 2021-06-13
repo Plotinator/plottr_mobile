@@ -58,6 +58,8 @@ export function deserialize (el) {
       return jsx('text', { bold: true, text: el.textContent })
     case 'u':
       return jsx('text', { underline: true, text: el.textContent })
+    case 'span':
+      return jsx('text', { type: 'span' }, children)
     case 'del':
       return jsx('text', { strike: true, text: el.textContent })
     case 'img':
