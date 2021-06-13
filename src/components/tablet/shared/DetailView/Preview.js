@@ -51,6 +51,11 @@ export default class DetailPreview extends Component {
     }
   }
 
+  componentWillUnmount () {
+    const { editMode } = this.state
+    if (editMode) this.handleSave()
+  }
+
   setScrollerRef = ref => this.scroller = ref
 
   handleToggleImageModal = () =>
