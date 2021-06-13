@@ -75,22 +75,22 @@ export default ScaledSheet.create({
     textAlign: 'center'
   },
   seriesTheme: {
-    ...style.regular,
+    ...style.italic,
     flexWrap: 'wrap',
     color: warmTextGray,
     paddingHorizontal: section,
     lineHeight: size.h6 * 1.5,
     fontSize: size.h6,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: -baseMargin / 2
   },
   seriesGenre: {
     ...style.semiBold,
     flexWrap: 'wrap',
     color: warmTextGray,
-    lineHeight: size.h6 * 1.4,
+    lineHeight: size.h6 * 1.6,
     fontSize: size.h6,
     textAlign: 'center',
-    marginBottom: -baseMargin / 2
   },
   booksContainer: {
     flex: 1,

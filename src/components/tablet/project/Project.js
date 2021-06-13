@@ -195,7 +195,7 @@ class Project extends Component {
             autoCapitalize='words'
             numberOfLines={1}
             inputStyle={styles.seriesName}
-            placeholder={t('Title')}
+            placeholder={t('Name')}
           />
           {!series.premise && !isEditing ? null : (
             <Input
@@ -210,19 +210,6 @@ class Project extends Component {
               placeholder={t('Premise')}
             />
           )}
-          {!series.theme && !isEditing ? null : (
-            <Input
-              reset
-              multiline
-              editable={isEditing}
-              value={series.theme}
-              onChangeText={this.handleSeriesTheme}
-              autoCapitalize='sentences'
-              numberOfLines={1}
-              inputStyle={styles.seriesTheme}
-              placeholder={t('Theme')}
-            />
-          )}
           {!series.genre && !isEditing ? null : (
             <Input
               reset
@@ -234,6 +221,19 @@ class Project extends Component {
               numberOfLines={1}
               inputStyle={styles.seriesGenre}
               placeholder={t('Genre')}
+            />
+          )}
+          {!series.theme && !isEditing ? null : (
+            <Input
+              reset
+              multiline
+              editable={isEditing}
+              value={series.theme}
+              onChangeText={this.handleSeriesTheme}
+              autoCapitalize='sentences'
+              numberOfLines={1}
+              inputStyle={styles.seriesTheme}
+              placeholder={t('Theme')}
             />
           )}
         </View>
