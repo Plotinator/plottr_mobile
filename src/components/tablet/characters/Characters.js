@@ -132,7 +132,13 @@ class Characters extends Component {
   }
 
   renderCharacterDetail() {
-    const { characters, customAttributes, navigation, images = [] } = this.props
+    const {
+      characters,
+      customAttributes,
+      categories,
+      navigation,
+      images = []
+    } = this.props
     let character = characters.find(
       (char) => char.id == this.state.activeCharacterId
     )
@@ -144,6 +150,7 @@ class Characters extends Component {
           key={character.id}
           character={{ ...character, image }}
           customAttributes={customAttributes}
+          categories={categories}
           onSave={this.saveCharacter}
           navigation={navigation}
         />
@@ -168,9 +175,7 @@ class Characters extends Component {
         <Toolbar onPressDrawer={openDrawer}>
           <NewButton onPress={this.createNewCharacter} />
           <View style={styles.additionals}>
-            <HeaderButtonOptions
-              title={t('Categories')}
-              icon={'list'}>
+            <HeaderButtonOptions title={t('Categories')} icon={'list'}>
               <HeaderAttributes type={'characterCategories'} />
             </HeaderButtonOptions>
             <HeaderButtonOptions

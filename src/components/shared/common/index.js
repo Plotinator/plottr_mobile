@@ -10,6 +10,7 @@ import IconButton from './IconButton'
 import RichEditor from './RichEditor'
 import ShellButton from './ShellButton'
 import AlertDialog from './AlertDialog'
+import PickerInput from './PickerInput'
 import ImagesModal from './ImagesModal'
 import Attachments from './Attachments'
 import AttachmentsPreview from './AttachmentsPreview'
@@ -39,6 +40,7 @@ export {
   RichEditor,
   AlertDialog,
   DetailBlock,
+  PickerInput,
   ImagesModal,
   Attachments,
   AttachmentsPreview,

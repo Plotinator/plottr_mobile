@@ -6,6 +6,7 @@ import { t } from 'plottr_locales'
 import {
   Text,
   Button,
+  PickerInput,
   ScrollerView,
   DetailBlock,
   AddButton,
@@ -51,19 +52,22 @@ export default class DetailPreview extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const { editMode } = this.state
     if (editMode) this.handleSave()
   }
 
-  setScrollerRef = ref => this.scroller = ref
+  setScrollerRef = (ref) => (this.scroller = ref)
 
-  handleToggleImageModal = () =>
-    this.setState({ showImageModal: !this.state.showImageModal })
+  handleHideImageModal = () => this.setState({ showImageModal: false })
+
+  handleShowImageModal = () => this.setState({ showImageModal: true })
 
   handleChooseImage = (imageId, image) => {
     const { object: oldObject, objectMeta = {} } = this.state
-    const { image: { key } } = objectMeta
+    const {
+      image: { key }
+    } = objectMeta
     const object = cloneDeep(oldObject)
     object[key] = imageId
     object.image = image
@@ -112,7 +116,7 @@ export default class DetailPreview extends Component {
               displayStyle={objectMeta.image.displayStyle}
               image={object.image && object.image.data}
               editMode={editMode}
-              onPress={this.handleToggleImageModal}
+              onPress={this.handleShowImageModal}
             />
           ) : (
             <DetailImage
@@ -120,7 +124,7 @@ export default class DetailPreview extends Component {
               imageSourceType='default'
               image={isCharacter ? images.PROFILE : null}
               editMode={editMode}
-              onPress={this.handleToggleImageModal}
+              onPress={this.handleShowImageModal}
             />
           )}
         </View>
@@ -145,7 +149,7 @@ export default class DetailPreview extends Component {
         <ImagesModal
           visible={editMode && showImageModal}
           onChooseImage={this.handleChooseImage}
-          onClose={this.handleToggleImageModal}
+          onClose={this.handleHideImageModal}
         />
       </React.Fragment>
     ) : (
@@ -198,11 +202,20 @@ export default class DetailPreview extends Component {
     const {
       objectMeta: { source }
     } = this.props
-    const { title, key, type, titleStyle, attachmentType } = attribute
+    const {
+      title,
+      key,
+      type,
+      titleStyle,
+      attachmentType,
+      options,
+      alwaysRender
+    } = attribute
     const isAttachment = type === 'attachment'
+    const isSelectable = type === 'selectable'
     const shouldRender = object[key] && object[key].length > 0
     const renderComponent =
-      editMode || shouldRender ? (
+      editMode || shouldRender || alwaysRender ? (
         isAttachment ? (
           <AttachmentsPreview
             editMode={editMode} // test example
@@ -212,6 +225,18 @@ export default class DetailPreview extends Component {
             type={attachmentType}
             source={source}
             objectKey={key}
+            onChange={this.handleChange}
+          />
+        ) : isSelectable ? (
+          <PickerInput
+            key={i}
+            editMode={editMode}
+            title={title}
+            value={object[key]}
+            valueKey='id'
+            displayKey='name'
+            paramKey={key}
+            options={options}
             onChange={this.handleChange}
           />
         ) : (

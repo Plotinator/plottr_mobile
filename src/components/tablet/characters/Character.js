@@ -34,7 +34,7 @@ export default class Character extends Component {
   }
 
   getObjectMeta = () => {
-    const { customAttributes } = this.props
+    const { customAttributes, categories } = this.props
 
     let objectMeta = {
       source: 'character',
@@ -56,7 +56,14 @@ export default class Character extends Component {
       },
       attributes: [
         {
-          title: 'Notes',
+          title: t('Category'),
+          options: categories,
+          key: 'categoryId',
+          type: 'selectable',
+          alwaysRender: true
+        },
+        {
+          title: t('Notes'),
           titleStyle: 'boldItalic',
           key: 'notes',
           type: 'paragraph'
