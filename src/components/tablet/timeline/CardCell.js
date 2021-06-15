@@ -14,8 +14,8 @@ import { Text } from '../../shared/common'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
-export default function CardCell (props) {
-  const { color, card, onEditCard } = props
+export default function CardCell(props) {
+  const { color, card, onEditCard, faded } = props
   const [pan, setPan] = useState(new Animated.ValueXY())
   const [panResponder, setResponder] = useState(null)
   const [cellRef, measure] = useRegisterCoordinates(
@@ -75,7 +75,12 @@ export default function CardCell (props) {
       ) : null}
       <Animated.View
         {...panResponder.panHandlers}
-        style={[styles.cardBox, panStyle, borderColor]}
+        style={[
+          styles.cardBox,
+          panStyle,
+          borderColor,
+          faded && { opacity: 0.25 }
+        ]}
         elevation={5}>
         <View style={styles.cardInner}>
           <Text fontStyle='semiBold' style={styles.cardText} numberOfLines={3}>

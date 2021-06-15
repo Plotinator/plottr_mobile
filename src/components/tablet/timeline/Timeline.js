@@ -94,6 +94,22 @@ class Timeline extends Component {
     this.verticalScrollPosition.removeAllListeners()
   }
 
+  isFiltered(card) {
+    const { filters, filterIsEmpty } = this.props
+    const { tag = [], character = [], place = [], book = [] } = filters || {}
+    let visible = false
+    if (card) {
+      const { tags = [], characters = [], places = [], bookIds = [] } = card
+
+      if (tag.some((tagId) => tags.includes(tagId))) visible = true
+      if (character.some((characterId) => characters.includes(characterId)))
+        visible = true
+      if (place.some((placeId) => places.includes(placeId))) visible = true
+      if (book.some((bookId) => bookIds.includes(bookId))) visible = true
+    }
+    return visible
+  }
+
   handleClearTimelineFilter = () => {
     const { actions } = this.props
     actions.setTimelineFilter({ tag: [], character: [], place: [], color: [] })
@@ -487,7 +503,13 @@ class Timeline extends Component {
     if (beat.new) {
       cells = [<Cell key='+'></Cell>]
     } else {
-      const { lineMap, cardMap, linesMaxCards } = this.props
+      const {
+        lineMap,
+        cardMap,
+        linesMaxCards,
+        filters,
+        filterIsEmpty
+      } = this.props
       const { lineMapKeys } = this.state
       cells = lineMapKeys.reduce((acc, linePosition) => {
         const line = lineMap[linePosition]
@@ -497,11 +519,16 @@ class Timeline extends Component {
           beat.position
         }-${linePosition}`
         if (cards) {
-          cards.forEach((c, idx) =>
-            acc.push(
+          cards.forEach((card, idx) => {
+            let faded = false
+            if (!filterIsEmpty) {
+              faded = !this.isFiltered(card)
+            }
+            return acc.push(
               <CardCell
-                key={`${key}-${idx}-${c.id}`}
-                card={c}
+                faded={faded}
+                key={`${key}-${idx}-${card.id}`}
+                card={card}
                 color={line.color}
                 showLine={idx == 0}
                 register={this.registerDropCoordinate}
@@ -510,7 +537,7 @@ class Timeline extends Component {
                 onEditCard={this.handleEditCard}
               />
             )
-          )
+          })
           if (cards.length < lineMaxCards) {
             for (let i = cards.length; i < lineMaxCards; i++) {
               acc.push(this.renderSpacerCard(`${key}-spacer-${i}`))
@@ -777,7 +804,8 @@ Timeline.propTypes = {
   hierarchyLevels: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
   hierarchyEnabled: PropTypes.bool,
-  filterIsEmpty: PropTypes.bool
+  filterIsEmpty: PropTypes.bool,
+  filters: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
@@ -798,7 +826,8 @@ function mapStateToProps(state) {
     hierarchyLevels: selectors.sortedHierarchyLevels(state),
     isSeries: selectors.isSeriesSelector(state),
     hierarchyEnabled: selectors.beatHierarchyIsOn(state),
-    filterIsEmpty: selectors.timelineFilterIsEmptySelector(state)
+    filterIsEmpty: selectors.timelineFilterIsEmptySelector(state),
+    filters: state.ui.timelineFilter
   }
 }
 
