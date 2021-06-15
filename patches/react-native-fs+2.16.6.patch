@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-native-fs/android/src/main/java/com/rnfs/RNFSManager.java b/node_modules/react-native-fs/android/src/main/java/com/rnfs/RNFSManager.java
+index 7aab307..76a39c4 100755
+--- a/node_modules/react-native-fs/android/src/main/java/com/rnfs/RNFSManager.java
++++ b/node_modules/react-native-fs/android/src/main/java/com/rnfs/RNFSManager.java
+@@ -115,11 +115,15 @@ public class RNFSManager extends ReactContextBaseJavaModule {
+     return stream;
+   }
+ 
++  private String getWriteAccessByAPILevel() {
++    return android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P ? "w" : "rwt";
++  }
++
+   private OutputStream getOutputStream(String filepath, boolean append) throws IORejectionException {
+     Uri uri = getFileUri(filepath, false);
+     OutputStream stream;
+     try {
+-      stream = reactContext.getContentResolver().openOutputStream(uri, append ? "wa" : "w");
++      stream = reactContext.getContentResolver().openOutputStream(uri, append ? "wa" : getWriteAccessByAPILevel());
+     } catch (FileNotFoundException ex) {
+       throw new IORejectionException("ENOENT", "ENOENT: " + ex.getMessage() + ", open '" + filepath + "'");
+     }
