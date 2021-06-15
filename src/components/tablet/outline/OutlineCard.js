@@ -18,7 +18,7 @@ import {
 import Fonts from '../../../fonts'
 
 class OutlineCard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     const {
       card: { title, description }
@@ -58,7 +58,7 @@ class OutlineCard extends Component {
     onReorder && onReorder(card, index, move)
   }
 
-  render () {
+  render() {
     const { lines, card } = this.props
     const { title, description, editMode } = this.state
     const line = lines.find((line) => line.id == card.lineId)
@@ -68,30 +68,32 @@ class OutlineCard extends Component {
     return (
       <TouchableWithoutFeedback>
         <View style={[styles.card, borderStyle]}>
-          <View style={styles.reorderButtons}>
-            <ShellButton
-              data={-1}
-              style={styles.reorderUp}
-              onPress={this.handleReorderCard}>
-              <IconButton
-                noninteractive
-                name='caret-up'
-                hitSize={1}
-                style={styles.reorderUpIcon}
-              />
-            </ShellButton>
-            <ShellButton
-              data={1}
-              style={styles.reorderDown}
-              onPress={this.handleReorderCard}>
-              <IconButton
-                noninteractive
-                name='caret-down'
-                hitSize={1}
-                style={styles.reorderDownIcon}
-              />
-            </ShellButton>
-          </View>
+          {/*
+            <View style={styles.reorderButtons}>
+              <ShellButton
+                data={-1}
+                style={styles.reorderUp}
+                onPress={this.handleReorderCard}>
+                <IconButton
+                  noninteractive
+                  name='caret-up'
+                  hitSize={1}
+                  style={styles.reorderUpIcon}
+                />
+              </ShellButton>
+              <ShellButton
+                data={1}
+                style={styles.reorderDown}
+                onPress={this.handleReorderCard}>
+                <IconButton
+                  noninteractive
+                  name='caret-down'
+                  hitSize={1}
+                  style={styles.reorderDownIcon}
+                />
+              </ShellButton>
+            </View>
+          */}
           <View style={styles.cardHead}>
             <View style={[styles.cardHeader, borderStyle]}>
               <Text color={color} style={styles.cardHeaderText}>
@@ -155,13 +157,13 @@ OutlineCard.propTypes = {
   card: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     lines: selectors.sortedLinesByBookSelector(state)
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.card, dispatch)
   }
