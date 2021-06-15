@@ -34,7 +34,7 @@ public class Document extends ReactContextBaseJavaModule {
     try {
       Uri uri = Uri.parse(docURI);
       ContentResolver contentResolver = reactContext.getContentResolver();
-      ParcelFileDescriptor pfd = contentResolver.openFileDescriptor(uri, "w");
+      ParcelFileDescriptor pfd = contentResolver.openFileDescriptor(uri, "wt");
       FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
       fileOutputStream.write(docData.getBytes());
       // Let the document provider know you're done by closing the stream.

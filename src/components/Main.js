@@ -182,11 +182,13 @@ export default class Main extends Component {
           let existingDocs = []
           let dataArray = JSON.parse(data || [])
           for (let i = 0; i < dataArray.length; i++) {
-            if (await rnfs.exists(dataArray[i].url)) {
+            if (IS_IOS && await rnfs.exists(dataArray[i].url)) {
+              existingDocs.push(dataArray[i])
+            } else if (!IS_IOS && await AndroidDocumentBrowser.fileExists(dataArray[i].url)){
               existingDocs.push(dataArray[i])
             }
           }
-          const recentDocuments = IS_IOS ? existingDocs : dataArray;
+          const recentDocuments = existingDocs;
           this.setState({ recentDocuments })
         } catch (e) {
           console.log('corrupt recent docs', e)
