@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Log;
+import android.os.ParcelFileDescriptor;
 
 import androidx.annotation.Nullable;
 
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
 
 public class DocumentBrowser extends ReactContextBaseJavaModule {
   private static ReactApplicationContext reactContext;
@@ -144,6 +146,23 @@ public class DocumentBrowser extends ReactContextBaseJavaModule {
     }
 
     currentActivity.finishActivity(currentAction);
+  }
+
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  public Boolean fileExists (final String filePath) {
+    File file = new File(filePath);
+    if ( file.exists() ) {
+      return true;
+    } else {
+      try {
+        Uri uri = Uri.parse(filePath);
+        ContentResolver contentResolver = reactContext.getContentResolver();
+        ParcelFileDescriptor pfd = contentResolver.openFileDescriptor(uri, "r");
+        return true;
+      } catch (FileNotFoundException e) {
+        return false;
+      }
+    }
   }
 
   private void sendEvent(ReactContext reactContext,
