@@ -29,14 +29,19 @@ import styles from './NotesStyles'
 class Notes extends Component {
   state = {
     activeNoteId: null,
-    filter: null,
     viewableNotes: []
   }
 
   static getDerivedStateFromProps(props, state) {
     let returnVal = { ...state }
-    const { notes } = props
-    const viewableNotes = Notes.viewableNotes(notes, state.filter)
+    const { notes, filters } = props
+    const { tag = [], character = [], place = [], book = [] } = filters || {}
+    const viewableNotes = Notes.viewableNotes(notes, {
+      tag,
+      character,
+      place,
+      book
+    })
     returnVal.viewableNotes = viewableNotes
     returnVal.activeNoteId = Notes.findActiveNote(
       viewableNotes,
@@ -72,13 +77,13 @@ class Notes extends Component {
   }
 
   // this is a hack for now
-  static staticFilterIsEmpty(filter) {
+  static staticFilterIsEmpty(filters) {
+    const { tag, character, place, book } = filters
     return (
-      filter == null ||
-      (filter['tag'].length === 0 &&
-        filter['character'].length === 0 &&
-        filter['place'].length === 0 &&
-        filter['book'].length === 0)
+      tag.length === 0 &&
+      character.length === 0 &&
+      place.length === 0 &&
+      book.length === 0
     )
   }
 
