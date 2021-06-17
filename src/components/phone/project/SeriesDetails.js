@@ -110,7 +110,6 @@ class SeriesDetails extends Component {
         const toChange = {}
         book[stateName] = textValue
         const state = { book }
-        console.log('BOOK', book)
         state.changes = true
         this.setState(state)
       }
