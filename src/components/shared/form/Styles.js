@@ -3,6 +3,7 @@ import Colors from '../../../utils/Colors'
 import Fonts from '../../../fonts'
 
 const {
+  ifTablet,
   baseMargin,
   doubleBaseMargin,
   section,
@@ -63,12 +64,12 @@ export default {
     top: -baseMargin * 0.9,
     right: -baseMargin * 0.9,
     borderRadius: 50,
-    width: '27@ms',
-    height: '27@ms',
+    width: ifTablet('27@ms', '35@ms'),
+    height: ifTablet('27@ms', '35@ms'),
     zIndex: 99
   },
   closeIcon: {
-    fontSize: size.tiny,
+    fontSize: ifTablet(size.tiny, size.h5),
     color: orange
   },
   form: {},
@@ -144,12 +145,15 @@ export default {
     width: '100%',
     justifyContent: 'center',
     paddingTop: doubleBaseMargin,
-    flexDirection: 'row'
+    paddingBottom: 1,
+    flexDirection: 'row',
+    marginHorizontal: -baseMargin / 2
   },
   action: {
+    flex: 1,
     marginHorizontal: baseMargin / 2,
     borderRadius: cornerRadius,
-    paddingHorizontal: doubleBaseMargin
+    paddingHorizontal: ifTablet(doubleBaseMargin, 0)
   },
   menuPopover: {
     borderRadius: cornerRadius,

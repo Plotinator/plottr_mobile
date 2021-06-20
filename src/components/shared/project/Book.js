@@ -1,20 +1,22 @@
 import React from 'react'
 import { View, ImageBackground } from 'react-native'
 import { t } from 'plottr_locales'
-import { Text, IconButton, AddButton, ShellButton } from '../../shared/common'
+import { Text, IconButton, AddButton, ShellButton } from '../common'
 import styles from './BookStyles'
 import Images from '../../../images'
-import { isTablet } from 'react-native-device-info'
+import Metrics from '../../../utils/Metrics'
 
 const { BOOK } = Images
+const { ifTablet } = Metrics
 
-export default function Book (props) {
+export default function Book(props) {
   const {
     style,
     editable,
     noTimeline,
     noOutline,
     book,
+    onPress,
     size = '33%',
     image = null,
     book: { id, title },
@@ -38,7 +40,7 @@ export default function Book (props) {
     onDeleteBook(id, bookTitle)
   }
   const bookStyles = [styles.book, { width: size }, style]
-  const fontSize = isTablet() ? 'tiny' : 'regular'
+  const fontSize = ifTablet('tiny', 'regular')
   const bookTitle = title || t('Untitled')
   const actions = (
     <View
@@ -50,11 +52,12 @@ export default function Book (props) {
           color='lightenGray'
           size={11}
           onPress={deleteBook}
+          style={styles.trashIcon}
           buttonStyle={styles.trashButton}
         />
       )}
       {!noOutline && (
-        <AddButton icon='stream' onPress={goToOutline} size={28} hitSize={20} />
+        <AddButton icon='stream' onPress={goToOutline} size={ifTablet(28, 25)} hitSize={20} />
       )}
       {!noTimeline && (
         <AddButton
@@ -65,7 +68,7 @@ export default function Book (props) {
         />
       )}
       {editable && (
-        <AddButton icon='pen' onPress={goToEditBook} size={28} hitSize={20} />
+        <AddButton icon='pen' onPress={goToEditBook} size={ifTablet(28, 25)} hitSize={20} />
       )}
     </View>
   )
@@ -73,7 +76,7 @@ export default function Book (props) {
   // imageWrapper
   return (
     <ShellButton
-      onPress={goToTimeline}
+      onPress={onPress || goToTimeline}
       style={bookStyles}
       noninteractive={!goToTimeline}>
       <ImageBackground

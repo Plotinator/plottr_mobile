@@ -12,7 +12,8 @@ const TabBarOptions = {
 }
 
 const TabScreenOptions = ({ route }) => ({
-  tabBarIcon: props => <TabIcon {...props} route={route} />,
+  headerShown: false,
+  tabBarIcon: (props) => <TabIcon {...props} route={route} />,
   tabBarButton: TabButton
 })
 

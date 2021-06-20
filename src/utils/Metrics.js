@@ -4,15 +4,20 @@ import {
   moderateVerticalScale,
   moderateScale
 } from 'react-native-size-matters'
+import { isTablet } from 'react-native-device-info'
 
 const { width, height } = Dimensions.get('window')
 const IS_IOS = Platform.OS === 'ios'
+const IS_TABLET = isTablet()
 const ifIOS = (is, isnt) => (IS_IOS ? is : isnt)
+const ifTablet = (is, isnt) => (IS_TABLET ? is : isnt)
 
 const Metrics = {
   IS_IOS,
   IS_ANDROID: !IS_IOS,
+  IS_TABLET,
   ifIOS,
+  ifTablet,
   section: moderateVerticalScale(25),
   baseMargin: moderateVerticalScale(10),
   doubleSection: moderateVerticalScale(50),

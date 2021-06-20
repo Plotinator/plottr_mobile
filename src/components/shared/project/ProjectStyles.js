@@ -3,6 +3,7 @@ import { Colors, Metrics } from '../../../utils'
 import Fonts from '../../../fonts'
 
 const {
+  ifTablet,
   baseMargin,
   doubleBaseMargin,
   cornerRadius,
@@ -19,8 +20,12 @@ const {
   warmTextGray,
   warmTextDarkGray
 } = Colors
-const smallestDimension = screenWidth > screenHeight ? screenHeight : screenWidth
-const { size, style } = Fonts
+const smallestDimension =
+  screenWidth > screenHeight ? screenHeight : screenWidth
+const {
+  size: { h1, h3, h4, h5, h6 },
+  style
+} = Fonts
 
 export default ScaledSheet.create({
   background: {
@@ -53,7 +58,7 @@ export default ScaledSheet.create({
     color: warmTextGray
   },
   seriesContainer: {
-    paddingHorizontal: doubleSection * 2,
+    paddingHorizontal: ifTablet(doubleSection, baseMargin) * 2,
     alignItems: 'center'
   },
   seriesName: {
@@ -61,8 +66,8 @@ export default ScaledSheet.create({
     flexWrap: 'wrap',
     marginTop: baseMargin / 2,
     color: warmTextDarkGray,
-    lineHeight: size.h1 * 1.2,
-    fontSize: size.h1,
+    lineHeight: h1 * 1.2,
+    fontSize: h1,
     textAlign: 'center'
   },
   seriesDescription: {
@@ -70,8 +75,8 @@ export default ScaledSheet.create({
     flexWrap: 'wrap',
     color: warmTextGray,
     paddingHorizontal: section,
-    lineHeight: size.h5 * 1.5,
-    fontSize: size.h5,
+    lineHeight: ifTablet(h5, h3) * 1.5,
+    fontSize: ifTablet(h5, h3),
     textAlign: 'center'
   },
   seriesTheme: {
@@ -79,18 +84,19 @@ export default ScaledSheet.create({
     flexWrap: 'wrap',
     color: warmTextGray,
     paddingHorizontal: section,
-    lineHeight: size.h6 * 1.5,
-    fontSize: size.h6,
+    lineHeight: h6 * 1.5,
+    fontSize: ifTablet(h6, h5),
     textAlign: 'center',
+    marginTop: baseMargin / 2,
     marginBottom: -baseMargin / 2
   },
   seriesGenre: {
     ...style.semiBold,
     flexWrap: 'wrap',
     color: warmTextGray,
-    lineHeight: size.h6 * 1.6,
-    fontSize: size.h6,
-    textAlign: 'center',
+    lineHeight: h6 * 1.6,
+    fontSize: ifTablet(h6, h5),
+    textAlign: 'center'
   },
   booksContainer: {
     flex: 1,
@@ -104,7 +110,7 @@ export default ScaledSheet.create({
     flexWrap: 'wrap'
   },
   book: {
-    width: 0.29 * smallestDimension
+    width: ifTablet(0.29, 0.5) * smallestDimension
   },
   saveButton: {
     width: 120,

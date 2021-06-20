@@ -5,28 +5,25 @@ import { bindActionCreators } from 'redux'
 import { ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native'
 import { View } from 'native-base'
 import { newIds, actions } from 'pltr/v2'
-import Toolbar from '../shared/Toolbar'
+import Toolbar from '../../shared/Toolbar'
 import { t } from 'plottr_locales'
-import {
-  Text,
-  Input,
-  AddButton,
-  Button,
-} from '../../shared/common'
-import Book from '../../shared/project/Book'
+import { ScrollerView, Text, Input, AddButton, Button } from '../common'
+import Book from './Book'
 import Collapsible from 'react-native-collapsible'
 import styles from './ProjectStyles'
-import { showAlert } from '../../shared/common/AlertDialog'
+import { showAlert } from '../common/AlertDialog'
 import BookModal from './BookModal'
+import { Metrics } from '../../../utils'
 
 const { objectId } = newIds
+const { ifTablet } = Metrics
 
 class Project extends Component {
   state = {
     editMode: false
   }
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     if (state.changes) {
       return { series: state.series, changes: true }
     } else {
@@ -36,7 +33,13 @@ class Project extends Component {
 
   handleSetNameInputRef = (ref) => (this.seriesName = ref)
 
-  handleSetScrollerRef = (ref) => (this.scroller = ref)
+  handleSetScrollerRef = (ref) => {
+    this.scroller = ref
+  }
+
+  handleSetSubScrollerRef = (ref) => {
+    this.subScroller = ref
+  }
 
   handleToggleEdit = () => {
     this.setState({ editMode: true }, () => {
@@ -96,7 +99,10 @@ class Project extends Component {
     // add a beat
     beatActions.addBeat(newBookId)
 
-    setTimeout(this.scroller.scrollToEnd)
+    setTimeout(() => {
+      // this.scroller.scrollToEnd()
+      this.subScroller.scrollToEnd()
+    })
   }
 
   handleDeleteBook = (id, title) => {
@@ -132,7 +138,7 @@ class Project extends Component {
 
   navigateToTimeline = (id) => {
     this.props.uiActions.changeCurrentTimeline(id)
-    this.props.navigation.navigate('Timeline')
+    this.props.navigation.navigate(ifTablet('Timeline', 'Outline'))
   }
 
   navigateToOutline = (id) => {
@@ -140,7 +146,7 @@ class Project extends Component {
     this.props.navigation.navigate('Outline')
   }
 
-  renderBooks () {
+  renderBooks() {
     const { books, images } = this.props
     if (!books.allIds) return null
     return books.allIds.map((id) => {
@@ -165,111 +171,116 @@ class Project extends Component {
     })
   }
 
-  render () {
+  render() {
     const { series, changes, editMode } = this.state
     const { openDrawer, images } = this.props
     const isEditing = editMode === true
     return (
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer} />
-        <View style={styles.labelContainer}>
-          <View style={styles.labelProject}>
-            <Text style={styles.labelText}>Series</Text>
-          </View>
-          <AddButton
-            icon='pen'
-            duration={300}
-            animated
-            animation={isEditing ? 'zoomOut' : 'zoomIn'}
-            onPress={this.handleToggleEdit}
-          />
-        </View>
-        <View style={styles.seriesContainer}>
-          <Input
-            reset
-            multiline
-            ref={this.handleSetNameInputRef}
-            editable={isEditing}
-            value={series.name}
-            onChangeText={this.handleSeriesName}
-            autoCapitalize='words'
-            numberOfLines={1}
-            inputStyle={styles.seriesName}
-            placeholder={t('Name')}
-          />
-          {!series.premise && !isEditing ? null : (
-            <Input
-              reset
-              multiline
-              editable={isEditing}
-              value={series.premise}
-              onChangeText={this.handleSeriesPremise}
-              autoCapitalize='sentences'
-              numberOfLines={1}
-              inputStyle={styles.seriesDescription}
-              placeholder={t('Premise')}
+        <ScrollerView
+          scrollerProps={{
+            ref: this.handleSetSubScrollerRef
+          }}>
+          <View style={styles.labelContainer}>
+            <View style={styles.labelProject}>
+              <Text style={styles.labelText}>Series</Text>
+            </View>
+            <AddButton
+              icon='pen'
+              duration={300}
+              animated
+              animation={isEditing ? 'zoomOut' : 'zoomIn'}
+              onPress={this.handleToggleEdit}
             />
-          )}
-          {!series.genre && !isEditing ? null : (
+          </View>
+          <View style={styles.seriesContainer}>
             <Input
               reset
               multiline
+              ref={this.handleSetNameInputRef}
               editable={isEditing}
-              value={series.genre}
-              onChangeText={this.handleSeriesGenre}
+              value={series.name}
+              onChangeText={this.handleSeriesName}
               autoCapitalize='words'
               numberOfLines={1}
-              inputStyle={styles.seriesGenre}
-              placeholder={t('Genre')}
+              inputStyle={styles.seriesName}
+              placeholder={t('Name')}
             />
-          )}
-          {!series.theme && !isEditing ? null : (
-            <Input
-              reset
-              multiline
-              editable={isEditing}
-              value={series.theme}
-              onChangeText={this.handleSeriesTheme}
-              autoCapitalize='sentences'
-              numberOfLines={1}
-              inputStyle={styles.seriesTheme}
-              placeholder={t('Theme')}
-            />
-          )}
-        </View>
-        <Collapsible collapsed={!isEditing}>
-          <View style={styles.buttonContainer}>
-            <Button
-              small
-              disabled={!changes}
-              onPress={this.handleSaveChanges}
-              style={styles.saveButton}>
-              {t('Save')}
-            </Button>
-            <Button
-              small
-              bordered
-              onPress={this.handleCancelChanges}
-              style={styles.saveButton}>
-              {t('Cancel')}
-            </Button>
+            {!series.premise && !isEditing ? null : (
+              <Input
+                reset
+                multiline
+                editable={isEditing}
+                value={series.premise}
+                onChangeText={this.handleSeriesPremise}
+                autoCapitalize='sentences'
+                numberOfLines={1}
+                inputStyle={styles.seriesDescription}
+                placeholder={t('Premise')}
+              />
+            )}
+            {!series.genre && !isEditing ? null : (
+              <Input
+                reset
+                multiline
+                editable={isEditing}
+                value={series.genre}
+                onChangeText={this.handleSeriesGenre}
+                autoCapitalize='words'
+                numberOfLines={1}
+                inputStyle={styles.seriesGenre}
+                placeholder={t('Genre')}
+              />
+            )}
+            {!series.theme && !isEditing ? null : (
+              <Input
+                reset
+                multiline
+                editable={isEditing}
+                value={series.theme}
+                onChangeText={this.handleSeriesTheme}
+                autoCapitalize='sentences'
+                numberOfLines={1}
+                inputStyle={styles.seriesTheme}
+                placeholder={t('Theme')}
+              />
+            )}
           </View>
-        </Collapsible>
-        <View style={styles.labelContainer}>
-          <View style={styles.labelProject}>
-            <Text style={styles.labelText}>{t('Books')}</Text>
+          <Collapsible collapsed={!isEditing}>
+            <View style={styles.buttonContainer}>
+              <Button
+                small
+                disabled={!changes}
+                onPress={this.handleSaveChanges}
+                style={styles.saveButton}>
+                {t('Save')}
+              </Button>
+              <Button
+                small
+                bordered
+                onPress={this.handleCancelChanges}
+                style={styles.saveButton}>
+                {t('Cancel')}
+              </Button>
+            </View>
+          </Collapsible>
+          <View style={styles.labelContainer}>
+            <View style={styles.labelProject}>
+              <Text style={styles.labelText}>{t('Books')}</Text>
+            </View>
+            <AddButton onPress={this.handleAddNewBook} />
           </View>
-          <AddButton onPress={this.handleAddNewBook} />
-        </View>
-        <View style={styles.booksContainer}>
-          <ScrollView
-            ref={this.handleSetScrollerRef}
-            contentContainerStyle={styles.booksList}>
-            <TouchableWithoutFeedback>
-              <React.Fragment>{this.renderBooks()}</React.Fragment>
-            </TouchableWithoutFeedback>
-          </ScrollView>
-        </View>
+          <View style={styles.booksContainer}>
+            <View style={styles.booksList}>
+              {/*<TouchableWithoutFeedback>
+              <React.Fragment>*/}
+              {this.renderBooks()}
+              {/*</React.Fragment>
+            </TouchableWithoutFeedback>*/}
+            </View>
+          </View>
+        </ScrollerView>
         <BookModal
           ref={this.handleBookModalRef}
           onSaveBook={this.handleSaveBook}
@@ -289,7 +300,7 @@ Project.propTypes = {
   closeFile: PropTypes.func
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     series: state.series,
     images: state.images,
@@ -297,7 +308,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.book, dispatch),
     lineActions: bindActionCreators(actions.line, dispatch),

@@ -8,13 +8,11 @@ import { getStore } from '../../../store/configureStore'
 import { actions } from 'pltr/v2'
 import AddButton from '../../ui/AddButton'
 import DrawerButton from '../../ui/DrawerButton'
-import SeriesDetails from '../project/SeriesDetails'
 import withBoundary from '../shared/BoundaryWrapper'
 import { RenderTitle } from '../../shared/common'
 
 const Stack = createStackNavigator()
 const SceneDetailsBounded = withBoundary(SceneDetails)
-const SeriesDetailsBounded = withBoundary(SeriesDetails)
 
 export default function OutlineStack(props) {
   const addChapter = () => {
@@ -25,38 +23,33 @@ export default function OutlineStack(props) {
     // TODO: rename scene to chapter
     store.dispatch(actions.beat.addBeat(currentTimeline))
   }
-
-  const addBook = () => {
-    props.navigation.push('SeriesDetails', { isNewBook: true })
-  }
-
+  const openDrawer = props.route?.params?.openDrawer
   return (
     <Stack.Navigator>
       <Stack.Screen
         name='ProjectHome'
         component={ProjectHome}
         options={{
-          title: RenderTitle('Project'),
-          headerLeft: () => (
-            <DrawerButton openDrawer={props.route?.params?.openDrawer} />
-          )
+          headerShown: false
         }}
+        initialParams={{ openDrawer }}
       />
-      <Stack.Screen name='SeriesDetails' component={SeriesDetailsBounded} />
       <Stack.Screen
-        name='OutlineHome'
+        name='Outline'
         component={OutlineHome}
         options={{
-          title: RenderTitle('Outline'),
-          headerRight: () => <AddButton onPress={addChapter} />
+          headerShown: false
         }}
+        initialParams={{ openDrawer }}
       />
       <Stack.Screen
         name='SceneDetails'
         component={SceneDetailsBounded}
         options={{
+          headerShown: false,
           title: RenderTitle('Scene Details')
         }}
+        initialParams={{ openDrawer }}
       />
     </Stack.Navigator>
   )

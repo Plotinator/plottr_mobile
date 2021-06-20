@@ -25,13 +25,15 @@ import {
   ShellButton,
   Attachments,
   ImagesModal
-} from '../../shared/common'
+} from '../common'
 import styles from './BookModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
-import Book from '../../shared/project/Book'
+import Book from './Book'
 import * as Animatable from 'react-native-animatable'
+import Metrics from '../../../utils/Metrics'
 
+const { ifTablet } = Metrics
 const AnimeTouchableNoFeedback = Animatable.createAnimatableComponent(
   TouchableWithoutFeedback
 )
@@ -157,7 +159,7 @@ export default class BookModal extends Component {
                   </View>
                   <View style={styles.bookContainer}>
                     <Book
-                      size={200}
+                      size={ifTablet(200, 120)}
                       book={{ id, title }}
                       image={bookImage}
                       noTimeline
@@ -166,7 +168,7 @@ export default class BookModal extends Component {
                       <View style={styles.cameraContainer}>
                         <AddButton
                           icon='camera'
-                          size={40}
+                          size={ifTablet(40, 30)}
                           onPress={this.handleChangeImage}
                           style={styles.cameraButton}
                         />

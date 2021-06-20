@@ -5,6 +5,7 @@ import Fonts from '../../../fonts'
 import FormStyles from '../../shared/form/Styles'
 
 const {
+  ifTablet,
   baseMargin,
   cornerRadius,
   doubleBaseMargin,
@@ -119,7 +120,7 @@ export default ScaledSheet.create({
   },
   bottomLeftIcon: {
     position: 'absolute',
-    fontSize: size.nano,
+    fontSize: ifTablet(size.nano, size.small),
     color: 'white',
     bottom: 7,
     left: 6
