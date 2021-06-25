@@ -4,12 +4,13 @@ import ErrorBoundary from '../../shared/ErrorBoundary'
 import Outline from './Outline'
 import Colors from '../../../utils/Colors'
 
-export default function OutlineHome (props) {
+export default function OutlineHome(props) {
   //gray-9
+  const openDrawer = props.route?.params?.openDrawer
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.warmBG }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.warmWhite }}>
       <ErrorBoundary>
-        <Outline navigation={props.navigation} />
+        <Outline navigation={props.navigation} openDrawer={openDrawer} />
       </ErrorBoundary>
     </SafeAreaView>
   )

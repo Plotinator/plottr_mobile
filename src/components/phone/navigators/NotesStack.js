@@ -11,17 +11,22 @@ import { RenderTitle } from '../../shared/common'
 const Stack = createStackNavigator()
 const NoteDetailsBounded = withBoundary(NoteDetails)
 
-export default function NotesStack (props) {
+export default function NotesStack(props) {
   const addNote = () => {
     props.navigation.push('NoteDetails', { isNewNote: true })
   }
-
+  const openDrawer = props.route?.params?.openDrawer
   return (
     <Stack.Navigator>
       <Stack.Screen
         name='NotesHome'
         component={NotesHome}
+        initialParams={{ openDrawer }}
         options={{
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f5f4f0' // warmWhite
+          },
           title: RenderTitle('Notes'),
           headerRight: () => <AddButton onPress={addNote} />,
           headerLeft: () => (
@@ -32,7 +37,12 @@ export default function NotesStack (props) {
       <Stack.Screen
         name='NoteDetails'
         component={NoteDetailsBounded}
+        initialParams={{ openDrawer }}
         options={{
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f5f4f0' // warmWhite
+          },
           title: RenderTitle('Note Details')
         }}
       />

@@ -11,7 +11,7 @@ export default ScaledSheet.create({
     backgroundColor: warmBG
   },
   content: {
-    paddingVertical: 8
+    // paddingVertical: 8
   },
   addScene: {
     fontSize: 16
@@ -38,5 +38,5 @@ export default ScaledSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: borderGray
   },
-  chaptersList: { marginTop: -7 }
+  chaptersList: {}
 })

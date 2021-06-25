@@ -13,6 +13,7 @@ import { askToDelete } from '../../../utils/delete'
 import { Text } from '../../shared/common'
 import Colors from '../../../utils/Colors'
 import Metrics from '../../../utils/Metrics'
+import Toolbar from '../../shared/Toolbar'
 
 class NotesList extends Component {
   deleteNote = (note) => {
@@ -44,26 +45,33 @@ class NotesList extends Component {
 
   render() {
     const notes = sortBy(this.props.notes, ['lastEdited'])
+    const { openDrawer } = this.props
     return (
-      <SwipeListView
-        data={notes}
-        renderItem={this.renderNote}
-        renderHiddenItem={({ item }, rowMap) => (
-          <TrashButton
-            data={item}
-            iconStyle={styles.icon}
-            onPress={this.deleteNote}
-            color='white'
-          />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-        leftOpenValue={75}
-      />
+      <View style={styles.wrapper}>
+        {/*<Toolbar onPressDrawer={openDrawer} />*/}
+        <SwipeListView
+          data={notes}
+          renderItem={this.renderNote}
+          renderHiddenItem={({ item }, rowMap) => (
+            <TrashButton
+              data={item}
+              iconStyle={styles.icon}
+              onPress={this.deleteNote}
+              color='white'
+            />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          leftOpenValue={75}
+        />
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1
+  },
   row: {
     backgroundColor: Colors.warmWhiteBG
   },

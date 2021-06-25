@@ -1,38 +1,30 @@
 import React from 'react'
-import { Button, Icon } from 'native-base'
-import { isTablet } from 'react-native-device-info'
+import { ShellButton, IconButton } from '../shared/common'
 import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../utils/Metrics'
+import Colors from '../../utils/Colors'
 
-const onTablet = isTablet()
-
-export default function DrawerButton (props) {
+export default function DrawerButton({ padded = true, onPress, openDrawer }) {
   return (
-    <Button
-      light
-      transparent
-      onPress={props.openDrawer}
-      style={styles.tabletButton}>
-      <Icon type='FontAwesome5' name='bars' style={styles.tabletIcon} />
-    </Button>
+    <ShellButton
+      onPress={onPress || openDrawer}
+      style={[styles.button, padded && styles.padded]}
+      hitSize={30}>
+      <IconButton name='bars' style={styles.icon} />
+    </ShellButton>
   )
 }
 
 const styles = ScaledSheet.create({
-  tabletButton: {
-    borderRadius: Metrics.cornerRadius / 2,
-    backgroundColor: onTablet ? 'white' : 'transparent',
-    marginRight: onTablet ? 20 : 0,
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0.5,
-      height: 0.5
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.25,
-    elevation: 2
+  button: {
+    marginRight: Metrics.doubleBaseMargin
   },
-  tabletIcon: {
-    fontSize: '18@ms'
+  icon: {
+    fontSize: Metrics.ifTablet('18@ms', '24@ms'),
+    color: Colors.textGray
+  },
+  padded: {
+    paddingHorizontal: Metrics.doubleBaseMargin,
+    padding: Metrics.baseMargin
   }
 })

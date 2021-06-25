@@ -30,6 +30,7 @@ export default function OutlineStack(props) {
         name='ProjectHome'
         component={ProjectHome}
         options={{
+          title: RenderTitle('Project'),
           headerShown: false
         }}
         initialParams={{ openDrawer }}
@@ -38,7 +39,11 @@ export default function OutlineStack(props) {
         name='Outline'
         component={OutlineHome}
         options={{
-          headerShown: false
+          title: RenderTitle('Outline'),
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f5f4f0' // warmWhite
+          }
         }}
         initialParams={{ openDrawer }}
       />
@@ -46,7 +51,10 @@ export default function OutlineStack(props) {
         name='SceneDetails'
         component={SceneDetailsBounded}
         options={{
-          headerShown: false,
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f5f4f0' // warmWhite
+          },
           title: RenderTitle('Scene Details')
         }}
         initialParams={{ openDrawer }}

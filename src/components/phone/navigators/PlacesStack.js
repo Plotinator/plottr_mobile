@@ -11,17 +11,22 @@ import { RenderTitle } from '../../shared/common'
 const Stack = createStackNavigator()
 const PlaceDetailsBounded = withBoundary(PlaceDetails)
 
-export default function PlacesStack (props) {
+export default function PlacesStack(props) {
   const addPlace = () => {
     props.navigation.push('PlaceDetails', { isNewPlace: true })
   }
-
+  const openDrawer = props.route?.params?.openDrawer
   return (
     <Stack.Navigator>
       <Stack.Screen
         name='PlacesHome'
+        initialParams={{ openDrawer }}
         component={PlacesHome}
         options={{
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f5f4f0' // warmWhite
+          },
           title: RenderTitle('Places'),
           headerRight: () => <AddButton onPress={addPlace} />,
           headerLeft: () => (
@@ -32,7 +37,12 @@ export default function PlacesStack (props) {
       <Stack.Screen
         name='PlaceDetails'
         component={PlaceDetailsBounded}
+        initialParams={{ openDrawer }}
         options={{
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f5f4f0' // warmWhite
+          },
           title: RenderTitle('Place Details')
         }}
       />

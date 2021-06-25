@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Icon, Label, Item, View } from 'native-base'
 import { selectors, actions, initialState, newIds } from 'pltr/v2'
-import { StyleSheet, Platform } from 'react-native'
+import { SafeAreaView, StyleSheet, Platform } from 'react-native'
 import { t } from 'plottr_locales'
 import ChapterPicker from '../../ui/ChapterPicker'
 import LinePicker from '../../ui/LinePicker'
@@ -14,6 +14,7 @@ import AttachmentList from '../../shared/attachments/AttachmentList'
 import DetailsScrollView from '../shared/DetailsScrollView'
 import Colors from '../../../utils/Colors'
 import Metrics from '../../../utils/Metrics'
+import Toolbar from '../../shared/Toolbar'
 import { Text, ShellButton, Input, RichEditor } from '../../shared/common'
 import Fonts from '../../../fonts'
 import {
@@ -26,17 +27,17 @@ import { showAlert } from '../../shared/common/AlertDialog'
 // cooresponds to CardDialog in desktop
 
 class SceneDetails extends Component {
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     const { cards } = props
     const { isNewCard, card } = state
-    const oldCard = isNewCard ? {} : cards.find(c => c.id == card.id)
+    const oldCard = isNewCard ? {} : cards.find((c) => c.id == card.id)
     const { tags = [], characters = [], places = [] } = oldCard
     return {
       card: { ...card, tags, characters, places }
     }
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     const { route, cards, lines } = props
     const { isNewCard, card, chapterId } = route.params
@@ -53,17 +54,17 @@ class SceneDetails extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setSaveButton()
     const { navigation } = this.props
     addLeaveListener(navigation, this.checkChanges, this.saveChanges)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     removeLeaveListener(this.props.navigation, this.checkChanges)
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     this.setSaveButton()
   }
 
@@ -85,7 +86,7 @@ class SceneDetails extends Component {
     this.toastError(t('Please choose a plotline'))
   }
 
-  toastError (errorText) {
+  toastError(errorText) {
     showAlert({
       message: errorText
     })
@@ -146,11 +147,14 @@ class SceneDetails extends Component {
     this.detailsScroller && this.detailsScroller.getScroller().scrollToEnd()
 
   handleAskToDelete = () => {
-    const { card: { title } } = this.state
+    const {
+      card: { title }
+    } = this.state
     showAlert({
       title: t('Delete Scene'),
-      message: t('Are you sure you want to delete {name}?', { name: title })
-        .replace('delete ', 'delete\n'),
+      message: t('Are you sure you want to delete {name}?', {
+        name: title
+      }).replace('delete ', 'delete\n'),
       actions: [
         {
           name: t('Yes, Delete'),
@@ -165,12 +169,14 @@ class SceneDetails extends Component {
   }
 
   handleDeleteScene = () => {
-    const { card: { id } } = this.state
+    const {
+      card: { id }
+    } = this.state
     this.props.actions.deleteCard(id)
     this.props.navigation.goBack()
   }
 
-  renderAttachments () {
+  renderAttachments() {
     const { card, isNewCard } = this.state
     if (isNewCard) return null
 
@@ -183,72 +189,85 @@ class SceneDetails extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       card,
       card: { title, description }
     } = this.state
     const chapterId = card.beatId || ''
     const lineId = card.lineId || ''
+    const openDrawer = this.props.route?.params?.openDrawer
+
     return (
-      <DetailsScrollView ref={this.setScroller}>
-        <View style={styles.container}>
-          <View inlineLabel last style={styles.label}>
-            <Input
-              inset
-              label={`${t('Title')}:`}
-              value={title}
-              onChangeText={this.handleTitleChange}
-              autoCapitalize='sentences'
-              placeholder={t('Give your scene a title')}
-              placeholderTextColor={Colors.lightGray}
-            />
-          </View>
-          <Item fixedLabel style={styles.label}>
-            <Text style={styles.labelText}>{t('Chapter')}:</Text>
-            <ChapterPicker
-              selectedId={chapterId}
-              onChange={this.changeChapter}
-            />
-          </Item>
-          <Item fixedLabel style={styles.label}>
-            <Text fontStyle='semiBold'>{t('Plotline')}:</Text>
-            <LinePicker selectedId={lineId} onChange={this.changeLine} />
-          </Item>
-          {this.renderAttachments()}
-          <View style={[styles.afterList, styles.rceView]}>
-            <Text fontStyle='semiBold' style={styles.label}>
-              {t('Description')}:
-            </Text>
-            <RichEditor
-              initialValue={description}
-              placeholder={t('Describe the scene')}
-              onFocus={this.handleOnEditorFocus}
-              onChange={this.handleDescriptionChange}
-            />
-            {/*
+      <SafeAreaView style={styles.wrapper}>
+        {/*<Toolbar onPressDrawer={openDrawer} />*/}
+        <DetailsScrollView ref={this.setScroller}>
+          <View style={styles.container}>
+            <View inlineLabel last style={styles.label}>
+              <Input
+                inset
+                label={`${t('Title')}:`}
+                value={title}
+                onChangeText={this.handleTitleChange}
+                autoCapitalize='sentences'
+                placeholder={t('Give your scene a title')}
+                placeholderTextColor={Colors.lightGray}
+              />
+            </View>
+            <Item fixedLabel style={styles.label}>
+              <Text style={styles.labelText}>{t('Chapter')}:</Text>
+              <ChapterPicker
+                selectedId={chapterId}
+                onChange={this.changeChapter}
+              />
+            </Item>
+            <Item fixedLabel style={styles.label}>
+              <Text fontStyle='semiBold'>{t('Plotline')}:</Text>
+              <LinePicker selectedId={lineId} onChange={this.changeLine} />
+            </Item>
+            {this.renderAttachments()}
+            <View style={[styles.afterList, styles.rceView]}>
+              <Text fontStyle='semiBold' style={styles.label}>
+                {t('Description')}:
+              </Text>
+              <RichEditor
+                initialValue={description}
+                placeholder={t('Describe the scene')}
+                onFocus={this.handleOnEditorFocus}
+                onChange={this.handleDescriptionChange}
+              />
+              {/*
             <RichEditor
               initialHTMLText={description}
               placeholder={t('Describe the scene')}
               onFocus={this.handleOnEditorFocus}
               onChange={this.handleDescriptionChange}
             />*/}
-            <ShellButton
-              onPress={this.handleAskToDelete}
-              style={styles.trashButton}>
-              <Icon
-                type='FontAwesome5'
-                name='trash'
-                style={{ color: Colors.textGray, fontSize: Fonts.size.regular }} />
-            </ShellButton>
+              <ShellButton
+                onPress={this.handleAskToDelete}
+                style={styles.trashButton}>
+                <Icon
+                  type='FontAwesome5'
+                  name='trash'
+                  style={{
+                    color: Colors.textGray,
+                    fontSize: Fonts.size.regular
+                  }}
+                />
+              </ShellButton>
+            </View>
           </View>
-        </View>
-      </DetailsScrollView>
+        </DetailsScrollView>
+      </SafeAreaView>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: Colors.warmWhite
+  },
   container: {
     // backgroundColor: Colors.warmBG
   },
@@ -290,7 +309,7 @@ SceneDetails.propTypes = {
   route: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     chapters: selectors.sortedBeatsByBookSelector(state),
     lines: selectors.sortedLinesByBookSelector(state),
@@ -300,7 +319,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.card, dispatch)
   }

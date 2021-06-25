@@ -4,11 +4,15 @@ import ErrorBoundary from '../../shared/ErrorBoundary'
 import NotesList from './NotesList'
 import Colors from '../../../utils/Colors'
 
-export default function NotesHome (props) {
+export default function NotesHome(props) {
   //gray-9
-  return <SafeAreaView style={{flex: 1, backgroundColor: Colors.warmBG }}>
-    <ErrorBoundary>
-      <NotesList navigation={props.navigation}/>
-    </ErrorBoundary>
-  </SafeAreaView>
+  const openDrawer = props.route?.params?.openDrawer
+  console.log('openDrawer', openDrawer)
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.warmWhite }}>
+      <ErrorBoundary>
+        <NotesList navigation={props.navigation} openDrawer={openDrawer} />
+      </ErrorBoundary>
+    </SafeAreaView>
+  )
 }

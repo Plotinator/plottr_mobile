@@ -11,7 +11,7 @@ import { RenderTitle } from '../../shared/common'
 const Stack = createStackNavigator()
 const CharacterDetailsBounded = withBoundary(CharacterDetails)
 
-export default function CharactersStack (props) {
+export default function CharactersStack(props) {
   const addCharacter = () => {
     props.navigation.push('CharacterDetails', { isNewCharacter: true })
   }
@@ -22,6 +22,10 @@ export default function CharactersStack (props) {
         name='CharactersHome'
         component={CharactersHome}
         options={{
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f5f4f0' // warmWhite
+          },
           title: RenderTitle('Characters'),
           headerRight: () => <AddButton onPress={addCharacter} />,
           headerLeft: () => (
