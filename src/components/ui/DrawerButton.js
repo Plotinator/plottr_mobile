@@ -9,7 +9,7 @@ export default function DrawerButton({ padded = true, onPress, openDrawer }) {
     <ShellButton
       onPress={onPress || openDrawer}
       style={[styles.button, padded && styles.padded]}
-      hitSize={30}>
+      hitSize={10}>
       <IconButton name='bars' style={styles.icon} />
     </ShellButton>
   )
