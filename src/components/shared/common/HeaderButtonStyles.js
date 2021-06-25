@@ -3,50 +3,47 @@ import Fonts from '../../../fonts'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
+const { baseMargin, cornerRadius, ifTablet } = Metrics
+const {
+  size: { tiny, h5, h7, h6 }
+} = Fonts
+
 export default ScaledSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: Metrics.baseMargin * 0.73,
-    paddingHorizontal: Metrics.baseMargin,
-    borderRadius: Metrics.cornerRadius / 2,
-    marginRight: Metrics.baseMargin
-    // backgroundColor: 'white',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1
-    // },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 1.41,
-    // elevation: 2
+    padding: baseMargin * 0.73,
+    paddingHorizontal: baseMargin,
+    borderRadius: cornerRadius / 2,
+    marginRight: baseMargin
   },
   icon: {
     color: Colors.textGray,
-    fontSize: Fonts.size.h6
+    fontSize: ifTablet(h6, h5)
   },
   text: {
     ...Fonts.style.bold,
-    fontSize: Fonts.size.h7,
-    paddingLeft: Metrics.baseMargin / 2,
+    fontSize: ifTablet(h7),
+    paddingLeft: baseMargin / 2,
     color: Colors.textGray
   },
   selected: {
     color: Colors.orange
   },
   count: {
-    top: -7,
-    right: -4,
+    position: 'absolute',
+    top: ifTablet(-5, -3),
+    right: ifTablet(-25, -15),
     backgroundColor: Colors.orange,
-    borderRadius: Metrics.cornerRadius,
-    width: 25,
-    height: 25,
+    borderRadius: 30,
+    width: ifTablet('20@ms', '22@ms'),
+    height: ifTablet('20@ms', '22@ms'),
     alignItems: 'center',
     justifyContent: 'center'
   },
   countText: {
     color: Colors.white,
-    fontSize: Fonts.size.tiny,
+    fontSize: tiny,
     ...Fonts.style.bold
   }
 })

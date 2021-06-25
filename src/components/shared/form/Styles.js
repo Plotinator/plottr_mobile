@@ -16,6 +16,7 @@ const {
   gray,
   white,
   warmBG,
+  warmWhite,
   orange,
   textGray,
   lightGray,
@@ -38,6 +39,10 @@ const inputText = {
 }
 
 export default {
+  background: {
+    flex: 1,
+    backgroundColor: warmWhite
+  },
   avoidingView: {
     flex: 1,
     backgroundColor: '#00000033',

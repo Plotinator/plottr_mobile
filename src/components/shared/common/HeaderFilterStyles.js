@@ -3,7 +3,7 @@ import Fonts from '../../../fonts'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
-const { baseMargin, doubleBaseMargin } = Metrics
+const { baseMargin, doubleBaseMargin, ifTablet } = Metrics
 const { style, size } = Fonts
 
 export default ScaledSheet.create({
@@ -27,7 +27,7 @@ export default ScaledSheet.create({
   columnTitle: {
     ...style.bold,
     paddingBottom: baseMargin / 2,
-    fontSize: size.tiny
+    fontSize: ifTablet(size.tiny)
   },
   clearButton: {
     paddingHorizontal: doubleBaseMargin,
@@ -35,7 +35,7 @@ export default ScaledSheet.create({
   },
   clearText: {
     ...style.semiBold,
-    fontSize: size.size9,
+    fontSize: ifTablet(size.size9),
     color: Colors.orange
   }
 })
