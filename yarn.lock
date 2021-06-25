@@ -6485,10 +6485,10 @@ react-native-iphone-x-helper@^1.3.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
 
-react-native-pell-rich-editor@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/react-native-pell-rich-editor/-/react-native-pell-rich-editor-1.8.0.tgz#cde408343fb505483ea1311a6e289aa4e39b3ebe"
-  integrity sha512-aAEHdYRbV3QKUGYbPEphfw2o9zsfe60w4bsRnNVCenxlIl5MUj1UqQgkJFW6pBEznqt0kBew7pbfxfTAJvYm4Q==
+react-native-pell-rich-editor@^1.8.5:
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/react-native-pell-rich-editor/-/react-native-pell-rich-editor-1.8.5.tgz#41a01127f39184007d5f6cddccc1bdaaecc74097"
+  integrity sha512-8sks6ah/ffafC0m5PVJ4ZHPg8hT3EwTNkL6qaKELOPKWbnrR9tu72yLZiFqO5n3u8lkHhY79FQ4g7wdXt6F7iw==
 
 react-native-popover-view@^3.0.3:
   version "3.0.3"
