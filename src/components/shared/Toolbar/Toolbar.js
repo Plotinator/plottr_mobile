@@ -5,12 +5,14 @@ import styles from './ToolbarStyles'
 import { ShellButton, IconButton } from '../common'
 
 export default (props) => {
-  const { onPressDrawer, children } = props
+  const { onPressDrawer, children, style } = props
   return (
-    <View style={styles.container}>
-      <ShellButton onPress={onPressDrawer} style={styles.button} hitSize={30}>
-        <IconButton name='bars' style={styles.icon} />
-      </ShellButton>
+    <View style={[styles.container, style]}>
+      {onPressDrawer && (
+        <ShellButton onPress={onPressDrawer} style={styles.button} hitSize={30}>
+          <IconButton name='bars' style={styles.icon} />
+        </ShellButton>
+      )}
       {children}
     </View>
   )

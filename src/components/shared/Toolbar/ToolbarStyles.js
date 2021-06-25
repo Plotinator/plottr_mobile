@@ -6,7 +6,7 @@ export default ScaledSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     paddingVertical: Metrics.baseMargin,
     backgroundColor: Colors.warmWhite,
     paddingTop: Metrics.baseMargin,
@@ -25,7 +25,7 @@ export default ScaledSheet.create({
     elevation: 2
   },
   button: {
-    marginRight: Metrics.ifTablet(20, 0),
+    marginRight: Metrics.doubleBaseMargin
   },
   icon: {
     fontSize: Metrics.ifTablet('18@ms', '24@ms'),
