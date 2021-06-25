@@ -3,7 +3,7 @@ import Fonts from '../../../fonts'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
-const { baseMargin, cornerRadius } = Metrics
+const { baseMargin, cornerRadius, ifTablet } = Metrics
 const { size, style } = Fonts
 const { textGray, warmTextDarkGray, orange } = Colors
 
@@ -43,7 +43,7 @@ export default ScaledSheet.create({
   label: {
     ...style.semiBold,
     maxWidth: 150,
-    fontSize: size.size9,
+    fontSize: ifTablet(size.size9),
     flexDirection: 'row',
     alignItems: 'center',
     alignItems: 'flex-start',
