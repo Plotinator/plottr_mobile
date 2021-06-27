@@ -164,11 +164,7 @@ export default class DetailPreview extends Component {
         )}
         <DetailBlock
           editMode={editMode}
-          heading={
-            <Text fontSize='h6' fontStyle='bold'>
-              {object[name.key] ? object[name.key] : 'New Character'}
-            </Text>
-          }
+          heading={object[name.key] ? object[name.key] : 'New Character'}
           details={object[description.key]}
           type={description.type}
           objectKey={description.key}
@@ -218,7 +214,7 @@ export default class DetailPreview extends Component {
       editMode || shouldRender || alwaysRender ? (
         isAttachment ? (
           <AttachmentsPreview
-            editMode={editMode} // test example
+            editMode={editMode}
             title={title}
             cardId={object.id}
             attachments={object[key]}
