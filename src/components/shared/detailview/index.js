@@ -3,4 +3,4 @@ import DetailImage from './DetailImage'
 
 export { DetailImage }
 
-export default Preview
+export default DetailPreview
