@@ -12,6 +12,18 @@ export default class Note extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(prevProps.customAttributes) !=
+      JSON.stringify(this.props.customAttributes)
+    ) {
+      let objectMeta = this.getObjectMeta()
+      this.setState({
+        objectMeta: objectMeta
+      })
+    }
+  }
+
   componentDidMount() {
     const { note } = this.props
     let objectMeta = this.getObjectMeta()
