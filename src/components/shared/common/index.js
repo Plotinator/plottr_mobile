@@ -6,6 +6,7 @@ import MainList from './MainList'
 import ModalBox from './ModalBox'
 import Checkbox from './Checkbox'
 import AddButton from './AddButton'
+import BackButton from './BackButton'
 import IconButton from './IconButton'
 import RichEditor from './RichEditor'
 import ShellButton from './ShellButton'
@@ -36,6 +37,7 @@ export {
   ModalBox,
   Checkbox,
   AddButton,
+  BackButton,
   IconButton,
   RichEditor,
   AlertDialog,
