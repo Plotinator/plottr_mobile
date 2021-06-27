@@ -44,10 +44,15 @@ class HeaderAttributes extends Component {
       addingNew: false
     })
 
+  setScrollerRef = (ref) => (this.scroller = ref)
+
   handleAddNew = () => {
-    this.setState({
-      addingNew: true
-    })
+    this.setState(
+      {
+        addingNew: true
+      },
+      () => setTimeout(() => this.scroller && this.scroller.scrollToEnd(), 800)
+    )
   }
 
   parseOffset(i) {
@@ -101,7 +106,11 @@ class HeaderAttributes extends Component {
             {t('Choose what you want to track about your { type }', { type })}
           </Text>
           <ScrollerView
-            scrollerProps={{ bounces: false, style: styles.scroller }}>
+            scrollerProps={{
+              ref: this.setScrollerRef,
+              bounces: false,
+              style: styles.scroller
+            }}>
             <View style={styles.rowItems}>
               {attributes.map(this.renderAttribute)}
               {addingNew && (
@@ -120,9 +129,12 @@ class HeaderAttributes extends Component {
               )}
             </View>
             <View style={styles.footer}>
-              <AddButton size={35} onPress={this.handleAddNew} />
+              <View />
             </View>
           </ScrollerView>
+          <View style={styles.footer}>
+            <AddButton size={35} onPress={this.handleAddNew} />
+          </View>
         </View>
       </View>
     )
@@ -211,7 +223,10 @@ class AttributeItem extends Component {
           text: t('Yes, Delete'),
           onPress: () => {
             this.view.transitionTo({ height: 0, marginBottom: 0, padding: 0 })
-            setTimeout(() => removeAttribute(isCategory ? attribute : name), 300)
+            setTimeout(
+              () => removeAttribute(isCategory ? attribute : name),
+              300
+            )
           }
         },
         { text: t('No'), onPress: () => {}, style: 'cancel' }
@@ -250,7 +265,8 @@ class AttributeItem extends Component {
       addAttribute
     } = this.props
     console.log('isCategory', isCategory)
-    if (isNew) addAttribute(isCategory ? stateName : { ...attribute, name: stateName })
+    if (isNew)
+      addAttribute(isCategory ? stateName : { ...attribute, name: stateName })
     else editAttribute(position, attribute, { ...attribute, name: stateName })
     this.setState({
       stateName: ''

@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { View, TextInput } from 'react-native'
 import Fonts from '../../../fonts'
+import { Metrics } from '../../../utils'
 import PropTypes from 'react-proptypes'
 import styles from './DetailBlockStyles'
 import Text from './Text'
 import Input from './Input'
 import RichEditor from './RichEditor'
 
+const { ifTablet } = Metrics
 const DetailBlock = (props) => {
   const {
     source,
@@ -53,35 +55,32 @@ const DetailBlock = (props) => {
           <RichEditor
             hideOnEmpty={!editMode}
             disabled={!editMode}
-            fontSize={Fonts.size.tiny}
+            fontSize={ifTablet(Fonts.size.tiny, Fonts.size.h5)}
             initialValue={details}
             onChange={(value) => {
-              onChange(objectKey, value);
+              onChange(objectKey, value)
             }}
           />
+        ) : !editMode ? (
+          <Text
+            style={[styles.detailsText, centerText && styles.centerText]}
+            center={centerText}>
+            {details}
+          </Text>
         ) : (
-          !editMode ? (
-            <Text
-              style={[styles.detailsText, centerText && styles.centerText]}
-              center={centerText}>
-              {details}
-            </Text>
-          ) : (
-            <Input
-              rounded
-              value={details}
-              style={styles.input}
-              inputStyle={styles.inputText}
-              onChangeText={(value) => {
-                onChange(objectKey, value);
-              }}
-            />
-          )
+          <Input
+            rounded
+            value={details}
+            style={styles.input}
+            inputStyle={styles.inputText}
+            onChangeText={(value) => {
+              onChange(objectKey, value)
+            }}
+          />
         )}
       </View>
     </View>
   )
-
 }
 
 DetailBlock.propTypes = {

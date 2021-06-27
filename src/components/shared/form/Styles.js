@@ -161,7 +161,7 @@ export default {
     paddingHorizontal: ifTablet(doubleBaseMargin, 0)
   },
   menuPopover: {
-    borderRadius: cornerRadius,
+    borderRadius: cornerRadius * ifTablet(1, 1.5),
     paddingVertical: baseMargin
   },
   menuScroller: {

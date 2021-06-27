@@ -17,7 +17,8 @@ export default function DrawerButton({ padded = true, onPress, openDrawer }) {
 
 const styles = ScaledSheet.create({
   button: {
-    marginRight: Metrics.doubleBaseMargin
+    marginLeft: Metrics.ifTablet(-Metrics.doubleBaseMargin),
+    marginRight: Metrics.ifTablet(0, Metrics.doubleBaseMargin)
   },
   icon: {
     fontSize: Metrics.ifTablet('18@ms', '24@ms'),

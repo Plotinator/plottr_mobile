@@ -15,6 +15,7 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     // flexWrap: 'wrap',
     width: 'auto',
+    maxHeight: '80%',
     padding: baseMargin,
     marginBottom: -baseMargin
   },
@@ -37,5 +38,13 @@ export default ScaledSheet.create({
     ...style.semiBold,
     fontSize: ifTablet(size.size9),
     color: Colors.orange
+  },
+  top: {
+    flex: 1
+  },
+  bottom: {
+    height: ifTablet('auto', 180),
+    paddingVertical: baseMargin,
+    width: '100%'
   }
 })

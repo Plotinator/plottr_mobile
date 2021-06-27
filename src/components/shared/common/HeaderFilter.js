@@ -39,7 +39,7 @@ class HeaderFilter extends Component {
     const { selected } = this.state
     const { onFilter, filteredItems, updateFilter } = this.props
     console.log('selected b4', selected)
-    const newSelected = Object.assign({}, {...selected})
+    const newSelected = Object.assign({}, { ...selected })
     console.log('selected aftr', newSelected)
     const selects = newSelected[type] || []
     const isFound = selects.indexOf(id)
@@ -96,15 +96,17 @@ class HeaderFilter extends Component {
             {filterOptions.map(this.renderGroup)}
           </View>
         </ScrollerView>
-        <Collapsible collapsed={!hasFilter}>
-          <ShellButton
-            onPress={this.handleClearFilter}
-            style={styles.clearButton}>
-            <Text center style={styles.clearText}>
-              {t('Clear All Filters')}
-            </Text>
-          </ShellButton>
-        </Collapsible>
+        <View style={styles.bottom}>
+          <Collapsible collapsed={!hasFilter}>
+            <ShellButton
+              onPress={this.handleClearFilter}
+              style={styles.clearButton}>
+              <Text center style={styles.clearText}>
+                {t('Clear All Filters')}
+              </Text>
+            </ShellButton>
+          </Collapsible>
+        </View>
       </View>
     )
   }
@@ -214,7 +216,8 @@ function mapStateToProps(state, { type }) {
       parseFilterGroup(t('Categories'), noteCategories, 'category')
     )
   if (showTags) filterOptions.push(parseFilterGroup(t('Tags'), tags, 'tag'))
-  if (showLines) filterOptions.push(parseFilterGroup(t('Plotlines'), lines, 'line'))
+  if (showLines)
+    filterOptions.push(parseFilterGroup(t('Plotlines'), lines, 'line'))
 
   return {
     // customAttributes,

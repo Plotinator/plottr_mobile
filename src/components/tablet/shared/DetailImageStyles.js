@@ -2,6 +2,8 @@ import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
+const { ifTablet } = Metrics
+
 export default ScaledSheet.create({
   containerDefault: {
     alignSelf: 'center',
@@ -12,12 +14,12 @@ export default ScaledSheet.create({
     alignSelf: 'center',
     width: 200,
     height: 200,
-    marginBottom: Metrics.baseMargin,
+    marginBottom: Metrics.baseMargin
   },
   containerFullWidth: {
     alignSelf: 'center',
     width: '100%',
-    height: 400
+    height: ifTablet(400, 200)
   },
   default: {
     resizeMode: 'contain',
@@ -47,7 +49,7 @@ export default ScaledSheet.create({
     overflow: 'hidden',
     borderRadius: Metrics.cornerRadius,
     width: '100%',
-    height: 400,
+    height: ifTablet(400, 200),
     borderWidth: 1,
     borderColor: Colors.borderGray
   },

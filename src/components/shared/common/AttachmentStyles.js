@@ -3,11 +3,12 @@ import Fonts from '../../../fonts'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
-const { baseMargin, cornerRadius } = Metrics
+const { baseMargin, cornerRadius, ifTablet } = Metrics
 const { style, size } = Fonts
 const {
   orange,
   white,
+  lightGray,
   textGray,
   cloudWhite,
   borderGray,
@@ -30,7 +31,7 @@ export default ScaledSheet.create({
     padding: baseMargin / 3,
     paddingBottom: baseMargin / 4,
     paddingRight: '23@ms',
-    minHeight: '30@ms'
+    minHeight: ifTablet('30@ms', '38@ms')
   },
   tabCell: {
     backgroundColor: warmWhiteBG,
@@ -45,7 +46,7 @@ export default ScaledSheet.create({
   },
   tabName: {
     ...style.semiBoldItalic,
-    fontSize: size.tiny,
+    fontSize: ifTablet(size.tiny, size.small),
     color: textGray,
     paddingLeft: baseMargin / 1.25
   },
@@ -56,13 +57,13 @@ export default ScaledSheet.create({
     padding: baseMargin / 1.5
   },
   removeIcon: {
-    fontSize: size.micro,
+    fontSize: ifTablet(size.micro, size.tiny),
     color: textBlack,
     opacity: 0.25
   },
   addButton: {
-    width: '22@ms',
-    height: '22@ms',
+    width: ifTablet('22@ms', '26@ms'),
+    height: ifTablet('22@ms', '26@ms'),
     position: 'absolute',
     top: baseMargin / 2,
     right: baseMargin / 2,
@@ -73,7 +74,7 @@ export default ScaledSheet.create({
     borderColor: orange
   },
   addIcon: {
-    fontSize: size.micro,
+    fontSize: ifTablet(size.micro, size.tiny),
     color: orange
   },
   menuPopover: {
@@ -91,6 +92,11 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  menuItemText: {
+    ...style.semiBold,
+    fontSize: ifTablet(size.h6, size.h5),
+    color: textGray
+  },
   menuDot: {
     backgroundColor: white,
     width: '10@ms',
@@ -100,6 +106,14 @@ export default ScaledSheet.create({
     marginTop: baseMargin / 4
   },
   addTypeText: {
-    padding: baseMargin * 0.9
+    ...style.italic,
+    padding: baseMargin * 0.9,
+    fontSize: ifTablet(size.micro, size.tiny),
+    color: lightGray
+  },
+  noItemText: {
+    ...style.semiBold,
+    fontSize: ifTablet(size.h6, size.h4),
+    color: textGray
   }
 })

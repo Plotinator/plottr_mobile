@@ -3,10 +3,16 @@ import Fonts from '../../../fonts'
 import { Metrics, Colors, Constants } from '../../../utils'
 
 const { ATTRIBUTE_HEIGHT } = Constants
-const { baseMargin, doubleBaseMargin, cornerRadius, screenWidth } = Metrics
+const {
+  baseMargin,
+  doubleBaseMargin,
+  cornerRadius,
+  screenWidth,
+  ifTablet
+} = Metrics
 const { style, size } = Fonts
 const { warmBG, warmTextGray, warmWhiteBG, lightenGray } = Colors
-const windowWidth = screenWidth * 0.75
+const windowWidth = screenWidth * ifTablet(0.75, 0.95)
 
 export default ScaledSheet.create({
   container: {
@@ -18,22 +24,21 @@ export default ScaledSheet.create({
   },
   title: {
     ...style.bold,
-    fontSize: size.tiny,
+    fontSize: ifTablet(size.tiny),
     color: warmTextGray
   },
   subtitle: {
     ...style.italic,
-    fontSize: size.tiny,
-    color: warmTextGray
+    fontSize: ifTablet(size.tiny),
+    color: warmTextGray,
+    marginBottom: baseMargin
   },
   rowItems: {
-    // flex: 1,
-    padding: baseMargin,
-    paddingTop: baseMargin * 1.5
+    paddingHorizontal: ifTablet(baseMargin)
   },
   rowItem: {
     backgroundColor: warmBG,
-    borderRadius: cornerRadius,
+    borderRadius: cornerRadius * ifTablet(1, 1.5),
     overflow: 'hidden',
     width: '100%',
     height: ATTRIBUTE_HEIGHT,
@@ -43,8 +48,11 @@ export default ScaledSheet.create({
     marginBottom: 2
   },
   rowDrag: {
-    padding: baseMargin,
+    padding: baseMargin * ifTablet(1, 1.5),
     justifyContent: 'center'
+  },
+  drag: {
+    fontSize: ifTablet(null, size.regular)
   },
   rowName: {
     flex: 1,
@@ -58,13 +66,13 @@ export default ScaledSheet.create({
   },
   nameText: {
     ...style.bold,
-    fontSize: size.tiny,
+    fontSize: ifTablet(size.tiny),
     color: warmTextGray
   },
   rowType: {},
   typeText: {
     ...style.italic,
-    fontSize: size.tiny,
+    fontSize: ifTablet(size.tiny),
     color: warmTextGray
   },
   rowAction: {
@@ -72,11 +80,11 @@ export default ScaledSheet.create({
   },
   icon: {
     padding: baseMargin,
-    fontSize: size.tiny
+    fontSize: ifTablet(size.tiny)
   },
   iconLarger: {
     padding: baseMargin * 1.1,
-    fontSize: size.small
+    fontSize: ifTablet(size.small, size.medium)
   },
   footer: {
     width: '100%',

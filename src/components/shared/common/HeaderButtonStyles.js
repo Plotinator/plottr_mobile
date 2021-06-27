@@ -12,7 +12,7 @@ export default ScaledSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: baseMargin * 0.73,
+    padding: baseMargin * ifTablet(0.73, 0.25),
     paddingHorizontal: baseMargin,
     borderRadius: cornerRadius / 2,
     marginRight: baseMargin
@@ -32,12 +32,12 @@ export default ScaledSheet.create({
   },
   count: {
     position: 'absolute',
-    top: ifTablet(-5, -3),
-    right: ifTablet(-25, -15),
+    top: ifTablet(-5, -2),
+    right: ifTablet(-18, -9),
     backgroundColor: Colors.orange,
     borderRadius: 30,
-    width: ifTablet('20@ms', '22@ms'),
-    height: ifTablet('20@ms', '22@ms'),
+    width: ifTablet('19@ms', '20@ms'),
+    height: ifTablet('19@ms', '20@ms'),
     alignItems: 'center',
     justifyContent: 'center'
   },

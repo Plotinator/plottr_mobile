@@ -3,7 +3,7 @@ import Metrics from '../../../utils/Metrics'
 import Fonts from '../../../fonts'
 import { Colors } from '../../../utils'
 
-const { baseMargin } = Metrics
+const { baseMargin, ifTablet } = Metrics
 const { style, size } = Fonts
 const {
   gray,
@@ -28,10 +28,10 @@ export default ScaledSheet.create({
   heading: {
     marginBottom: baseMargin * 0.05,
     flexDirection: 'row',
-    alignItems:'center',
+    alignItems: 'center'
   },
   headingText: {
-    fontSize: Fonts.size.h7,
+    fontSize: ifTablet(size.h7, size.h5),
     marginBottom: baseMargin / 4,
     marginRight: baseMargin / 2
   },
@@ -65,14 +65,14 @@ export default ScaledSheet.create({
     marginTop: -baseMargin / 3,
     backgroundColor: warmWhite,
     borderRadius: 50,
-    width: '15@ms',
-    height: '15@ms',
+    width: ifTablet('15@ms', '20@ms'),
+    height: ifTablet('15@ms', '20@ms'),
     justifyContent: 'center',
     alignItems: 'center'
   },
   countText: {
     ...style.bold,
-    fontSize: size.micro,
+    fontSize: ifTablet(size.micro, size.tiny),
     color: lightenGray
-  },
+  }
 })

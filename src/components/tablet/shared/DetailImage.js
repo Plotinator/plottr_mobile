@@ -4,6 +4,9 @@ import { View, Image } from 'react-native'
 import { AddButton, ShellButton, Text } from '../../shared/common'
 import styles from './DetailImageStyles'
 import { t } from 'plottr_locales'
+import Metrics from '../../../utils/Metrics'
+
+const { ifTablet } = Metrics
 
 export default function DetailImage({
   image,
@@ -33,15 +36,20 @@ export default function DetailImage({
         source={imageSourceType == 'default' ? image : { uri: image }}
       />
       {editMode ? (
-        <AddButton style={editIconStyle} size={40} icon='camera' onPress={onPress} />
+        <AddButton
+          style={editIconStyle}
+          size={ifTablet(40, 35)}
+          icon='camera'
+          onPress={onPress}
+        />
       ) : null}
     </View>
   ) : editMode ? (
     <ShellButton style={styles.addImageButtonContainer} onPress={onPress}>
-      <AddButton size={30} icon='camera' />
+      <AddButton size={ifTablet(30, 26)} icon='camera' />
       <Text
         style={styles.addImageText}
-        fontSize='h7'
+        fontSize={ifTablet('h7', 'size13')}
         fontStyle='semiBold'
         color='orange'>
         {t('Add Image')}

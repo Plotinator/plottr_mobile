@@ -40,7 +40,7 @@ export default function OutlineStack(props) {
         component={OutlineHome}
         options={{
           title: RenderTitle('Outline'),
-          // headerShown: false,
+          headerShown: false,
           headerStyle: {
             backgroundColor: '#f5f4f0' // warmWhite
           }
@@ -51,7 +51,7 @@ export default function OutlineStack(props) {
         name='SceneDetails'
         component={SceneDetailsBounded}
         options={{
-          // headerShown: false,
+          headerShown: false,
           headerStyle: {
             backgroundColor: '#f5f4f0' // warmWhite
           },

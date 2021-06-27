@@ -3,7 +3,7 @@ import Metrics from '../../../utils/Metrics'
 import Fonts from '../../../fonts'
 import FormStyles from '../form/Styles'
 
-const { baseMargin, doubleBaseMargin } = Metrics
+const { baseMargin, doubleBaseMargin, ifTablet } = Metrics
 
 export default ScaledSheet.create({
   ...FormStyles,
@@ -14,7 +14,7 @@ export default ScaledSheet.create({
     marginBottom: baseMargin * 0.05
   },
   headingText: {
-    fontSize: Fonts.size.h7
+    fontSize: ifTablet(Fonts.size.h7, Fonts.size.h5)
   },
   headingEditText: {
     ...Fonts.style.boldItalic,
@@ -24,7 +24,7 @@ export default ScaledSheet.create({
   details: {},
   detailsText: {
     ...Fonts.style.regular,
-    fontSize: Fonts.size.tiny
+    fontSize: ifTablet(Fonts.size.tiny, Fonts.size.small)
   },
   input: {
     ...FormStyles.input,
@@ -33,7 +33,7 @@ export default ScaledSheet.create({
   },
   inputText: {
     ...FormStyles.inputText,
-    fontSize: Fonts.size.tiny
+    fontSize: ifTablet(Fonts.size.tiny, Fonts.size.h5)
   },
   centerText: {
     textAlign: 'center'

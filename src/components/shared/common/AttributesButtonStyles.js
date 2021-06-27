@@ -7,9 +7,9 @@ export default ScaledSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: Metrics.baseMargin * .73,
+    padding: Metrics.baseMargin * Metrics.ifTablet(0.73, 0.25),
     paddingHorizontal: Metrics.baseMargin,
-    borderRadius: Metrics.cornerRadius / 2,
+    borderRadius: Metrics.cornerRadius / 2
     // backgroundColor: 'white',
     // shadowColor: '#000',
     // shadowOffset: {
@@ -22,7 +22,7 @@ export default ScaledSheet.create({
   },
   smile: {
     color: Colors.textGray,
-    fontSize: Fonts.size.h5,
+    fontSize: Metrics.ifTablet(Fonts.size.h5, Fonts.size.h3),
     marginTop: -Metrics.baseMargin / 3,
     marginRight: -Metrics.baseMargin / 4
   },
@@ -31,8 +31,8 @@ export default ScaledSheet.create({
     borderRadius: 99,
     borderWidth: 3,
     borderColor: Colors.textGray,
-    width: 22,
-    height: 22,
+    width: Metrics.ifTablet(22, 17),
+    height: Metrics.ifTablet(22, 17),
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
@@ -41,13 +41,13 @@ export default ScaledSheet.create({
   },
   frown: {
     color: 'white',
-    fontSize: Fonts.size.h5,
+    fontSize: Metrics.ifTablet(Fonts.size.h5, Fonts.size.h3),
     marginLeft: -3,
     marginTop: -4
   },
   text: {
     ...Fonts.style.bold,
-    fontSize: Fonts.size.h7,
+    fontSize: Metrics.ifTablet(Fonts.size.h7),
     paddingLeft: Metrics.baseMargin / 2,
     color: Colors.textGray
   }

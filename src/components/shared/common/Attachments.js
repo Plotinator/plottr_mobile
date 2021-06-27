@@ -56,8 +56,7 @@ class Attachments extends Component {
       const attached = attachments.filter((val) => val != id)
       onChange(objectKey, attached)
     }
-    if (cardId)
-      this.removeAttachment(id)
+    if (cardId) this.removeAttachment(id)
   }
 
   handleAddAttachment = ({ id }) => {
@@ -67,8 +66,7 @@ class Attachments extends Component {
       attached.push(id)
       onChange(objectKey, attached)
     }
-    if (cardId)
-      this.addAttachment(id)
+    if (cardId) this.addAttachment(id)
   }
 
   renderAttachmentName(attachment) {
@@ -76,7 +74,9 @@ class Attachments extends Component {
     const { title, name } = attachment
     const firstCapital = type.substring(0, 1).toUpperCase()
     const commonLast = type.substring(1)
-    return name || title || t(`New {type}`, { type: `${firstCapital}${commonLast}` })
+    return (
+      name || title || t(`New {type}`, { type: `${firstCapital}${commonLast}` })
+    )
   }
 
   renderTabCell = (attachment, i) => {
@@ -104,9 +104,7 @@ class Attachments extends Component {
         key={i}
         style={styles.menuItem}
         onPress={this.handleAddAttachment}>
-        <Text fontSize='h6' fontStyle={'semiBold'} color={'textGray'}>
-          {titleDisplay}
-        </Text>
+        <Text style={styles.menuItemText}>{titleDisplay}</Text>
         {color && <View style={[styles.menuDot, { backgroundColor: color }]} />}
       </ShellButton>
     )
@@ -125,13 +123,7 @@ class Attachments extends Component {
       <View style={styles.tabsBase}>
         {attached.map(this.renderTabCell)}
         {attached.length == 0 && (
-          <Text
-            style={styles.addTypeText}
-            fontSize='micro'
-            fontStyle='italic'
-            color='lightGray'>
-            {t('Add a {type}', { type })}
-          </Text>
+          <Text style={styles.addTypeText}>{t('Add a {type}', { type })}</Text>
         )}
         <Popover
           popoverStyle={styles.menuPopover}
@@ -144,9 +136,7 @@ class Attachments extends Component {
             {unattached.map(this.renderListItem)}
             {unattached.length == 0 && (
               <View style={styles.menuItem}>
-                <Text fontSize='h6' fontStyle={'semiBold'} color={'textGray'}>
-                  {t('No more :)')}
-                </Text>
+                <Text style={styles.noItemText}>{t('No more :)')}</Text>
               </View>
             )}
           </ScrollView>

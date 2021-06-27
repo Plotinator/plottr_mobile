@@ -5,6 +5,7 @@ import Fonts from '../../../../fonts'
 import FormStyles from '../../../shared/form/Styles'
 
 const {
+  ifTablet,
   baseMargin,
   doubleBaseMargin,
   section,
@@ -38,7 +39,7 @@ export default ScaledSheet.create({
     flex: 1,
     backgroundColor: warmBG,
     padding: baseMargin,
-    paddingLeft: 0
+    paddingLeft: ifTablet(0)
   },
   subContainer: {
     // dont remove subContainer
@@ -67,7 +68,7 @@ export default ScaledSheet.create({
     paddingBottom: doubleBaseMargin,
     position: 'absolute',
     height: '100%',
-    maxHeight: screenHeight - headerHeight - footerHeight - 35,
+    maxHeight: screenHeight - headerHeight - footerHeight - ifTablet(35, 5),
     top: 0,
     right: doubleBaseMargin
   }
