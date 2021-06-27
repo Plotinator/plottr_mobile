@@ -3,7 +3,7 @@ import Fonts from '../../../fonts'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
-const { baseMargin, doubleBaseMargin, cornerRadius } = Metrics
+const { baseMargin, doubleBaseMargin, cornerRadius, ifTablet } = Metrics
 const { style, size } = Fonts
 const {
   orange,
@@ -36,7 +36,7 @@ export default ScaledSheet.create({
     color: textGrayTone
   },
   titleText: {
-    fontSize: size.h5,
+    fontSize: ifTablet(size.h5, size.h2),
     ...style.bold,
     marginRight: baseMargin / 2,
     color: textGrayTone
@@ -54,21 +54,28 @@ export default ScaledSheet.create({
   },
   groupText: {
     ...style.bold,
-    color: Colors.warmTextGray,// textLightGrayTone,
-    fontSize: size.h7
+    color: Colors.warmTextGray, // textLightGrayTone,
+    fontSize: ifTablet(size.h7, size.h4)
   },
   items: {
-    paddingLeft: baseMargin,
-    paddingBottom: baseMargin
+    paddingLeft: ifTablet(baseMargin, doubleBaseMargin),
+    paddingRight: ifTablet(0, baseMargin * 1.2),
+    paddingBottom: ifTablet(baseMargin, doubleBaseMargin)
   },
   item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: Colors.warmWhiteBG,// whiteTone,
-    borderRadius: cornerRadius,
+    backgroundColor: Colors.warmWhiteBG, // whiteTone,
     padding: baseMargin * 1.25,
     paddingTop: baseMargin * 1.15,
+    minHeight: 30 + baseMargin * 2
+  },
+  wrapper: {
+    borderRadius: cornerRadius * ifTablet(1, 1.5),
+    overflow: 'hidden',
+    justifyContent: 'center',
+    backgroundColor: Colors.warmWhiteBG,
     marginBottom: 3
   },
   itemActive: {
@@ -78,7 +85,7 @@ export default ScaledSheet.create({
     flex: 1,
     ...style.bold,
     color: textDarkGrayTone,
-    fontSize: size.size9
+    fontSize: ifTablet(size.size9, size.size7)
   },
   number: {
     height: '100%'
@@ -86,14 +93,16 @@ export default ScaledSheet.create({
   itemNumber: {
     ...style.bold,
     color: textDarkGrayTone,
-    fontSize: size.size9
+    fontSize: ifTablet(size.size9, size.size7)
   },
   textActive: {
     color: white
   },
   trashButton: {
     marginLeft: baseMargin / 2
-    // marginRight: -baseMargin / 4
+  },
+  trashIcon: {
+    fontSize: ifTablet(size.size9, size.size7)
   },
   colors: {
     flexDirection: 'row',
@@ -119,4 +128,30 @@ export default ScaledSheet.create({
     borderWidth: 1,
     borderColor: borderGray
   },
+  sliderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  slideColumn: {
+    minWidth: 50,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  leftButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopLeftRadius: cornerRadius * ifTablet(1, 1.5),
+    borderBottomLeftRadius: cornerRadius * ifTablet(1, 1.5),
+    backgroundColor: warmBG,
+    padding: baseMargin * 1.5
+  },
+  rightButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopRightRadius: cornerRadius * ifTablet(1, 1.5),
+    borderBottomRightRadius: cornerRadius * ifTablet(1, 1.5),
+    backgroundColor: warmBG,
+    padding: baseMargin * 1.5
+  }
 })

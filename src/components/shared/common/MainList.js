@@ -12,6 +12,7 @@ import ScrollerView from './ScrollerView'
 import styles from './MainListStyles'
 import PropTypes from 'prop-types'
 import tinycolor from 'tinycolor2'
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 
 const DefaultList = [
   {
@@ -25,14 +26,27 @@ const DefaultList = [
 ]
 
 class MainList extends Component {
+  referrers = []
+
   state = {
     focusGroup: null
   }
 
-  componentWillUnmount () {
+  // events
+  componentWillUnmount() {
     clearInterval(this.groupInterval)
   }
 
+  // methods
+  setRowReferrer = (ref_name) => (ref) => (this.referrers[ref_name] = ref)
+
+  closeRow({ id, listIndex }) {
+    // per row closure
+    const Row = this.referrers[`_row_${id}_${listIndex}`]
+    if (Row) Row.closeRow()
+  }
+
+  // handlers
   handleFocusGroup = (focusGroup) => {
     this.setState({ focusGroup })
     clearInterval(this.groupInterval)
@@ -43,21 +57,31 @@ class MainList extends Component {
     this.setState({ focusGroup: null })
   }
 
-  renderTitleHead () {
+  handlePressLeft = (item) => {
+    const { onPressLeft } = this.props
+    onPressLeft && onPressLeft(item)
+    this.closeRow(item)
+  }
+  handlePressRight = (item) => {
+    const { onPressRight } = this.props
+    onPressRight && onPressRight(item)
+    this.closeRow(item)
+  }
+
+  // renderers
+  renderTitleHead() {
     const { title, onPressAdd } = this.props
     return (
       title && (
         <View style={styles.titleHead}>
           <Text style={styles.titleText}>{title} </Text>
-          {onPressAdd && (
-            <AddButton data={{}} onPress={onPressAdd} />
-          )}
+          {onPressAdd && <AddButton data={{}} onPress={onPressAdd} />}
         </View>
       )
     )
   }
 
-  renderGroupList () {
+  renderGroupList() {
     const { list = DefaultList } = this.props
     return list.map((group, i) => {
       return (
@@ -89,21 +113,18 @@ class MainList extends Component {
               outlined
               data={group}
               animation={isFocused ? 'fadeIn' : 'fadeOut'}
-              onPress={onPressAdd} />
+              onPress={onPressAdd}
+            />
           )}
         </View>
       </ShellButton>
     )
   }
 
-  renderList (data) {
+  renderList(data) {
     const { list } = this.props
     const listdata = data || list || []
-    return (
-      <View style={styles.items}>
-        {listdata.map(this.renderListItem)}
-      </View>
-    )
+    return <View style={styles.items}>{listdata.map(this.renderListItem)}</View>
   }
 
   renderListItem = (item, i) => {
@@ -116,10 +137,14 @@ class MainList extends Component {
       activeKey,
       activeValue,
       alwaysShowDelete,
-      onPressDelete
+      onPressDelete,
+      leftIcon, // 'pen'
+      rightIcon, // 'trash'
+      onPressLeft,
+      onPressRight
     } = this.props
-    const { title, name, colors, imageId } = item
-    const itemName = title || name || `${t('New')} ${type} ${i+1}`
+    const { id, title, name, colors, imageId } = item
+    const itemName = title || name || `${t('New')} ${type} ${i + 1}`
     const isActive = activeValue && item[activeKey] === activeValue
     const textStyles = [
       styles.itemText,
@@ -128,52 +153,91 @@ class MainList extends Component {
     ]
     const image = images[imageId] && { uri: images[imageId].data }
     return (
-      <ShellButton
+      <SwipeRow
         key={i}
-        data={{ ...item, listIndex: i }}
-        style={[styles.item, isActive && styles.itemActive]}
-        onPress={onPressItem}>
-        {numbered && (
-          <View style={styles.number}>
-            <Text style={[styles.itemNumber, isActive && styles.textActive]}>
-              {`${i + 1}. `}
-            </Text>
+        ref={this.setRowReferrer(`_row_${id}_${i}`)}
+        closeOnRowPress
+        leftOpenValue={50}
+        rightOpenValue={-50}
+        swipeToOpenPercent={50}
+        swipeToClosePercent={20}
+        disableLeftSwipe={!onPressRight}
+        disableRightSwipe={!onPressLeft}>
+        <View style={styles.sliderRow}>
+          <View style={styles.slideColumn}>
+            {onPressLeft && (
+              <IconButton
+                data={{ ...item, listIndex: i }}
+                onPress={this.handlePressLeft}
+                buttonStyle={styles.leftButton}
+                name={leftIcon}
+                size={20}
+              />
+            )}
           </View>
-        )}
-        {imageId && images[imageId] && (
-          <Image source={image} style={styles.image} />
-        )}
-        <Text style={textStyles}>
-          {itemName}
-        </Text>
-        {onPressDelete && (alwaysShowDelete || isActive) && (
-          <IconButton
-            data={item}
-            name='trash'
-            color='white'
-            size={10}
-            onPress={onPressDelete}
-            buttonStyle={styles.trashButton} />
-        )}
-        {colors && (
-          <View style={styles.colors}>
-            {colors.map(this.renderColor)}
+          <View style={styles.slideColumn}>
+            {onPressRight && (
+              <IconButton
+                data={{ ...item, listIndex: i }}
+                onPress={this.handlePressRight}
+                buttonStyle={styles.rightButton}
+                name={rightIcon}
+                size={20}
+              />
+            )}
           </View>
-        )}
-      </ShellButton>
+        </View>
+        <View style={styles.wrapper}>
+          <ShellButton
+            data={{ ...item, listIndex: i }}
+            style={[styles.item, isActive && styles.itemActive]}
+            onPress={onPressItem}>
+            {numbered && (
+              <View style={styles.number}>
+                <Text
+                  style={[styles.itemNumber, isActive && styles.textActive]}>
+                  {`${i + 1}. `}
+                </Text>
+              </View>
+            )}
+            {imageId && images[imageId] && (
+              <Image source={image} style={styles.image} />
+            )}
+            <Text style={textStyles}>{itemName}</Text>
+            {onPressDelete && (alwaysShowDelete || isActive) && (
+              <IconButton
+                data={item}
+                name='trash'
+                color='white'
+                size={10}
+                onPress={onPressDelete}
+                buttonStyle={styles.trashButton}
+                style={styles.trashIcon}
+              />
+            )}
+            {colors && (
+              <View style={styles.colors}>{colors.map(this.renderColor)}</View>
+            )}
+          </ShellButton>
+        </View>
+      </SwipeRow>
     )
   }
 
-  renderColor = (color, i) => (
+  renderColor = (color, i) =>
     color && (
-      <View key={i} style={[styles.colorDot, {
-          backgroundColor: tinycolor(color).toHexString()
-        }]}
+      <View
+        key={i}
+        style={[
+          styles.colorDot,
+          {
+            backgroundColor: tinycolor(color).toHexString()
+          }
+        ]}
       />
     )
-  )
 
-  render () {
+  render() {
     const { isGroup, list } = this.props
     const noEmpty = list && list.length > 0
     return (
@@ -201,7 +265,7 @@ MainList.propTypes = {
   list: PropTypes.array
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     images: state.images
   }
