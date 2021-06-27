@@ -18,6 +18,7 @@ export default ScaledSheet.create({
   },
   headingEditText: {
     ...Fonts.style.boldItalic,
+    fontSize: ifTablet(Fonts.size.h7, Fonts.size.h5),
     marginLeft: baseMargin / 4,
     opacity: 0.5
   },
@@ -29,13 +30,14 @@ export default ScaledSheet.create({
   input: {
     ...FormStyles.input,
     marginTop: baseMargin / 1.5,
-    height: '30@ms'
+    height: ifTablet('30@ms', '40@ms')
   },
   inputText: {
     ...FormStyles.inputText,
     fontSize: ifTablet(Fonts.size.tiny, Fonts.size.h5)
   },
   centerText: {
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: ifTablet(Fonts.size.h6, Fonts.size.h4)
   }
 })

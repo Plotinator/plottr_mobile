@@ -101,7 +101,7 @@ export default ScaledSheet.create({
     backgroundColor: white,
     width: '10@ms',
     height: '10@ms',
-    marginLeft: baseMargin / 2,
+    marginRight: baseMargin,
     borderRadius: 50,
     marginTop: baseMargin / 4
   },
@@ -115,5 +115,15 @@ export default ScaledSheet.create({
     ...style.semiBold,
     fontSize: ifTablet(size.h6, size.h4),
     color: textGray
+  },
+  image: {
+    resizeMode: 'cover',
+    overflow: 'hidden',
+    borderRadius: 50,
+    marginRight: baseMargin,
+    width: 30,
+    height: 30,
+    borderWidth: 1,
+    borderColor: borderGray
   }
 })

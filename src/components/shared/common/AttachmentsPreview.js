@@ -7,6 +7,9 @@ import Attachments from './Attachments'
 import styles from './AttachmentPreviewStyles'
 import PropTypes from 'prop-types'
 import tinycolor from 'tinycolor2'
+import Metrics from '../../../utils/Metrics'
+
+const { ifTablet } = Metrics
 
 class AttachmentsPreview extends Component {
   renderAttachmentName(attachment) {
@@ -31,7 +34,7 @@ class AttachmentsPreview extends Component {
       { borderColor: hexColor }
     ]
     const tagTextProps = {
-      fontSize: 'tiny',
+      fontSize: ifTablet('tiny', 'h5'),
       fontStyle: 'italic'
     }
     showHash ? (tagTextProps.color = hexColor) : null

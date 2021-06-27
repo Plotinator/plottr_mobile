@@ -23,7 +23,7 @@ const {
 
 export default ScaledSheet.create({
   container: {
-    marginBottom: baseMargin
+    marginBottom: baseMargin * 1.5
   },
   heading: {
     marginBottom: baseMargin * 0.05,

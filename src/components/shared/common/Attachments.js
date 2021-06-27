@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actions, selectors } from 'pltr/v2'
-import { View, ScrollView } from 'react-native'
+import { View, Image, ScrollView } from 'react-native'
 import Text from './Text'
 import ShellButton from './ShellButton'
 import { Icon } from 'native-base'
@@ -14,6 +14,7 @@ import Popover, {
 } from 'react-native-popover-view'
 import { t } from 'plottr_locales'
 import { cloneDeep } from 'lodash'
+import tinycolor from 'tinycolor2'
 
 class Attachments extends Component {
   addAttachment = (id) => {
@@ -82,8 +83,11 @@ class Attachments extends Component {
   renderTabCell = (attachment, i) => {
     const titleDisplay = this.renderAttachmentName(attachment)
     const { color } = attachment
+    const colorHex = color ? tinycolor(color).toHexString() : null
     return (
-      <View key={i} style={[styles.tabCell, color && { borderColor: color }]}>
+      <View
+        key={i}
+        style={[styles.tabCell, colorHex && { borderColor: colorHex }]}>
         <Text style={styles.tabName}>{titleDisplay}</Text>
         <ShellButton
           data={attachment}
@@ -97,15 +101,24 @@ class Attachments extends Component {
 
   renderListItem = (attachment, i) => {
     const titleDisplay = this.renderAttachmentName(attachment)
-    const { color } = attachment
+    const { imageId, color } = attachment
+    const { images = [] } = this.props
+    const foundImage = imageId && images[imageId]
+    const colorHex = color ? tinycolor(color).toHexString() : null
+
     return (
       <ShellButton
         data={attachment}
         key={i}
         style={styles.menuItem}
         onPress={this.handleAddAttachment}>
+        {colorHex && (
+          <View style={[styles.menuDot, { backgroundColor: colorHex }]} />
+        )}
+        {foundImage && (
+          <Image source={{ uri: foundImage.data }} style={styles.image} />
+        )}
         <Text style={styles.menuItemText}>{titleDisplay}</Text>
-        {color && <View style={[styles.menuDot, { backgroundColor: color }]} />}
       </ShellButton>
     )
   }
@@ -164,6 +177,7 @@ function mapStateToProps(state) {
     bookIds.push({ ...books[element] })
   })
   return {
+    images: state.images,
     characters: selectors.charactersSortedAtoZSelector(state),
     places: selectors.placesSortedAtoZSelector(state),
     tags: selectors.sortedTagsSelector(state),
