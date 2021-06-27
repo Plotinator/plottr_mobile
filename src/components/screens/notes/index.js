@@ -1,17 +1,19 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
 import ErrorBoundary from '../../shared/ErrorBoundary'
-import NotesList from './NotesList'
-import Colors from '../../../utils/Colors'
+import Notes from './Notes'
+import styles from './NotesStyles'
+import NoteDetails from './NoteDetails'
+
+export { NoteDetails }
 
 export default function NotesHome(props) {
-  //gray-9
+  const { navigation } = props
   const openDrawer = props.route?.params?.openDrawer
-  console.log('openDrawer', openDrawer)
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.warmWhite }}>
+    <SafeAreaView style={styles.container}>
       <ErrorBoundary>
-        <NotesList navigation={props.navigation} openDrawer={openDrawer} />
+        <Notes navigation={navigation} openDrawer={openDrawer} />
       </ErrorBoundary>
     </SafeAreaView>
   )

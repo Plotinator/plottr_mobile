@@ -3,19 +3,13 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native'
+import { View } from 'react-native'
 import { t } from 'plottr_locales'
-import cx from 'classnames'
 import { selectors, actions, newIds } from 'pltr/v2'
-import { View, H3, Button, H1, Icon, Content } from 'native-base'
-import { Col, Grid } from 'react-native-easy-grid'
 import ErrorBoundary from '../../shared/ErrorBoundary'
-import Toolbar from '../shared/Toolbar'
-import Note from './Note'
+import Toolbar from '../../shared/Toolbar'
 import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
-import DrawerButton from '../../ui/DrawerButton'
-import SideButton from '../shared/SideButton'
 import {
   Text,
   MainList,
@@ -25,6 +19,11 @@ import {
   HeaderButtonOptions
 } from '../../shared/common'
 import styles from './NotesStyles'
+import { Metrics } from '../../../utils'
+import { Col, Grid } from 'react-native-easy-grid'
+import Note from './Note'
+
+const { IS_TABLET, ifTablet } = Metrics
 
 class Notes extends Component {
   state = {
@@ -43,10 +42,11 @@ class Notes extends Component {
       book
     })
     returnVal.viewableNotes = viewableNotes
-    returnVal.activeNoteId = Notes.findActiveNote(
-      viewableNotes,
-      state.activeNoteId
-    )
+    if (IS_TABLET)
+      returnVal.activeNoteId = Notes.findActiveNote(
+        viewableNotes,
+        state.activeNoteId
+      )
 
     return returnVal
   }
@@ -121,34 +121,21 @@ class Notes extends Component {
     this.props.actions.editNote(id, attributes)
   }
 
-  handleSelectNote = ({ id }) => {
-    this.setState({ activeNoteId: id })
+  handleSelectNote = (note) => {
+    const { id } = note
+    if (IS_TABLET) this.setState({ activeNoteId: id })
+    else this.props.navigation.navigate('NoteDetails', { note })
   }
 
   handleAddNote = () => {
     const id = newIds.nextId(this.props.notes)
     this.props.actions.addNote()
-    this.setState({ activeNoteId: id })
+    if (IS_TABLET) this.setState({ activeNoteId: id })
   }
 
   handleDeleteNote = (note) => {
     askToDelete(note.title || t('New Note'), () =>
       this.props.actions.deleteNote(note.id)
-    )
-  }
-
-  renderNoteItem = ({ item }) => {
-    const isActive = item.id == this.state.activeNoteId
-    const { images = [] } = this.props
-    const foundImage = images[item.imageId]
-    return (
-      <SideButton
-        onPress={() => this.setState({ activeNoteId: item.id })}
-        onDelete={() => this.deleteNote(item)}
-        image={foundImage && foundImage.data}
-        title={item.title || t('New Note')}
-        isActive={isActive}
-      />
     )
   }
 
@@ -164,7 +151,7 @@ class Notes extends Component {
       <ErrorBoundary>
         <Note
           key={note.id}
-          note={{ ...note, image }}
+          note={note}
           onSave={this.saveNote}
           navigation={this.props.navigation}
           customAttributes={customAttributes}
@@ -183,7 +170,7 @@ class Notes extends Component {
     return (
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
-          <NewButton onPress={this.createNewNote} />
+          {IS_TABLET && <NewButton onPress={this.createNewNote} />}
           <View style={styles.additionals}>
             <HeaderButtonOptions
               title={t('Filter')}
@@ -209,9 +196,11 @@ class Notes extends Component {
               onPressItem={this.handleSelectNote}
               onPressAdd={this.handleAddNote}
               onPressDelete={this.handleDeleteNote}
+              rightIcon={'trash'}
+              onPressRight={!IS_TABLET && this.handleDeleteNote}
             />
           </Col>
-          <Col size={10}>{this.renderNoteDetail()}</Col>
+          {IS_TABLET && <Col size={10}>{this.renderNoteDetail()}</Col>}
         </Grid>
       </View>
     )
@@ -224,7 +213,6 @@ Notes.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
-  ui: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired
 }
 

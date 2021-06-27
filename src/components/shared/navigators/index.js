@@ -2,6 +2,7 @@ import React from 'react'
 import TabButton from './TabButton'
 import TabIcon from './TabIcon'
 import TabStyles from './TabStyles'
+import { Colors } from '../../../utils'
 
 const TabBarOptions = {
   activeTintColor: '#ff7f32',
@@ -17,4 +18,18 @@ const TabScreenOptions = ({ route }) => ({
   tabBarButton: TabButton
 })
 
-export { TabIcon, TabButton, TabStyles, TabBarOptions, TabScreenOptions }
+const ScreenOptions = {
+  headerShown: false,
+  headerStyle: {
+    backgroundColor: Colors.warmWhite
+  }
+}
+
+export {
+  TabIcon,
+  TabButton,
+  TabStyles,
+  TabBarOptions,
+  TabScreenOptions,
+  ScreenOptions
+}

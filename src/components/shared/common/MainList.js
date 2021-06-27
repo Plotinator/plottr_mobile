@@ -254,7 +254,7 @@ class MainList extends Component {
 }
 
 MainList.propTypes = {
-  images: PropTypes.array.isRequired,
+  images: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   title: PropTypes.string,
   // onPressAdd: PropTypes.funct,
   // onPressDelete: PropTypes.funct,
