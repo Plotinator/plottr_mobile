@@ -32,7 +32,7 @@ export default ScaledSheet.create({
     alignItems: 'center'
   },
   dialogBox: {
-    backgroundColor: '#fffcf7', // warmWhiteBG
+    backgroundColor: Colors.warmWhiteBG,
     borderRadius: buttonRadius,
     minHeight: 200,
     minWidth: 200,

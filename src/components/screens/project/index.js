@@ -1,6 +1,6 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
-import ErrorBoundary from '../ErrorBoundary'
+import ErrorBoundary from '../../shared/ErrorBoundary'
 import Project from './Project'
 import styles from './ProjectStyles'
 
@@ -10,10 +10,7 @@ export default (props) => {
   return (
     <SafeAreaView style={styles.background}>
       <ErrorBoundary>
-        <Project
-          navigation={navigation}
-          openDrawer={openDrawer}
-        />
+        <Project navigation={navigation} openDrawer={openDrawer} />
       </ErrorBoundary>
     </SafeAreaView>
   )

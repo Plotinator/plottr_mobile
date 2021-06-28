@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, ImageBackground } from 'react-native'
 import { t } from 'plottr_locales'
-import { Text, IconButton, AddButton, ShellButton } from '../common'
+import { Text, IconButton, AddButton, ShellButton } from '../../shared/common'
 import styles from './BookStyles'
 import Images from '../../../images'
 import Metrics from '../../../utils/Metrics'
@@ -57,7 +57,12 @@ export default function Book(props) {
         />
       )}
       {!noOutline && (
-        <AddButton icon='stream' onPress={goToOutline} size={ifTablet(28, 25)} hitSize={20} />
+        <AddButton
+          icon='stream'
+          onPress={goToOutline}
+          size={ifTablet(28, 25)}
+          hitSize={20}
+        />
       )}
       {!noTimeline && (
         <AddButton
@@ -68,7 +73,12 @@ export default function Book(props) {
         />
       )}
       {editable && (
-        <AddButton icon='pen' onPress={goToEditBook} size={ifTablet(28, 25)} hitSize={20} />
+        <AddButton
+          icon='pen'
+          onPress={goToEditBook}
+          size={ifTablet(28, 25)}
+          hitSize={20}
+        />
       )}
     </View>
   )

@@ -7,11 +7,17 @@ import { View } from 'native-base'
 import { newIds, actions } from 'pltr/v2'
 import Toolbar from '../../shared/Toolbar'
 import { t } from 'plottr_locales'
-import { ScrollerView, Text, Input, AddButton, Button } from '../common'
-import Book from './Book'
+import {
+  ScrollerView,
+  Book,
+  Text,
+  Input,
+  AddButton,
+  Button
+} from '../../shared/common'
 import Collapsible from 'react-native-collapsible'
 import styles from './ProjectStyles'
-import { showAlert } from '../common/AlertDialog'
+import { showAlert } from '../../shared/common/AlertDialog'
 import BookModal from './BookModal'
 import { Metrics } from '../../../utils'
 

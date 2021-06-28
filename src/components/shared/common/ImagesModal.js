@@ -14,20 +14,18 @@ import {
   KeyboardAvoidingView
 } from 'react-native'
 import { t } from 'plottr_locales'
-import {
-  Input,
-  Text,
-  Button,
-  AddButton,
-  IconButton,
-  RichEditor,
-  ShellButton,
-  Attachments
-} from '../../shared/common'
+import Input from './Book'
+import Text from './Book'
+import Button from './Book'
+import AddButton from './Book'
+import IconButton from './Book'
+import RichEditor from './Book'
+import ShellButton from './Book'
+import Attachments from './Book'
+import Book from './Book'
 import styles from './ImagesModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
-import Book from '../../shared/project/Book'
 import Colors from '../../../utils/Colors'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import { showAlert, showInputAlert } from './AlertDialog'
@@ -176,7 +174,7 @@ class ImagesModal extends Component {
               name='trash'
               style={styles.bottomLeftIcon}
             />
-          </ShellButton>,
+          </ShellButton>
           // <ShellButton
           //   data={imageId}
           //   key='pen'
@@ -195,7 +193,7 @@ class ImagesModal extends Component {
     )
   }
 
-  render () {
+  render() {
     const { selected, forceHide } = this.state
     const { book, visible } = this.props
     const { images } = this.props
@@ -250,13 +248,13 @@ ImagesModal.propTypes = {
   onClose: PropTypes.func.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     images: state.images
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.image, dispatch)
   }

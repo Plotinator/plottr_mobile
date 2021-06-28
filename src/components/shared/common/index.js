@@ -1,5 +1,6 @@
 import Text from './Text'
 import Icon from './Icon'
+import Book from './Book'
 import Input from './Input'
 import Button from './Button'
 import MainList from './MainList'
@@ -30,6 +31,7 @@ import HeaderButtonOptions from './HeaderButtonOptions'
 export {
   Text,
   Icon,
+  Book,
   Input,
   Title,
   Button,

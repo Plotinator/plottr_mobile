@@ -17,6 +17,7 @@ import { t } from 'plottr_locales'
 import {
   Input,
   Text,
+  Book,
   Button,
   ScrollerView,
   AddButton,
@@ -25,11 +26,10 @@ import {
   ShellButton,
   Attachments,
   ImagesModal
-} from '../common'
+} from '../../shared/common'
 import styles from './BookModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
-import Book from './Book'
 import * as Animatable from 'react-native-animatable'
 import Metrics from '../../../utils/Metrics'
 

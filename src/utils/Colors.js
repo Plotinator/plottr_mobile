@@ -24,6 +24,8 @@ const Colors = {
   textLightGray: '#A8A8A8',
   lightenGray: '#b3b3b3',
   lighterGray: '#CBCBCB',
+  deactivated: '#9F9F9F',
+  tagColors: ['#6cace4', '#78be20', '#e5554f', '#ff7f32', '#ffc72c'], // Same as the timeline colors
   // new tones
   whiteTone: '#ffffff',
   grayTone: '#efefef',
@@ -32,8 +34,6 @@ const Colors = {
   textGrayTone: '#7d7d7d',
   textDarkGrayTone: '#666666',
   textDarkerGrayTone: '#545454',
-  deactivated: '#9F9F9F',
-  tagColors: ['#6cace4', '#78be20', '#e5554f', '#ff7f32', '#ffc72c'], // Same as the timeline colors
   // warm tones
   warmWhite: '#f5f4f0',
   warmWhiter: '#f6f5f3',
@@ -42,7 +42,6 @@ const Colors = {
   warmGray: '#e1ded9',
   warmTextGray: '#7d7d7b', //7f7e7d
   warmTextDarkGray: '#656462'
-
 }
 
 Colors.backgroundTone = Colors.lightGrayTone

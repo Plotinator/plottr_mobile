@@ -85,7 +85,7 @@ export default ScaledSheet.create({
     flex: 1,
     ...style.bold,
     color: textDarkGrayTone,
-    fontSize: ifTablet(size.size9, size.size7)
+    fontSize: ifTablet(size.size9, size.h5)
   },
   number: {
     height: '100%'

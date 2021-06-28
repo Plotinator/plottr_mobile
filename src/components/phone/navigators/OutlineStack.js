@@ -2,7 +2,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { t } from 'plottr_locales'
 import OutlineHome from '../outline/OutlineHome'
-import ProjectHome from '../project/ProjectHome'
+import Project from '../../screens/project'
 import SceneDetails from '../outline/SceneDetails'
 import { getStore } from '../../../store/configureStore'
 import { actions } from 'pltr/v2'
@@ -27,8 +27,8 @@ export default function OutlineStack(props) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name='ProjectHome'
-        component={ProjectHome}
+        name='Project'
+        component={Project}
         options={{
           title: RenderTitle('Project'),
           headerShown: false

@@ -2,7 +2,7 @@ import { ScaledSheet } from 'react-native-size-matters'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 import Fonts from '../../../fonts'
-import FormStyles from '../form/Styles'
+import FormStyles from '../../shared/form/Styles'
 
 const {
   baseMargin,
