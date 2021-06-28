@@ -7,6 +7,7 @@ import TagsHome from '../tags/TagsHome'
 import withBoundary from '../shared/BoundaryWrapper'
 import TagDetails from '../tags/TagDetails'
 import { RenderTitle } from '../../shared/common/Title'
+import { Colors } from '../../../utils'
 
 const Stack = createStackNavigator()
 const TagDetailsBounded = withBoundary(TagDetails)
@@ -25,7 +26,7 @@ export default function TagsStack(props) {
         options={{
           // headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           },
           title: RenderTitle('Tags'),
           headerRight: () => <AddButton onPress={addTag} />,
@@ -41,7 +42,7 @@ export default function TagsStack(props) {
         options={{
           // headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           },
           title: RenderTitle('Tag Details')
         }}

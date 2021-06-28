@@ -7,6 +7,7 @@ import AddButton from '../../ui/AddButton'
 import DrawerButton from '../../ui/DrawerButton'
 import withBoundary from '../shared/BoundaryWrapper'
 import { RenderTitle } from '../../shared/common'
+import { Colors } from '../../../utils'
 
 const Stack = createStackNavigator()
 const PlaceDetailsBounded = withBoundary(PlaceDetails)
@@ -25,7 +26,7 @@ export default function PlacesStack(props) {
         options={{
           // headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           },
           title: RenderTitle('Places'),
           headerRight: () => <AddButton onPress={addPlace} />,
@@ -41,7 +42,7 @@ export default function PlacesStack(props) {
         options={{
           // headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           },
           title: RenderTitle('Place Details')
         }}

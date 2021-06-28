@@ -5,6 +5,7 @@ import PlotlinesScreen from '../plotlines/PlotlinesScreen'
 import PlotlineDetails from '../plotlines/PlotlineDetails'
 import withBoundary from '../shared/BoundaryWrapper'
 import { RenderTitle } from '../../shared/common'
+import { Colors } from '../../../utils'
 
 const Stack = createStackNavigator()
 const PlotlineDetailsBounded = withBoundary(PlotlineDetails)
@@ -18,7 +19,7 @@ export default function PlotlinesStack(props) {
         options={{
           // headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           },
           title: RenderTitle('Plotlines'),
           headerBackTitle: RenderTitle('Done')
@@ -30,7 +31,7 @@ export default function PlotlinesStack(props) {
         options={{
           // headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           },
           title: RenderTitle('Plotline Details'),
           headerBackTitle: RenderTitle('Back')

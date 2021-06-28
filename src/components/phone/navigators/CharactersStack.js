@@ -7,6 +7,7 @@ import DrawerButton from '../../ui/DrawerButton'
 import withBoundary from '../shared/BoundaryWrapper'
 import CharacterDetails from '../characters/CharacterDetails'
 import { RenderTitle } from '../../shared/common'
+import { Colors } from '../../../utils'
 
 const Stack = createStackNavigator()
 const CharacterDetailsBounded = withBoundary(CharacterDetails)
@@ -24,7 +25,7 @@ export default function CharactersStack(props) {
         options={{
           // headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           },
           title: RenderTitle('Characters'),
           headerRight: () => <AddButton onPress={addCharacter} />,

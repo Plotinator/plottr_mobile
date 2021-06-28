@@ -10,6 +10,7 @@ import AddButton from '../../ui/AddButton'
 import DrawerButton from '../../ui/DrawerButton'
 import withBoundary from '../shared/BoundaryWrapper'
 import { RenderTitle } from '../../shared/common'
+import { Colors } from '../../../utils'
 
 const Stack = createStackNavigator()
 const SceneDetailsBounded = withBoundary(SceneDetails)
@@ -42,7 +43,7 @@ export default function OutlineStack(props) {
           title: RenderTitle('Outline'),
           headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           }
         }}
         initialParams={{ openDrawer }}
@@ -53,7 +54,7 @@ export default function OutlineStack(props) {
         options={{
           headerShown: false,
           headerStyle: {
-            backgroundColor: '#f5f4f0' // warmWhite
+            backgroundColor: Colors.warmWhite
           },
           title: RenderTitle('Scene Details')
         }}
