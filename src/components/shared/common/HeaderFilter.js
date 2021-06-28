@@ -38,20 +38,12 @@ class HeaderFilter extends Component {
     const { label, type, id } = checkbox
     const { selected } = this.state
     const { onFilter, filteredItems, updateFilter } = this.props
-    console.log('selected b4', selected)
     const newSelected = Object.assign({}, { ...selected })
-    console.log('selected aftr', newSelected)
     const selects = newSelected[type] || []
     const isFound = selects.indexOf(id)
-    console.log('newSelected[type]', newSelected[type])
-    console.log('selected', selected)
-    console.log('type', type)
-    console.log('isFound', isFound)
     if (active && isFound == -1) selects.push(id)
     else if (isFound > -1) selects.splice(isFound, 1)
     newSelected[type] = selects
-    console.log('selects', selects)
-    console.log('newSelected', newSelected)
     this.setState({ selected: newSelected }, () => {
       onFilter && onFilter(newSelected)
       updateFilter(newSelected)
@@ -62,7 +54,11 @@ class HeaderFilter extends Component {
     const isEmpty = data.length == 0
     return isEmpty ? null : (
       <View style={styles.filterColumn} key={k}>
-        {title ? <Text style={styles.columnTitle}>{title}</Text> : null}
+        {title ? (
+          <View style={styles.titleContainer}>
+            <Text style={styles.columnTitle}>{title}</Text>
+          </View>
+        ) : null}
         {data.map((checkbox, i) => {
           const { id, label } = checkbox
           const { selected } = this.state
@@ -88,7 +84,12 @@ class HeaderFilter extends Component {
   render() {
     const { filterOptions = [] } = this.props
     const { selected } = this.state
-    const hasFilter = Object.keys(selected).length
+    const filterCount = Object.values(selected || {}).map(
+      (filter) => filter.length
+    )
+    const hasFilter = filterCount.length
+      ? filterCount.reduce((a, b) => a + b)
+      : 0
     return (
       <View style={styles.container}>
         <ScrollerView>

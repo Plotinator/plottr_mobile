@@ -25,9 +25,12 @@ export default ScaledSheet.create({
     paddingHorizontal: baseMargin * 1.5,
     paddingBottom: doubleBaseMargin
   },
+  titleContainer: {
+    paddingBottom: baseMargin / 2,
+    height: ifTablet(28, 22)
+  },
   columnTitle: {
     ...style.bold,
-    paddingBottom: baseMargin / 2,
     fontSize: ifTablet(size.tiny)
   },
   clearButton: {

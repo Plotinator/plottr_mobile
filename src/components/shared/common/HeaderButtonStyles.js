@@ -5,7 +5,7 @@ import Colors from '../../../utils/Colors'
 
 const { baseMargin, cornerRadius, ifTablet } = Metrics
 const {
-  size: { tiny, h5, h7, h6 }
+  size: { nano, micro, tiny, h5, h7, h6 }
 } = Fonts
 
 export default ScaledSheet.create({
@@ -32,18 +32,18 @@ export default ScaledSheet.create({
   },
   count: {
     position: 'absolute',
-    top: ifTablet(-5, -2),
-    right: ifTablet(-18, -9),
+    top: ifTablet(0, -5),
+    right: ifTablet(-10, -10),
     backgroundColor: Colors.orange,
     borderRadius: 30,
-    width: ifTablet('19@ms', '20@ms'),
-    height: ifTablet('19@ms', '20@ms'),
+    width: ifTablet('15@ms', '20@ms'),
+    height: ifTablet('15@ms', '20@ms'),
     alignItems: 'center',
     justifyContent: 'center'
   },
   countText: {
     color: Colors.white,
-    fontSize: tiny,
+    fontSize: ifTablet(micro, tiny),
     ...Fonts.style.bold
   }
 })
