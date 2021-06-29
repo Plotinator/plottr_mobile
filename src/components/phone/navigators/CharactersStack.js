@@ -37,7 +37,13 @@ export default function CharactersStack(props) {
       <Stack.Screen
         name='CharacterDetails'
         component={CharacterDetailsBounded}
-        options={{ title: RenderTitle('Character Details') }}
+        options={{
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: Colors.warmWhite
+          },
+          title: RenderTitle('Character Details')
+        }}
       />
     </Stack.Navigator>
   )
