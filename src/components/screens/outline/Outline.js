@@ -6,7 +6,7 @@ import { keyBy } from 'lodash'
 import { t } from 'plottr_locales'
 import { selectors, actions, helpers } from 'pltr/v2'
 import { Col, Grid } from 'react-native-easy-grid'
-import Toolbar from '../../shared/Toolbar'
+import Toolbar from '../Toolbar'
 import SeriesPicker from '../../shared/SeriesPicker'
 import styles from './OutlineStyles'
 import {
@@ -18,7 +18,10 @@ import {
   HeaderButtonOptions
 } from '../../shared/common'
 import OutlineChapter from './OutlineChapter'
-import BeatItemTitle from '../../shared/BeatItemTitle'
+import BeatItemTitle from '../BeatItemTitle'
+import { Metrics } from '../../../utils'
+
+const { IS_TABLET, ifTablet } = Metrics
 
 class Outline extends Component {
   state = { linesById: {}, currentLine: null, selectedLine: null }
@@ -95,17 +98,19 @@ class Outline extends Component {
           </View>
         </Toolbar>
         <Grid>
-          <Col size={5}>
-            <MainList
-              numbered
-              list={outlines}
-              title={t('Outline')}
-              type={t('Outline')}
-              activeKey='id'
-              activeValue={selectedLineId || chapters[0]?.id}
-              onPressItem={this.handleSelectOutline}
-            />
-          </Col>
+          {IS_TABLET && (
+            <Col size={5}>
+              <MainList
+                numbered
+                list={outlines}
+                title={t('Outline')}
+                type={t('Outline')}
+                activeKey='id'
+                activeValue={selectedLineId || chapters[0]?.id}
+                onPressItem={this.handleSelectOutline}
+              />
+            </Col>
+          )}
           <Col size={10}>
             <FlatList
               data={outlines}

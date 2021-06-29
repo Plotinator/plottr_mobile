@@ -2,6 +2,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native'
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Outline from './Outline'
+// import Outline from '../../shared/outline/'
 import Colors from '../../../utils/Colors'
 
 export default function OutlineHome(props) {

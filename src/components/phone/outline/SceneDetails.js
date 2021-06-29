@@ -15,7 +15,13 @@ import DetailsScrollView from '../shared/DetailsScrollView'
 import Colors from '../../../utils/Colors'
 import Metrics from '../../../utils/Metrics'
 import Toolbar from '../../shared/Toolbar'
-import { Text, ShellButton, Input, RichEditor } from '../../shared/common'
+import {
+  BackButton,
+  Text,
+  ShellButton,
+  Input,
+  RichEditor
+} from '../../shared/common'
 import Fonts from '../../../fonts'
 import {
   checkForChanges,
@@ -194,13 +200,21 @@ class SceneDetails extends Component {
       card,
       card: { title, description }
     } = this.state
+    const { navigation } = this.props
     const chapterId = card.beatId || ''
     const lineId = card.lineId || ''
     const openDrawer = this.props.route?.params?.openDrawer
 
     return (
       <SafeAreaView style={styles.wrapper}>
-        {/*<Toolbar onPressDrawer={openDrawer} />*/}
+        <Toolbar>
+          <BackButton onPress={navigation.goBack} />
+          <View style={styles.center}>
+            <Text fontStyle='bold' fontSize='h4'>
+              {t('Scene Details')}
+            </Text>
+          </View>
+        </Toolbar>
         <DetailsScrollView ref={this.setScroller}>
           <View style={styles.container}>
             <View inlineLabel last style={styles.label}>
@@ -282,6 +296,12 @@ const styles = StyleSheet.create({
   },
   rceView: {
     flex: 1
+  },
+  center: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingRight: Metrics.section + Metrics.doubleBaseMargin
   },
   labelText: {
     ...Fonts.style.semiBold,

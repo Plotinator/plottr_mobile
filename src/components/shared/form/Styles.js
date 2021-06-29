@@ -147,12 +147,12 @@ export default {
     transform: [{ rotate: '-90deg' }]
   },
   actions: {
-    width: '100%',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingTop: doubleBaseMargin,
     paddingBottom: 1,
     flexDirection: 'row',
-    marginHorizontal: -baseMargin / 2
+    marginLeft: -baseMargin / 2,
+    marginRight: -baseMargin / 2
   },
   action: {
     flex: 1,

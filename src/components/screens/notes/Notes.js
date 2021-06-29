@@ -128,9 +128,16 @@ class Notes extends Component {
   }
 
   handleAddNote = () => {
-    const id = newIds.nextId(this.props.notes)
-    this.props.actions.addNote()
+    const { notes, actions, navigation } = this.props
+    const id = newIds.nextId(notes)
+    actions.addNote()
     if (IS_TABLET) this.setState({ activeNoteId: id })
+    else {
+      setTimeout(() => {
+        const note = this.props.notes.find((note) => note.id == id)
+        navigation.navigate('NoteDetails', { note })
+      }, 100)
+    }
   }
 
   handleDeleteNote = (note) => {

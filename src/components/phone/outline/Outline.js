@@ -9,12 +9,12 @@ import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { selectors, helpers, actions } from 'pltr/v2'
 import ErrorBoundary from '../../shared/ErrorBoundary'
-import Chapter from '../../shared/outline/Chapter'
+import Chapter from '../../screens/outline/Chapter'
 import TrashButton from '../../ui/TrashButton'
 import RenameButton from '../../ui/RenameButton'
 import AddButton from '../../ui/AddButton'
 import BeatItemTitle from '../../shared/BeatItemTitle'
-import { Text } from '../../shared/common'
+import { BackButton, Text } from '../../shared/common'
 import styles from './OutlineStyles'
 import { showAlert, showInputAlert } from '../../shared/common/AlertDialog'
 import Toolbar from '../../shared/Toolbar'
@@ -78,7 +78,6 @@ class Outline extends Component {
     const isAuto = title == 'auto'
     const autoChapter = <BeatItemTitle beat={chapter} />
     const chapterName = isAuto ? autoChapter : title
-
     showInputAlert({
       title: t('Rename Chapter'),
       message: t('Enter a new name for {chapter}', { chapter: chapterName }),
@@ -161,7 +160,7 @@ class Outline extends Component {
   }
 
   render() {
-    const { chapters, lines, card2Dmap, openDrawer } = this.props
+    const { chapters, lines, card2Dmap, openDrawer, navigation } = this.props
     const cardMap = helpers.card.cardMapping(
       chapters,
       lines,
@@ -170,7 +169,14 @@ class Outline extends Component {
     )
     return (
       <View style={styles.container}>
-        {/*<Toolbar onPressDrawer={openDrawer} />*/}
+        <Toolbar>
+          <BackButton onPress={navigation.goBack} />
+          <View style={styles.center}>
+            <Text fontStyle='bold' fontSize='h4'>
+              {t('Outline')}
+            </Text>
+          </View>
+        </Toolbar>
         <FlatList
           data={chapters}
           renderItem={({ item }) => this.renderChapter(item, cardMap)}

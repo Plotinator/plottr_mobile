@@ -6,9 +6,9 @@ import { t } from 'plottr_locales'
 import { selectors } from 'pltr/v2'
 import { View } from 'native-base'
 import ErrorBoundary from '../../shared/ErrorBoundary'
-import Toolbar from '../shared/Toolbar'
+import Toolbar from '../../shared/Toolbar'
 import { HeaderButtonOptions, HeaderFilter } from '../../shared/common'
-import SeriesPicker from '../shared/SeriesPicker'
+import SeriesPicker from '../../shared/SeriesPicker'
 import Timeline from './Timeline'
 
 class TimelineWrapper extends Component {

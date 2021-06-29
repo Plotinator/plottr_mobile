@@ -22,7 +22,8 @@ export default ScaledSheet.create({
       height: 1
     },
     shadowRadius: 0,
-    elevation: 2
+    elevation: 2,
+    minHeight: Metrics.ifTablet('48@ms')
   },
   button: {
     marginRight: Metrics.doubleBaseMargin

@@ -10,12 +10,11 @@ import { selectors, actions, newIds } from 'pltr/v2'
 import { View, H3, Button, H1, Icon, Content } from 'native-base'
 import { Col, Grid } from 'react-native-easy-grid'
 import ErrorBoundary from '../../shared/ErrorBoundary'
-import Toolbar from '../shared/Toolbar'
+import Toolbar from '../../shared/Toolbar'
 import Character from './Character'
 import NewButton from '../../ui/NewButton'
 import { askToDelete } from '../../../utils/delete'
 import DrawerButton from '../../ui/DrawerButton'
-import SideButton from '../shared/SideButton'
 import {
   Text,
   MainList,

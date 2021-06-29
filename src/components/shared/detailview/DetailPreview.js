@@ -178,17 +178,19 @@ export default class DetailPreview extends Component {
   renderSaveButtons = () => {
     const { editMode } = this.state
     return (
-      <Collapsible style={styles.actions} collapsed={!editMode}>
-        <Button small style={styles.action} onPress={this.handleSave}>
-          {t('Save')}
-        </Button>
-        <Button
-          small
-          bordered
-          style={styles.action}
-          onPress={this.handleCancel}>
-          {t('Cancel')}
-        </Button>
+      <Collapsible collapsed={!editMode}>
+        <View style={styles.actions}>
+          <Button small style={styles.action} onPress={this.handleSave}>
+            {t('Save')}
+          </Button>
+          <Button
+            small
+            bordered
+            style={styles.action}
+            onPress={this.handleCancel}>
+            {t('Cancel')}
+          </Button>
+        </View>
       </Collapsible>
     )
   }

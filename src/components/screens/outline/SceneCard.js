@@ -7,54 +7,59 @@ import { selectors, actions } from 'pltr/v2'
 import { Card, CardItem, View, Left, Right } from 'native-base'
 import { StyleSheet } from 'react-native'
 import { isTablet } from 'react-native-device-info'
-import RichTextEditor from '../RichTextEditor'
-import { RichEditor, Text } from '../common'
+import { RichEditor, Text } from '../../shared/common'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
 const isOnTablet = isTablet()
 
 class SceneCard extends Component {
-
   navigateToDetails = () => {
-    this.props.navigation.navigate('SceneDetails', {card: this.props.card})
+    this.props.navigation.navigate('SceneDetails', { card: this.props.card })
   }
 
-  renderDescription () {
+  renderDescription() {
     if (!isOnTablet) return null
     const { card } = this.props
 
-    return <View style={{padding: 16}}>
-      <RichEditor
-      // <RichTextEditor
-        initialValue={card.description}
-        onChange={() => {}}
-        disabled
-      />
-    </View>
+    return (
+      <View style={{ padding: 16 }}>
+        <RichEditor
+          initialValue={card.description}
+          onChange={() => {}}
+          disabled
+        />
+      </View>
+    )
   }
 
-  render () {
+  render() {
     const { line, card } = this.props
     const lineColor = { color: line.color.toLowerCase() }
     if (isOnTablet) {
       return (
         <Card style={[styles.card, { borderColor: line.color.toLowerCase() }]}>
           <View style={styles.paddedTitleBox}>
-            <Text style={[styles.tabletLineText, lineColor]}>({line.title})</Text>
+            <Text style={[styles.tabletLineText, lineColor]}>
+              ({line.title})
+            </Text>
           </View>
           <View style={styles.paddedBox}>
             <Text style={styles.tabletTitleText}>{card.title}</Text>
           </View>
-          { this.renderDescription() }
+          {this.renderDescription()}
         </Card>
       )
     } else {
       return (
         <Card style={[styles.card, { borderColor: line.color.toLowerCase() }]}>
           <CardItem button onPress={this.navigateToDetails}>
-            <Left><Text>{card.title}</Text></Left>
-            <Right><Text style={[styles.lineText, lineColor]}>({line.title})</Text></Right>
+            <Left>
+              <Text>{card.title}</Text>
+            </Left>
+            <Right>
+              <Text style={[styles.lineText, lineColor]}>({line.title})</Text>
+            </Right>
           </CardItem>
         </Card>
       )
@@ -74,24 +79,24 @@ const styles = StyleSheet.create({
     borderWidth: 2
   },
   lineText: {
-    fontSize: 12,
+    fontSize: 12
   },
   tabletLineText: {
-    fontSize: 16,
+    fontSize: 16
   },
   tabletTitleText: {
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: '500'
   },
   paddedTitleBox: {
     paddingTop: 16,
     paddingBottom: 4,
-    paddingHorizontal: 16,
+    paddingHorizontal: 16
   },
   paddedBox: {
     paddingHorizontal: 16,
-    paddingVertical: 4,
-  },
+    paddingVertical: 4
+  }
 })
 
 SceneCard.propTypes = {
@@ -105,13 +110,13 @@ SceneCard.propTypes = {
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   images: PropTypes.object,
-  navigation: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   let line = null
   // get the right lines for state.ui.currentTimeline (bookId)
-  line = state.lines.find(l => l.id == ownProps.card.lineId)
+  line = state.lines.find((l) => l.id == ownProps.card.lineId)
   return {
     line: line,
     tags: state.tags,
@@ -121,13 +126,10 @@ function mapStateToProps (state, ownProps) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.card, dispatch)
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SceneCard)
+export default connect(mapStateToProps, mapDispatchToProps)(SceneCard)

@@ -10,7 +10,7 @@ import { H3, Icon, Card, CardItem, View } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import SceneCard from './SceneCard'
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import { Text, ShellButton } from '../common'
+import { Text, ShellButton } from '../../shared/common'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 import Fonts from '../../../fonts'
@@ -19,7 +19,7 @@ import { cloneDeep } from 'lodash'
 class Chapter extends Component {
   state = { sortedCards: [] }
 
-  static getDerivedStateFromProps (nextProps, nextState) {
+  static getDerivedStateFromProps(nextProps, nextState) {
     const { chapter, cards, lines } = nextProps
     const sortedCards = helpers.card.sortCardsInBeat(
       chapter.autoOutlineSort == true,
@@ -27,9 +27,9 @@ class Chapter extends Component {
       lines
     )
     if (chapter.autoOutlineSort)
-      sortedCards.sort((a, b) => a.id < b.id ? -1 : 1)
+      sortedCards.sort((a, b) => (a.id < b.id ? -1 : 1))
     else
-      sortedCards.sort((a, b) => a.positionInBeat < b.positionInBeat ? -1 : 1)
+      sortedCards.sort((a, b) => (a.positionInBeat < b.positionInBeat ? -1 : 1))
     return { sortedCards }
   }
 
@@ -55,7 +55,7 @@ class Chapter extends Component {
     let newOrderWithinLine = null
 
     // already in chapter
-    if (currentIds.includes (dropped.cardId)) {
+    if (currentIds.includes(dropped.cardId)) {
       // flip it to manual sort
       newOrderInChapter = helpers.lists.moveToAbove(
         dropped.index,
@@ -109,7 +109,7 @@ class Chapter extends Component {
     }
   }
 
-  renderManualSort () {
+  renderManualSort() {
     if (this.props.chapter.autoOutlineSort) return null
     return (
       <ShellButton onPress={this.autoSortChapter} style={styles.manualSorted}>
@@ -121,7 +121,7 @@ class Chapter extends Component {
     )
   }
 
-  renderCards () {
+  renderCards() {
     const { sortedCards } = this.state
     const hasCards = sortedCards.length
     return hasCards == 0 ? null : (
@@ -141,7 +141,7 @@ class Chapter extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       beatTree,
       chapter,
@@ -151,7 +151,7 @@ class Chapter extends Component {
       isSeries,
       hierarchyEnabled,
       hierarchyLevels,
-      beatIndex,
+      beatIndex
     } = this.props
     if (activeFilter && !cards.length) return null
 
@@ -234,10 +234,10 @@ Chapter.propTypes = {
   positionOffset: PropTypes.number.isRequired,
   navigation: PropTypes.object.isRequired,
   render: PropTypes.func.isRequired,
-  hierarchyEnabled: PropTypes.bool,
+  hierarchyEnabled: PropTypes.bool
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     ui: state.ui,
     lines: selectors.sortedLinesByBookSelector(state),
@@ -246,11 +246,11 @@ function mapStateToProps (state, ownProps) {
     hierarchyLevels: selectors.sortedHierarchyLevels(state),
     isSeries: selectors.isSeriesSelector(state),
     hierarchyEnabled: selectors.beatHierarchyIsOn(state),
-    beatIndex: selectors.beatIndexSelector(state, ownProps.chapter.id),
+    beatIndex: selectors.beatIndexSelector(state, ownProps.chapter.id)
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.card, dispatch),
     beatActions: bindActionCreators(actions.beat, dispatch)

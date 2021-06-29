@@ -38,5 +38,11 @@ export default ScaledSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: borderGray
   },
-  chaptersList: {}
+  chaptersList: {},
+  center: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingRight: section + doubleBaseMargin
+  }
 })

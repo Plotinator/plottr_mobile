@@ -37,12 +37,6 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     marginLeft: 'auto'
   },
-  sideButton: {
-    minHeight: 50,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
   characterSideImage: {
     resizeMode: 'contain',
     overflow: 'hidden',

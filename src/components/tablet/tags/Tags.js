@@ -12,7 +12,7 @@ import {
 import { t } from 'plottr_locales'
 import { cloneDeep } from 'lodash'
 import { selectors, actions, newIds } from 'pltr/v2'
-import Toolbar from '../shared/Toolbar'
+import Toolbar from '../../shared/Toolbar'
 import NewButton from '../../ui/NewButton'
 import DrawerButton from '../../ui/DrawerButton'
 import { Text, AddButton, MainList } from '../../shared/common'
@@ -25,7 +25,7 @@ import { showAlert } from '../../shared/common/AlertDialog'
 const { ifIOS } = Metrics
 
 class Tags extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       editingTag: null,
@@ -105,7 +105,7 @@ class Tags extends Component {
     setTimeout(() => this.tagRef && this.tagRef.handleFocusInput(), 600)
   }
 
-  renderColorPicker () {
+  renderColorPicker() {
     const { showColorPicker, editingTag } = this.state
     return (
       <ColorPickerModal
@@ -134,12 +134,12 @@ class Tags extends Component {
     )
   }
 
-  renderTagList () {
+  renderTagList() {
     const { tags } = this.props
     return tags.map(this.renderTagItem)
   }
 
-  render () {
+  render() {
     const { openDrawer } = this.props
     return (
       <View style={styles.container}>
@@ -171,13 +171,13 @@ Tags.propTypes = {
   navigation: PropTypes.object.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     tags: selectors.sortedTagsSelector(state)
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.tag, dispatch)
   }

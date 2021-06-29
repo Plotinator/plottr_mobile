@@ -62,8 +62,8 @@ export default ScaledSheet.create({
     opacity: 0.25
   },
   addButton: {
-    width: ifTablet('22@ms', '26@ms'),
-    height: ifTablet('22@ms', '26@ms'),
+    width: ifTablet('22@ms', '25@vs'),
+    height: ifTablet('22@ms', '25@vs'),
     position: 'absolute',
     top: baseMargin / 2,
     right: baseMargin / 2,
