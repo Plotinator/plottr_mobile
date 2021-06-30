@@ -9,17 +9,18 @@ const { textGray, warmTextDarkGray, orange } = Colors
 
 export default ScaledSheet.create({
   container: {
+    minHeight: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'center',
     marginVertical: baseMargin / 4
   },
   checkBox: {
-    width: '13@ms',
-    height: '13@ms',
+    width: ifTablet('13@ms', '17@ms'),
+    height: ifTablet('13@ms', '17@ms'),
     borderWidth: 1.5,
     borderColor: warmTextDarkGray,
-    borderRadius: cornerRadius / 2,
+    borderRadius: cornerRadius / ifTablet(2, 1.5),
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: baseMargin * 0.75
@@ -28,7 +29,7 @@ export default ScaledSheet.create({
     borderColor: orange
   },
   checkTick: {
-    fontSize: size.micro,
+    fontSize: ifTablet(size.micro, size.tiny),
     marginTop: '0@ms',
     marginRight: '-2@ms',
     color: warmTextDarkGray
