@@ -34,10 +34,9 @@ class Places extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const activePlaceId = IS_TABLET ? Places.findActivePlace(
-      props.visiblePlaces,
-      state.activePlaceId
-    ) : null
+    const activePlaceId = IS_TABLET
+      ? Places.findActivePlace(props.visiblePlaces, state.activePlaceId)
+      : null
     return { activePlaceId }
   }
 
@@ -65,17 +64,9 @@ class Places extends Component {
     this.props.actions.editPlace(id, attributes)
   }
 
-  navigateToCustomAttributes = () => {
-    this.props.navigation.navigate('CustomAttributesModal', {
-      type: 'places'
-    })
-  }
-
   handleSelectPlace = (place) => {
-    const { id } = place
-    if (IS_TABLET) this.setState({ activePlaceId: id })
+    if (IS_TABLET) this.setState({ activePlaceId: place.id })
     else this.props.navigation.navigate('PlaceDetails', { place })
-
   }
 
   handleAddPlace = () => {
@@ -90,7 +81,6 @@ class Places extends Component {
         navigation.navigate('PlaceDetails', { place })
       }, 100)
     }
-
   }
 
   handleDeletePlace = (place) => {
