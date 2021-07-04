@@ -68,7 +68,7 @@ export default ScaledSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.warmWhiteBG, // whiteTone,
     padding: baseMargin * 1.25,
-    paddingTop: baseMargin * 1.15,
+    paddingVertical: baseMargin * 0.75,
     minHeight: 30 + baseMargin * 2
   },
   wrapper: {
