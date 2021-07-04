@@ -31,7 +31,7 @@ export default class RichTextEditor extends Component {
   }
 
   handleBlurEditor = () => {
-    // IS_ANDROID && this.richText.focusContentEditor()
+    this.richText.blurContentEditor()
   }
 
   renderTitleIcons = (title, size = 18, style = 'bold', props = {}) => ({
@@ -85,7 +85,7 @@ export default class RichTextEditor extends Component {
     const initialText = typeof html == 'object' ? SlateToHTML(html) : html
     const isEmpty =
       trim(String(initialText || '').replace(/(<([^>]+)>)/gi, '')) === ''
-    const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color} !important; line-height: ${lineHeight}em; padding: 0 0 10px 0;`
+    const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color} !important; line-height: ${lineHeight}em; padding: 0 0 30px 0;`
     const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${
       Colors[bgColor] || bgColor
     } !important; }`
