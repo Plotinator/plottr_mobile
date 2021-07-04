@@ -13,7 +13,6 @@ const {
   headerHeight,
   footerHeight,
   screenHeight,
-  buttonRadius,
   doubleSection
 } = Metrics
 const { style, size } = Fonts
@@ -48,12 +47,12 @@ export default ScaledSheet.create({
   },
   scroller: {
     overflow: 'hidden',
-    borderRadius: cornerRadius
+    borderRadius: cornerRadius * ifTablet(1, 1.5)
   },
   detailsWrapper: {
     backgroundColor: warmWhiteBG,
     padding: baseMargin * 1.5,
-    borderRadius: cornerRadius,
+    borderRadius: cornerRadius * ifTablet(1, 1.5),
     minHeight: 50,
     paddingBottom: doubleSection
   },

@@ -12,8 +12,8 @@ export default ScaledSheet.create({
   },
   containerCircular: {
     alignSelf: 'center',
-    width: 200,
-    height: 200,
+    width: ifTablet(200, 150),
+    height: ifTablet(200, 150),
     marginBottom: Metrics.baseMargin
   },
   containerFullWidth: {
@@ -37,8 +37,8 @@ export default ScaledSheet.create({
     alignSelf: 'center',
     overflow: 'hidden',
     borderRadius: 150,
-    width: 200,
-    height: 200,
+    width: ifTablet(200, 150),
+    height: ifTablet(200, 150),
     borderWidth: 1,
     marginTop: Metrics.baseMargin / 2,
     borderColor: Colors.borderGray
