@@ -12,15 +12,8 @@ const {
   screenWidth
 } = Metrics
 const { style, size } = Fonts
-const {
-  gray,
-  white,
-  orange,
-  warmGray,
-  warmWhite,
-  warmTextGray,
-} = Colors
-const imageSize = (screenWidth - doubleBaseMargin * 2) * .205
+const { gray, white, orange, warmGray, warmWhite, warmTextGray } = Colors
+const imageSize = (screenWidth - doubleBaseMargin * 2) * ifTablet(0.205, 0.274)
 
 export default ScaledSheet.create({
   ...FormStyles,
@@ -49,14 +42,14 @@ export default ScaledSheet.create({
   images: {
     flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   imageContainer: {
     width: imageSize,
     height: imageSize,
-    marginRight: imageSize * .115,
-    marginBottom: imageSize * .115,
-    borderRadius: cornerRadius * 1.2,
+    marginRight: imageSize * 0.115,
+    marginBottom: imageSize * 0.115,
+    borderRadius: cornerRadius * 1.2
     // borderWidth: '2@ms',
     // borderColor: warmWhite
   },
@@ -97,7 +90,7 @@ export default ScaledSheet.create({
     bottom: 6,
     right: 5
   },
-/* Bottom left button */
+  /* Bottom left button */
   bottomLeftButton: {
     bottom: 0,
     left: 0,
@@ -127,6 +120,7 @@ export default ScaledSheet.create({
   },
   actions: {
     ...FormStyles.actions,
+    paddingRight: doubleBaseMargin,
     paddingTop: baseMargin
   }
 })

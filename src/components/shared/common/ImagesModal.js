@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'react-proptypes'
 import { Icon } from 'native-base'
-import { selectors, actions, helpers, initialState } from 'pltr/v2'
+import { selectors, actions } from 'pltr/v2'
 import {
   Alert,
   Image,
@@ -14,21 +14,19 @@ import {
   KeyboardAvoidingView
 } from 'react-native'
 import { t } from 'plottr_locales'
-import Input from './Book'
-import Text from './Book'
-import Button from './Book'
-import AddButton from './Book'
-import IconButton from './Book'
-import RichEditor from './Book'
-import ShellButton from './Book'
-import Attachments from './Book'
-import Book from './Book'
+import Text from './Text'
+import Button from './Button'
+import AddButton from './AddButton'
+import ShellButton from './ShellButton'
 import styles from './ImagesModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
 import Colors from '../../../utils/Colors'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import { showAlert, showInputAlert } from './AlertDialog'
+import Metrics from '../../../utils/Metrics'
+
+const { ifTablet, IS_TABLET } = Metrics
 
 class ImagesModal extends Component {
   state = {
@@ -230,10 +228,16 @@ class ImagesModal extends Component {
                 {Object.keys(images).map(this.renderImage)}
               </View>
             </ScrollView>
-            <Collapsible style={styles.actions} collapsed={!selected}>
-              <Button tiny style={styles.action} onPress={this.handleChoose}>
-                {t('Choose')}
-              </Button>
+            <Collapsible collapsed={!selected}>
+              <View style={styles.actions}>
+                <Button
+                  tiny={IS_TABLET}
+                  tight={!IS_TABLET}
+                  style={styles.action}
+                  onPress={this.handleChoose}>
+                  {t('Choose')}
+                </Button>
+              </View>
             </Collapsible>
           </View>
         </KeyboardAvoidingView>
