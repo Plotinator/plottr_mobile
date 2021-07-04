@@ -9,7 +9,8 @@ const { style, size } = Fonts
 export default ScaledSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingBottom: baseMargin
   },
   filterBase: {
     flexDirection: 'row',
@@ -34,8 +35,7 @@ export default ScaledSheet.create({
     fontSize: ifTablet(size.tiny)
   },
   clearButton: {
-    paddingHorizontal: doubleBaseMargin,
-    paddingBottom: baseMargin
+    paddingHorizontal: doubleBaseMargin
   },
   clearText: {
     ...style.semiBold,
@@ -43,10 +43,14 @@ export default ScaledSheet.create({
     color: Colors.orange
   },
   top: {
-    flex: 1
+    flex: 1,
+    maxHeight: '78%'
   },
   bottom: {
-    height: ifTablet('auto', 180),
+    backgroundColor: Colors.warmWhiteBG,
+    position: 'absolute',
+    bottom: -baseMargin,
+    height: 'auto',
     paddingVertical: baseMargin,
     width: '100%'
   }
