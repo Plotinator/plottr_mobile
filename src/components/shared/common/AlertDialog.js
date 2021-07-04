@@ -42,13 +42,13 @@ export default class AlertDialog extends Component {
     shadeBase: 0
   }
 
-  componentDidMount () {
+  componentDidMount() {
     MasterAlert = this
     Keyboard.addListener('keyboardDidShow', this.handleKeyboardShow)
     Keyboard.addListener('keyboardDidHide', this.handleKeyboardHide)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     Keyboard.removeListener('keyboardDidShow', this.handleKeyboardShow)
     Keyboard.removeListener('keyboardDidHide', this.handleKeyboardHide)
     MasterAlert = null
@@ -137,7 +137,7 @@ export default class AlertDialog extends Component {
     )
   }
 
-  renderInput (inputText) {
+  renderInput(inputText) {
     return (
       <Input
         center
@@ -152,7 +152,7 @@ export default class AlertDialog extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       actions = [],
       visible,
@@ -189,16 +189,14 @@ export default class AlertDialog extends Component {
               <Icon type='FontAwesome5' name='times' style={styles.closeIcon} />
             </ShellButton>
             <View style={styles.dialogTitle}>
-              <Text
-                style={styles.titleText}
-                fontSize='h3'
-                fontStyle='bold'
-                center>
+              <Text style={styles.titleText} center>
                 {title}
               </Text>
             </View>
             <View style={styles.dialogBody}>
-              <Text center>{message}</Text>
+              <Text center style={styles.bodyText}>
+                {message}
+              </Text>
               {isInput && this.renderInput(inputText)}
             </View>
             <View style={styles.dialogActions}>
@@ -223,7 +221,7 @@ class ActionButton extends Component {
     const { action, onPress } = this.props
     onPress(action)
   }
-  render () {
+  render() {
     const {
       index,
       disabled,
@@ -243,10 +241,9 @@ class ActionButton extends Component {
           <Icon type='FontAwesome5' name={icon} style={styles.actionIcon} />
         )}
         <Text
-          fontStyle={'bold'}
           white
           center
-          style={!positive && styles.orangeText}>
+          style={[styles.buttonText, !positive && styles.orangeText]}>
           {name}
         </Text>
       </ShellButton>

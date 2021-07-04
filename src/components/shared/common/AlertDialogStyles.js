@@ -5,6 +5,7 @@ import Colors from '../../../utils/Colors'
 
 const { borderGray, darkGray, textGray, white, orange, green, red } = Colors
 const {
+  ifTablet,
   section,
   baseMargin,
   buttonRadius,
@@ -31,10 +32,10 @@ export default ScaledSheet.create({
   },
   dialogBox: {
     backgroundColor: white,
-    borderRadius: buttonRadius,
+    borderRadius: buttonRadius / ifTablet(1.5, 1),
     // minHeight: 120,
     minWidth: 200,
-    maxWidth: '90%',
+    maxWidth: ifTablet('50%', '80%'),
     alignItems: 'center',
     height: 'auto',
     width: 'auto'
@@ -46,12 +47,20 @@ export default ScaledSheet.create({
     paddingTop: doubleBaseMargin
   },
   titleText: {
+    ...style.bold,
+    fontSize: ifTablet(size.h5, size.h4),
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center'
   },
   dialogBody: {
     paddingHorizontal: section,
+    alignItems: 'center'
+  },
+  bodyText: {
+    fontSize: ifTablet(size.h6, size.h5),
+    alignSelf: 'center',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   input: {
@@ -66,11 +75,11 @@ export default ScaledSheet.create({
     justifyContent: 'center',
     alignSelf: 'flex-end',
     position: 'absolute',
-    top: 0,
-    right: 0
+    top: -baseMargin / 2,
+    right: -baseMargin / 4
   },
   closeIcon: {
-    fontSize: size.h1,
+    fontSize: ifTablet(size.h4, size.h3),
     paddingBottom: 0,
     color: textGray
   },
@@ -93,13 +102,13 @@ export default ScaledSheet.create({
     marginHorizontal: baseMargin / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: buttonRadius
+    borderRadius: buttonRadius / ifTablet(1.5, 1.25)
   },
   positiveButton: {
     backgroundColor: orange
   },
   outlined: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   dangerButton: {
     backgroundColor: red
@@ -113,5 +122,9 @@ export default ScaledSheet.create({
   },
   orangeText: {
     color: orange
+  },
+  buttonText: {
+    ...style.bold,
+    fontSize: ifTablet(size.h6, size.h5)
   }
 })
