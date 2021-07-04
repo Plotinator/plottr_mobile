@@ -24,7 +24,7 @@ const { size, style } = Fonts
 export default ScaledSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.warmBG
+    backgroundColor: Colors.warmWhite
   },
   grid: {
     flex: 1

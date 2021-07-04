@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { t } from 'plottr_locales'
 import { StyleSheet } from 'react-native'
-import DetailPreview from '../shared/DetailView/Preview'
+import DetailPreview from '../../shared/detailview/'
 import { cloneDeep } from 'lodash'
 
 export default class Character extends Component {

@@ -5,7 +5,7 @@ import OutlineHome from '../outline/OutlineHome'
 import TimelineHome from '../timeline/TimelineHome'
 import NotesHome from '../../screens/notes'
 import CharactersHome from '../characters/CharactersHome'
-import PlacesHome from '../places/PlacesHome'
+import PlacesHome from '../../screens/places'
 import TagsHome from '../tags/TagsHome'
 import { TabBarOptions, TabScreenOptions } from '../../shared/navigators'
 

@@ -1,51 +1,25 @@
 import React from 'react'
-import { t } from 'plottr_locales'
 import { createStackNavigator } from '@react-navigation/stack'
-import PlacesHome from '../places/PlacesHome'
-import PlaceDetails from '../places/PlaceDetails'
-import AddButton from '../../ui/AddButton'
-import DrawerButton from '../../ui/DrawerButton'
-import withBoundary from '../shared/BoundaryWrapper'
-import { RenderTitle } from '../../shared/common'
-import { Colors } from '../../../utils'
+import PlacesHome, { PlaceDetails } from '../../screens/places'
+import { ScreenOptions } from '../../shared/navigators'
 
 const Stack = createStackNavigator()
-const PlaceDetailsBounded = withBoundary(PlaceDetails)
 
 export default function PlacesStack(props) {
-  const addPlace = () => {
-    props.navigation.push('PlaceDetails', { isNewPlace: true })
-  }
   const openDrawer = props.route?.params?.openDrawer
   return (
     <Stack.Navigator>
       <Stack.Screen
         name='PlacesHome'
-        initialParams={{ openDrawer }}
         component={PlacesHome}
-        options={{
-          // headerShown: false,
-          headerStyle: {
-            backgroundColor: Colors.warmWhite
-          },
-          title: RenderTitle('Places'),
-          headerRight: () => <AddButton onPress={addPlace} />,
-          headerLeft: () => (
-            <DrawerButton openDrawer={props.route?.params?.openDrawer} />
-          )
-        }}
+        initialParams={{ openDrawer }}
+        options={ScreenOptions}
       />
       <Stack.Screen
         name='PlaceDetails'
-        component={PlaceDetailsBounded}
+        component={PlaceDetails}
         initialParams={{ openDrawer }}
-        options={{
-          // headerShown: false,
-          headerStyle: {
-            backgroundColor: Colors.warmWhite
-          },
-          title: RenderTitle('Place Details')
-        }}
+        options={ScreenOptions}
       />
     </Stack.Navigator>
   )

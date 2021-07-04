@@ -3,11 +3,11 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { selectors, actions, newIds } from 'pltr/v2'
-import { View, H3, Button, H1, Icon, Content } from 'native-base'
+import { Icon } from 'native-base'
 import { Col, Grid } from 'react-native-easy-grid'
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Toolbar from '../../shared/Toolbar'
@@ -24,6 +24,9 @@ import {
   HeaderFilter
 } from '../../shared/common'
 import styles from './PlacesStyles'
+import { Metrics } from '../../../utils'
+
+const { IS_TABLET } = Metrics
 
 class Places extends Component {
   state = {
@@ -31,10 +34,10 @@ class Places extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const activePlaceId = Places.findActivePlace(
+    const activePlaceId = IS_TABLET ? Places.findActivePlace(
       props.visiblePlaces,
       state.activePlaceId
-    )
+    ) : null
     return { activePlaceId }
   }
 
@@ -68,14 +71,26 @@ class Places extends Component {
     })
   }
 
-  handleSelectPlace = ({ id }) => {
-    this.setState({ activePlaceId: id })
+  handleSelectPlace = (place) => {
+    const { id } = place
+    if (IS_TABLET) this.setState({ activePlaceId: id })
+    else this.props.navigation.navigate('PlaceDetails', { place })
+
   }
 
   handleAddPlace = () => {
+    const { navigation, actions } = this.props
+
     const id = newIds.nextId(this.props.places)
-    this.props.actions.addPlace()
-    this.setState({ activePlaceId: id })
+    actions.addPlace()
+    if (IS_TABLET) this.setState({ activePlaceId: id })
+    else {
+      setTimeout(() => {
+        const place = this.props.places.find((place) => place.id == id)
+        navigation.navigate('PlaceDetails', { place })
+      }, 100)
+    }
+
   }
 
   handleDeletePlace = (place) => {
@@ -114,7 +129,7 @@ class Places extends Component {
     return (
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
-          <NewButton onPress={this.createNewPlace} />
+          {IS_TABLET && <NewButton onPress={this.createNewPlace} />}
           <View style={styles.additionals}>
             <View style={styles.additionals}>
               <HeaderButtonOptions
@@ -142,9 +157,11 @@ class Places extends Component {
               onPressItem={this.handleSelectPlace}
               onPressAdd={this.handleAddPlace}
               onPressDelete={this.handleDeletePlace}
+              rightIcon={'trash'}
+              onPressRight={!IS_TABLET && this.handleDeletePlace}
             />
           </Col>
-          <Col size={10}>{this.renderPlaceDetail()}</Col>
+          {IS_TABLET && <Col size={10}>{this.renderPlaceDetail()}</Col>}
         </Grid>
       </View>
     )
