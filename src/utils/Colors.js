@@ -35,7 +35,7 @@ const Colors = {
   textDarkGrayTone: '#666666',
   textDarkerGrayTone: '#545454',
   // warm tones
-  warmWhite: '#f5f4f0',
+  warmWhite: '#f5f3f0',
   warmWhiter: '#f6f5f3',
   warmBG: '#efece7',
   warmWhiteBG: '#fffcf7',

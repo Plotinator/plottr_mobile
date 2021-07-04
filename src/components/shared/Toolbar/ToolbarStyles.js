@@ -8,7 +8,6 @@ export default ScaledSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingVertical: Metrics.baseMargin,
-    backgroundColor: Colors.warmWhite,
     paddingTop: Metrics.baseMargin,
     paddingBottom: Metrics.baseMargin * 1.5,
     backgroundColor: Colors.warmWhite,
