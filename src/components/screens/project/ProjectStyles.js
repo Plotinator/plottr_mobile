@@ -94,6 +94,7 @@ export default ScaledSheet.create({
     ...style.semiBold,
     flexWrap: 'wrap',
     color: warmTextGray,
+    paddingTop: baseMargin / 4,
     lineHeight: h6 * 1.6,
     fontSize: ifTablet(h6, h5),
     textAlign: 'center'
