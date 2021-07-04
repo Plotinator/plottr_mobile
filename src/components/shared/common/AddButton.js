@@ -3,16 +3,19 @@ import styles from './AddButtonStyles'
 import Colors from '../../../utils/Colors'
 import { Icon } from 'native-base'
 import ShellButton from './ShellButton'
+import Metrics from '../../../utils/Metrics'
+
+const { ifTablet } = Metrics
 
 export default class AddButton extends Component {
-  render () {
+  render() {
     const {
       style,
       data,
       icon = 'plus',
       color = 'orange',
-      size = 26,
-      hitSize = 5,
+      size = ifTablet(28, 24),
+      hitSize = 6,
       outlined,
       onPress,
       animated,
