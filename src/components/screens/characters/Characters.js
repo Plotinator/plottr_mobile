@@ -179,12 +179,6 @@ class Characters extends Component {
     )
   }
 
-  navigateToCustomAttributes = () => {
-    this.props.navigation.navigate('CustomAttributesModal', {
-      type: 'characters'
-    })
-  }
-
   render() {
     const { openDrawer, filters } = this.props
     const filterCount = Object.values(filters || {}).map(
