@@ -3,7 +3,7 @@ import {
   View,
   TextInput,
   Keyboard,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback
 } from 'react-native'
 import { Icon } from 'native-base'
 import { ShellButton, Input, Text } from '../../shared/common'
@@ -20,8 +20,7 @@ class TagCell extends Component {
     }
   }
 
-  static getDerivedStateFromProps (nextProps, nextState) {
-
+  static getDerivedStateFromProps(nextProps, nextState) {
     // update the color if changed
     if (nextProps.tag.color !== nextState.tag.color)
       nextState.tag.color = nextProps.tag.color
@@ -68,19 +67,20 @@ class TagCell extends Component {
   handleInputRef = (ref) => (this.input = ref)
 
   render() {
+    const { onDelete, onSave, isEditing } = this.props
     const {
-      onDelete,
-      onSave,
-      isEditing
-    } = this.props
-    const { tag, tag: { color, title } } = this.state
+      tag,
+      tag: { color, title }
+    } = this.state
     const hexColor = tinycolor(color).toHexString()
     const borderColor = { borderColor: hexColor }
-    const colorStyle = [{
-      borderTopColor: hexColor,
-      borderBottomColor: hexColor
-    }]
-    const hitArea = { top: 5, bottom: 5, left: 5, right: 5 }
+    const colorStyle = [
+      {
+        borderTopColor: hexColor,
+        borderBottomColor: hexColor
+      }
+    ]
+    const hitSize = 10
     return (
       <TouchableWithoutFeedback onPress={this.handleFocusInput}>
         <View style={[styles.tag, borderColor, isEditing && styles.focused]}>
@@ -92,7 +92,12 @@ class TagCell extends Component {
               editable={isEditing}
               placeholder='New Tag'
               ref={this.handleInputRef}
-              style={[ styles.tagTextInput, {/* color: hexColor */} ]}
+              style={[
+                styles.tagTextInput,
+                {
+                  /* color: hexColor */
+                }
+              ]}
               onChangeText={this.handleTitleChange}
               value={title}
               multiline={true}
@@ -106,14 +111,9 @@ class TagCell extends Component {
                 data={tag}
                 onPress={this.handleColor}
                 style={styles.topLeftButton}
-                hitSlop={hitArea}
+                hitSize={hitSize}
                 disabled={!isEditing}>
-                <View
-                  style={[
-                    styles.topLeftShape,
-                    ...colorStyle
-                  ]}
-                />
+                <View style={[styles.topLeftShape, ...colorStyle]} />
                 <Icon
                   type='FontAwesome5'
                   name='paint-brush'
@@ -124,14 +124,9 @@ class TagCell extends Component {
                 data={tag}
                 onPress={this.handleCancel}
                 style={styles.topRightButton}
-                hitSlop={hitArea}
+                hitSize={hitSize}
                 disabled={!isEditing}>
-                <View
-                  style={[
-                    styles.topRightShape,
-                    ...colorStyle
-                  ]}
-                />
+                <View style={[styles.topRightShape, ...colorStyle]} />
                 <Icon
                   type='FontAwesome5'
                   name='times'
@@ -143,14 +138,9 @@ class TagCell extends Component {
           <ShellButton
             data={tag}
             onPress={onDelete}
-            hitSlop={hitArea}
+            hitSize={hitSize}
             style={styles.bottomLeftButton}>
-            <View
-              style={[
-                styles.bottomLeftShape,
-                ...colorStyle
-              ]}
-            />
+            <View style={[styles.bottomLeftShape, ...colorStyle]} />
             <Icon
               type='FontAwesome5'
               name='trash'
@@ -159,15 +149,10 @@ class TagCell extends Component {
           </ShellButton>
           <ShellButton
             data={tag}
-            hitSlop={hitArea}
+            hitSize={hitSize}
             onPress={isEditing ? onSave : this.handleEdit}
             style={styles.bottomRightButton}>
-            <View
-              style={[
-                styles.bottomRightShape,
-                ...colorStyle
-              ]}
-            />
+            <View style={[styles.bottomRightShape, ...colorStyle]} />
             <Icon
               type='FontAwesome5'
               name={isEditing ? 'check' : 'pen'}

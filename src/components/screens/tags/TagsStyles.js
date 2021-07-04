@@ -2,11 +2,15 @@ import { ScaledSheet } from 'react-native-size-matters'
 import { Colors, Metrics } from '../../../utils'
 import Fonts from '../../../fonts'
 
-const { baseMargin, doubleBaseMargin } = Metrics
+const { baseMargin, doubleBaseMargin, ifTablet } = Metrics
 const { textGrayTone } = Colors
 const { size, style } = Fonts
 
 export default ScaledSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: Colors.warmWhite
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.warmBG
@@ -22,7 +26,7 @@ export default ScaledSheet.create({
     color: textGrayTone
   },
   titleText: {
-    fontSize: size.h5,
+    fontSize: ifTablet(size.h5, size.h2),
     ...style.bold,
     marginRight: baseMargin,
     color: textGrayTone
@@ -34,5 +38,5 @@ export default ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: doubleBaseMargin
-  },
+  }
 })

@@ -6,7 +6,7 @@ import TimelineHome from '../timeline/TimelineHome'
 import NotesHome from '../../screens/notes'
 import CharactersHome from '../characters/CharactersHome'
 import PlacesHome from '../../screens/places'
-import TagsHome from '../tags/TagsHome'
+import TagsHome from '../../screens/tags'
 import { TabBarOptions, TabScreenOptions } from '../../shared/navigators'
 
 const Tab = createBottomTabNavigator()

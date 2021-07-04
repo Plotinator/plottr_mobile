@@ -1,14 +1,14 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
 import ErrorBoundary from '../../shared/ErrorBoundary'
-import Places from './Places'
+import Tags from './Tags'
+import styles from './TagsStyles'
 
-export default function PlacesHome (props) {
-  //gray-9
+export default function TagsHome(props) {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.wrapper}>
       <ErrorBoundary>
-        <Places
+        <Tags
           navigation={props.navigation}
           openDrawer={props.route?.params?.openDrawer}
         />

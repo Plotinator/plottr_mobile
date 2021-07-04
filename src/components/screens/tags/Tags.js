@@ -18,11 +18,11 @@ import DrawerButton from '../../ui/DrawerButton'
 import { Text, AddButton, MainList } from '../../shared/common'
 import { Colors, Metrics } from '../../../utils'
 import TagCell from './TagCell'
-import ColorPickerModal from '../shared/ColorPickerModal'
+import ColorPickerModal from '../../tablet/shared/ColorPickerModal'
 import styles from './TagsStyles'
 import { showAlert } from '../../shared/common/AlertDialog'
 
-const { ifIOS } = Metrics
+const { IF_TABLET, ifIOS } = Metrics
 
 class Tags extends Component {
   constructor(props) {
@@ -145,7 +145,7 @@ class Tags extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <Toolbar onPressDrawer={openDrawer}>
-            <NewButton onPress={this.handleCreateNewTag} />
+            {IF_TABLET && <NewButton onPress={this.handleCreateNewTag} />}
           </Toolbar>
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>{t('Tags')}</Text>
