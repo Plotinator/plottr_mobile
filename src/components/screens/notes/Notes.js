@@ -23,7 +23,7 @@ import { Metrics } from '../../../utils'
 import { Col, Grid } from 'react-native-easy-grid'
 import Note from './Note'
 
-const { IS_TABLET, ifTablet } = Metrics
+const { IS_TABLET } = Metrics
 
 class Notes extends Component {
   state = {

@@ -20,7 +20,7 @@ import {
 } from '../../shared/common'
 import { t } from 'plottr_locales'
 
-class Notes extends Component {
+class NoteDetails extends Component {
   saveNote = (id, attributes) => {
     this.props.actions.editNote(id, attributes)
   }
@@ -61,7 +61,7 @@ class Notes extends Component {
   }
 }
 
-Notes.propTypes = {
+NoteDetails.propTypes = {
   actions: PropTypes.object.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
@@ -85,4 +85,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Notes)
+export default connect(mapStateToProps, mapDispatchToProps)(NoteDetails)
