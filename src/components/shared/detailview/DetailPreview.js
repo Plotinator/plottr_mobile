@@ -17,6 +17,9 @@ import styles from './DetailPreviewStyles'
 import Collapsible from 'react-native-collapsible'
 import DetailImage from './DetailImage'
 import images from '../../../images'
+import Metrics from '../../../utils/Metrics'
+
+const { ifTablet, IS_TABLET } = Metrics
 
 export default class DetailPreview extends Component {
   constructor(props) {
@@ -180,11 +183,16 @@ export default class DetailPreview extends Component {
     return (
       <Collapsible collapsed={!editMode}>
         <View style={styles.actions}>
-          <Button small style={styles.action} onPress={this.handleSave}>
+          <Button
+            small={IS_TABLET}
+            tight={!IS_TABLET}
+            style={styles.action}
+            onPress={this.handleSave}>
             {t('Save')}
           </Button>
           <Button
-            small
+            small={IS_TABLET}
+            tight={!IS_TABLET}
             bordered
             style={styles.action}
             onPress={this.handleCancel}>
@@ -271,7 +279,8 @@ export default class DetailPreview extends Component {
                 showsVerticalScrollIndicator: false
               }}
               style={styles.scroller}>
-              <View style={styles.detailsWrapper}>
+              <View
+                style={[styles.detailsWrapper, editMode && styles.editWrapper]}>
                 {this.renderHeader()}
                 {attributes.map(this.renderAttribute)}
                 {this.renderSaveButtons()}
@@ -279,7 +288,11 @@ export default class DetailPreview extends Component {
             </ScrollerView>
             {!editMode && (
               <View style={styles.editButtonContainer}>
-                <AddButton size={40} icon='pen' onPress={this.handleEdit} />
+                <AddButton
+                  size={ifTablet(40, 35)}
+                  icon='pen'
+                  onPress={this.handleEdit}
+                />
               </View>
             )}
           </View>

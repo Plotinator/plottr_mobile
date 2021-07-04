@@ -57,6 +57,9 @@ export default ScaledSheet.create({
     minHeight: 50,
     paddingBottom: doubleSection
   },
+  editWrapper: {
+    paddingBottom: doubleBaseMargin
+  },
   detailsBlock: {
     marginBottom: baseMargin
   },
