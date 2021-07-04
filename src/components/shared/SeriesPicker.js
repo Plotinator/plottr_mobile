@@ -40,8 +40,7 @@ class SeriesPicker extends Component {
           style={styles.menuItem}
           onPress={this.handleChange}>
           <Text
-            fontSize='h3'
-            fontStyle={'semiBold'}
+            style={styles.itemText}
             color={id == currentTimeline ? 'green' : 'textGray'}>
             {(book && book.title) || t('Untitled')}
           </Text>
@@ -101,9 +100,7 @@ class SeriesPicker extends Component {
           <ShellButton
             style={styles.menuItem}
             onPress={this.handleSwitchToSeries}>
-            <Text fontSize='h3' fontStyle={'bold'} color={'textGray'}>
-              {seriesText}
-            </Text>
+            <Text style={styles.seriesText}>{seriesText}</Text>
           </ShellButton>
           <ScrollerView style={styles.menuScroller}>
             {this.renderItems()}

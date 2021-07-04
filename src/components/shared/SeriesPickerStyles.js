@@ -55,7 +55,17 @@ export default ScaledSheet.create({
     maxHeight: '200@ms'
   },
   menuItem: {
+    color: Colors.textGray,
     padding: baseMargin,
     paddingVertical: baseMargin / 2
+  },
+  seriesText: {
+    ...fontStyles.bold,
+    fontSize: ifTablet(fontSizes.h6),
+    color: Colors.textGray
+  },
+  itemText: {
+    ...fontStyles.semiBold,
+    fontSize: ifTablet(fontSizes.h6)
   }
 })
