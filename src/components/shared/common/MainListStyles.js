@@ -45,12 +45,14 @@ export default ScaledSheet.create({
     borderTopRightRadius: 999,
     borderBottomRightRadius: 999,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: Colors.warmGray, // grayTone,
-    paddingVertical: baseMargin / 1.5,
+    paddingVertical: baseMargin / ifTablet(1.5, 1),
     paddingLeft: doubleBaseMargin,
-    paddingRight: baseMargin / 1.5,
-    marginBottom: baseMargin
+    paddingRight: baseMargin / ifTablet(1.5, 1),
+    marginBottom: baseMargin,
+    marginRight: ifTablet(0, baseMargin)
   },
   groupText: {
     ...style.bold,
@@ -88,7 +90,7 @@ export default ScaledSheet.create({
     fontSize: ifTablet(size.size9, size.h5)
   },
   number: {
-    height: '100%',
+    // height: '100%',
     justifyContent: 'center'
   },
   itemNumber: {

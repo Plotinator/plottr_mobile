@@ -29,6 +29,7 @@ export default ScaledSheet.create({
   },
   subtitle: {
     ...style.italic,
+    textAlign: 'center',
     fontSize: ifTablet(size.tiny),
     color: warmTextGray,
     marginBottom: baseMargin

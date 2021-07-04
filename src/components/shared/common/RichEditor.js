@@ -31,7 +31,7 @@ export default class RichTextEditor extends Component {
   }
 
   handleBlurEditor = () => {
-    this.richText.blurContentEditor()
+    // this.richText.blurContentEditor()
   }
 
   renderTitleIcons = (title, size = 18, style = 'bold', props = {}) => ({

@@ -107,6 +107,7 @@ class HeaderAttributes extends Component {
           </Text>
           <ScrollerView
             scrollerProps={{
+              disableScrollViewPanResponder: true,
               ref: this.setScrollerRef,
               bounces: false,
               style: styles.scroller

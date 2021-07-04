@@ -3,7 +3,7 @@ import Fonts from '../../../fonts'
 import Metrics from '../../../utils/Metrics'
 import Colors from '../../../utils/Colors'
 
-const { baseMargin, doubleBaseMargin, cornerRadius } = Metrics
+const { baseMargin, doubleBaseMargin, cornerRadius, ifTablet } = Metrics
 const { style, size } = Fonts
 const {
   orange,
@@ -31,7 +31,7 @@ export default ScaledSheet.create({
     padding: baseMargin / 3,
     paddingBottom: baseMargin / 4,
     paddingRight: '23@ms',
-    minHeight: '35@ms',
+    minHeight: ifTablet('35@ms', '42@ms'),
     paddingHorizontal: baseMargin
   },
   selected: {
@@ -41,7 +41,7 @@ export default ScaledSheet.create({
     alignItems: 'center'
   },
   name: {
-    fontSize: Fonts.size.tiny,
+    fontSize: ifTablet(size.tiny, size.h5),
     paddingLeft: baseMargin / 1.25
   },
   menuPopover: {
@@ -60,27 +60,27 @@ export default ScaledSheet.create({
   },
   menuText: {
     ...style.semiBold,
-    fontSize: Fonts.size.tiny
+    fontSize: ifTablet(size.tiny, size.h5)
   },
   caret: {
-    fontSize: size.tiny,
+    fontSize: ifTablet(size.tiny, size.h5),
     right: -baseMargin
   },
   label: {
     marginBottom: baseMargin / 2
   },
   labelEditText: {
-    fontSize: Fonts.size.h7,
+    fontSize: ifTablet(size.tiny, size.h5),
     ...Fonts.style.boldItalic,
     marginLeft: baseMargin / 4,
     opacity: 0.5
   },
   labelText: {
-    fontSize: Fonts.size.h7,
+    fontSize: ifTablet(size.tiny, size.h5),
     ...Fonts.style.bold
   },
   detailsText: {
     ...Fonts.style.regular,
-    fontSize: Fonts.size.tiny
+    fontSize: ifTablet(size.tiny, size.h5)
   }
 })
