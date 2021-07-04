@@ -88,7 +88,8 @@ export default ScaledSheet.create({
     fontSize: ifTablet(size.size9, size.h5)
   },
   number: {
-    height: '100%'
+    height: '100%',
+    justifyContent: 'center'
   },
   itemNumber: {
     ...style.bold,
