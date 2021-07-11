@@ -174,5 +174,13 @@ export default {
   menuItem: {
     padding: baseMargin,
     paddingVertical: baseMargin / 2
+  },
+  additionals: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+  leanRight: {
+    marginRight: -baseMargin
   }
 }

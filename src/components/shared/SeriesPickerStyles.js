@@ -11,7 +11,7 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: baseMargin / 1.25,
+    paddingVertical: baseMargin / ifTablet(1.25, 3),
     paddingLeft: baseMargin * 1.5,
     paddingRight: doubleBaseMargin / 1.5,
     borderRadius: cornerRadius / 2,

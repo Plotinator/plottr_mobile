@@ -172,7 +172,7 @@ class Outline extends Component {
       <View style={styles.container}>
         <Toolbar onPressDrawer={openDrawer}>
           <SeriesPicker />
-          <View style={styles.additionals}>
+          <View style={[styles.additionals, styles.leanRight]}>
             <HeaderButtonOptions
               title={t('Filter')}
               icon='filter'
