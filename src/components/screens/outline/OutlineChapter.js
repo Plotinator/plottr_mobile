@@ -64,7 +64,7 @@ class OutlineChapter extends Component {
     )
   }
 
-  renderManuallySorted (isManuallSorted) {
+  renderManuallySorted(isManuallSorted) {
     return (
       isManuallSorted && (
         <ShellButton
@@ -77,20 +77,26 @@ class OutlineChapter extends Component {
     )
   }
 
-  renderCard = (card, key) => (
-    <OutlineCard
-      key={key}
-      index={key}
-      card={card}
-      cardMap={this.props.cardMap}
-      navigation={this.props.navigation}
-      onReorder={this.handleReorderCard}
-    />
-  )
+  renderCard = (card, key) => {
+    const {
+      filters: { line: lineFilters }
+    } = this.props
+    const hasFitler = lineFilters && lineFilters.length
+    return !hasFitler || (hasFitler && lineFilters.includes(card.lineId)) ? (
+      <OutlineCard
+        key={key}
+        index={key}
+        card={card}
+        cardMap={this.props.cardMap}
+        navigation={this.props.navigation}
+        onReorder={this.handleReorderCard}
+      />
+    ) : null
+  }
 
   renderSortedCards = (sortedCards) => sortedCards.map(this.renderCard)
 
-  render () {
+  render() {
     const { chapter, cardMap } = this.props
     const { id, autoOutlineSort } = chapter
     const { positionOffset, lines } = this.props
@@ -126,14 +132,15 @@ OutlineChapter.propTypes = {
   positionOffset: PropTypes.number.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     lines: selectors.sortedLinesByBookSelector(state),
-    positionOffset: selectors.positionOffsetSelector(state)
+    positionOffset: selectors.positionOffsetSelector(state),
+    filters: state.ui.outlineFilter
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     cardActions: bindActionCreators(actions.card, dispatch),
     beatActions: bindActionCreators(actions.beat, dispatch)
