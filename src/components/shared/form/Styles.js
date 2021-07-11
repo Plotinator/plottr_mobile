@@ -92,7 +92,7 @@ export default {
     color: lightenGray,
     paddingLeft: baseMargin / 4,
     paddingBottom: baseMargin / 2,
-    marginRight: baseMargin / 2,
+    marginRight: baseMargin / 2
     // opacity: 0.5
   },
   count: {
@@ -138,12 +138,12 @@ export default {
   collapseText: {
     ...style.italic,
     color: textGray,
-    fontSize: size.nano
+    fontSize: ifTablet(size.nano, size.tiny)
   },
   collapseIcon: {
-    fontSize: size.small / 2,
+    fontSize: ifTablet(9, 8),
     color: textGray,
-    marginTop: 5,
+    marginTop: ifTablet(5, 4),
     marginLeft: baseMargin / 4
   },
   collapsedIcon: {
