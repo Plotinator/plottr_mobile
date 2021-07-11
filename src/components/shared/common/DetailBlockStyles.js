@@ -17,24 +17,15 @@ export default ScaledSheet.create({
     fontSize: ifTablet(Fonts.size.h7, Fonts.size.h5)
   },
   headingEditText: {
-    ...Fonts.style.boldItalic,
-    fontSize: ifTablet(Fonts.size.h7, Fonts.size.h5),
-    marginLeft: baseMargin / 4,
-    opacity: 0.5
+    ...FormStyles.label
+    // fontSize: ifTablet(Fonts.size.h7, Fonts.size.h5),
+    // marginLeft: baseMargin / 4,
+    // opacity: 0.5
   },
   details: {},
   detailsText: {
     ...Fonts.style.regular,
-    fontSize: ifTablet(Fonts.size.tiny, Fonts.size.small)
-  },
-  input: {
-    ...FormStyles.input,
-    marginTop: baseMargin / 1.5,
-    height: ifTablet('30@ms', '40@ms')
-  },
-  inputText: {
-    ...FormStyles.inputText,
-    fontSize: ifTablet(Fonts.size.tiny, Fonts.size.h5)
+    fontSize: ifTablet(Fonts.size.h7, Fonts.size.h5)
   },
   centerText: {
     textAlign: 'center',

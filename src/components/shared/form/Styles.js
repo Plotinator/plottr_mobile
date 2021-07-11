@@ -88,11 +88,12 @@ export default {
   },
   label: {
     ...style.boldItalic,
-    fontSize: size.small,
+    fontSize: ifTablet(Fonts.size.h7, Fonts.size.h5),
     color: lightenGray,
     paddingLeft: baseMargin / 4,
     paddingBottom: baseMargin / 2,
-    marginRight: baseMargin / 2
+    marginRight: baseMargin / 2,
+    // opacity: 0.5
   },
   count: {
     marginTop: -baseMargin / 2,
@@ -110,12 +111,15 @@ export default {
   },
   input: {
     backgroundColor: 'transparent',
-    height: '48@mvs',
+    // height: '48@mvs',
+    marginTop: baseMargin / 1.5,
+    height: ifTablet('30@ms', '40@ms'),
     borderRadius: cornerRadius * 1.25
   },
   inputText: {
     ...style.regular,
-    ...inputText
+    ...inputText,
+    fontSize: ifTablet(size.tiny, size.h5)
   },
   inputBoldText: {
     ...style.semiBold,

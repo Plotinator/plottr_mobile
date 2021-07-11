@@ -11,7 +11,6 @@ import RichEditor from './RichEditor'
 const { ifTablet } = Metrics
 const DetailBlock = (props) => {
   const {
-    source,
     heading,
     headingStyle = 'bold',
     details,
