@@ -198,7 +198,7 @@ export default ScaledSheet.create({
   beatDots: {
     marginTop: -baseMargin / 4,
     paddingVertical: baseMargin / 4,
-    paddingHorizontal: baseMargin / 2,
+    paddingHorizontal: baseMargin / 4,
     backgroundColor: warmWhiteBG,
     borderRadius: 20,
     marginLeft: baseMargin * 1.5,
@@ -215,9 +215,11 @@ export default ScaledSheet.create({
     // width: 15,
     width: 'auto',
     paddingHorizontal: baseMargin / 2,
-    height: 15,
+    // height: 15,
+    paddingBottom: 1,
     borderRadius: 20,
-    margin: baseMargin / 2,
+    marginHorizontal: baseMargin / 2,
+    marginVertical: baseMargin / 4,
     backgroundColor: warmWhite,
     justifyContent: 'center',
     alignItems: 'center'
@@ -229,7 +231,7 @@ export default ScaledSheet.create({
   dotText: {
     ...style.semiBold,
     color: warmTextGray,
-    fontSize: size.tiny
+    fontSize: size.small
   },
   activeDotText: {
     color: warmWhite

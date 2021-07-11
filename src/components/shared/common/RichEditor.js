@@ -92,9 +92,9 @@ export default class RichTextEditor extends Component {
     const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${
       Colors[bgColor] || bgColor
     } !important; }`
-    // if (disabled && this.preLength != strippedText.length) {
-    //   this.preLength = strippedText.length
-    // }
+    if (disabled && this.preLength != strippedText.length) {
+      this.preLength = strippedText.length
+    }
     return isEmpty && hideOnEmpty ? null : (
       <TouchableWithoutFeedback
         onPress={this.handleFocusEditor}
