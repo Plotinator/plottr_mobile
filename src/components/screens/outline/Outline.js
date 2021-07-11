@@ -47,7 +47,8 @@ class Outline extends Component {
   handleSelectOutline = ({ listIndex, index, id }) => {
     this.setState({
       autoType: 'list',
-      selectedLineId: id
+      selectedLineId: id,
+      viewables: [{ index, isViewable: true }]
     })
     this.outlineListRef.scrollToIndex({
       index: listIndex || index
@@ -89,9 +90,8 @@ class Outline extends Component {
           index: lastViewing.index
         })
       }
+      this.setState({ viewables: viewableItems })
     }
-
-    this.setState({ viewables: viewableItems })
   }
 
   handleScrollDrag = () => {
@@ -116,9 +116,13 @@ class Outline extends Component {
 
   renderBeatDot = ({ item: outline }) => {
     const { viewables } = this.state
-    const isActive = viewables.find(
-      (o) => o.index == outline.index && o.isViewable == true
-    )
+    const last = viewables.length - 1
+    const lastViewing = viewables[last]
+
+    const isActive = lastViewing && lastViewing.index === outline.index
+    // viewables.find(
+    //   (o) => o.index == outline.index && o.isViewable == true
+    // )
 
     return (
       <ShellButton
@@ -128,8 +132,8 @@ class Outline extends Component {
         style={[styles.beatDot, isActive && styles.activeDot]}
         onPress={this.handleSelectOutline}>
         <Text style={[styles.dotText, isActive && styles.activeDotText]}>
-          {outline.index + 1}
-          {'. '}
+          {/*outline.index + 1}
+          {'. '*/}
           {outline.title}
         </Text>
       </ShellButton>
