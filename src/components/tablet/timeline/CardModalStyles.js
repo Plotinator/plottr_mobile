@@ -65,5 +65,8 @@ export default ScaledSheet.create({
     backgroundColor: borderGray,
     height: '100%',
     transform: [{ rotate: '15deg' }]
+  },
+  wrapper: {
+    marginBottom: baseMargin
   }
 })

@@ -64,6 +64,18 @@ class OutlineChapter extends Component {
     )
   }
 
+  handleNewCard = () => {
+    const { navigation, chapter, lines } = this.props
+    const { id: beatId } = chapter
+    const lineId = lines[0].id
+    navigation.navigate('SceneDetails', {
+      isNew: true,
+      scene: {},
+      beatId,
+      lineId
+    })
+  }
+
   renderManuallySorted(isManuallSorted) {
     return (
       isManuallSorted && (
@@ -78,9 +90,8 @@ class OutlineChapter extends Component {
   }
 
   renderCard = (card, key) => {
-    const {
-      filters: { line: lineFilters }
-    } = this.props
+    const { filters } = this.props
+    const { line: lineFilters } = filters || {}
     const hasFitler = lineFilters && lineFilters.length
     return !hasFitler || (hasFitler && lineFilters.includes(card.lineId)) ? (
       <OutlineCard
@@ -115,6 +126,11 @@ class OutlineChapter extends Component {
           <View style={styles.chapter}>
             <View style={styles.chapterTitle}>
               <Text style={styles.chapterText}>{chapterTitle}</Text>
+              <AddButton
+                size={20}
+                style={styles.addCardButton}
+                onPress={this.handleNewCard}
+              />
               {this.renderManuallySorted(isManuallSorted)}
             </View>
             <View style={styles.cards}>

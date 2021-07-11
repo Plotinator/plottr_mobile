@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { FlatList, View } from 'react-native'
 import { keyBy } from 'lodash'
 import { t } from 'plottr_locales'
@@ -11,7 +12,10 @@ import SeriesPicker from '../../shared/SeriesPicker'
 import styles from './OutlineStyles'
 import {
   Text,
+  Button,
   MainList,
+  AddButton,
+  IconButton,
   ShellButton,
   HeaderFilter,
   ScrollerView,
@@ -22,6 +26,10 @@ import {
 import OutlineChapter from './OutlineChapter'
 import BeatItemTitle from '../../shared/BeatItemTitle'
 import { Metrics } from '../../../utils'
+import Popover, {
+  PopoverMode,
+  PopoverPlacement
+} from 'react-native-popover-view'
 
 const { IS_TABLET, ifTablet } = Metrics
 
@@ -31,7 +39,7 @@ class Outline extends Component {
     currentLine: null,
     selectedLine: null,
     viewables: [{ index: 0, isViewable: true }],
-    autoType: 'scroll' // list
+    autoType: 'list' // list
   }
   outlineListRef = null
 
@@ -86,9 +94,13 @@ class Outline extends Component {
           selectedLineId: lastViewing.item.id
         })
       } else {
-        this.outlineDotsRef.scrollToIndex({
-          index: lastViewing.index
-        })
+        setTimeout(
+          () =>
+            this.outlineDotsRef.scrollToIndex({
+              index: lastViewing.index
+            }),
+          100
+        )
       }
       this.setState({ viewables: viewableItems })
     }
@@ -98,6 +110,18 @@ class Outline extends Component {
     this.setState({
       autoType: 'scroll'
     })
+  }
+
+  handleNew = (type) => {
+    const { bookId, lineActions, beatActions } = this.props
+    switch (type) {
+      case 'plotline':
+        lineActions.addLineWithTitle(t('New Plotline'), this.props.bookId)
+        break
+      case 'chapter':
+        beatActions.addBeat(bookId)
+        break
+    }
   }
 
   renderOutlineChapter(chapter, cardMap, i) {
@@ -181,47 +205,69 @@ class Outline extends Component {
             </HeaderButtonOptions>
           </View>
         </Toolbar>
-        {!IS_TABLET && (
-          <View style={styles.beatDots}>
-            <FlatList
-              horizontal
-              data={outlines}
-              showsHorizontalScrollIndicator={false}
-              renderItem={this.renderBeatDot}
-              keyExtractor={this.extractOutlineKey}
-              contentContainerStyle={styles.dotslist}
-              ref={this.handleDotsRef}
-            />
-          </View>
-        )}
-        <Grid>
-          {IS_TABLET && (
-            <Col size={5}>
-              <MainList
-                numbered
-                list={outlines}
-                title={t('Outline')}
-                type={t('Outline')}
-                activeKey='id'
-                activeValue={selectedLineId || chapters[0]?.id}
-                onPressItem={this.handleSelectOutline}
+        <View style={styles.wrapper}>
+          {!IS_TABLET && (
+            <View style={styles.titleContainer}>
+              <Text style={styles.titleText}>{t('Outline')}</Text>
+              <ShellButton
+                data={'chapter'}
+                style={styles.addButton}
+                onPress={this.handleNew}>
+                <AddButton size={26} style={styles.addIconButton} />
+                <Text style={styles.addButtonText}>{t('Chapter')}</Text>
+              </ShellButton>
+              <ShellButton
+                data={'plotline'}
+                style={styles.addButton}
+                onPress={this.handleNew}>
+                <AddButton size={26} style={styles.addIconButton} />
+                <Text style={styles.addButtonText}>{t('Plotline')}</Text>
+              </ShellButton>
+            </View>
+          )}
+          {!IS_TABLET && (
+            <View style={styles.beatDots}>
+              <FlatList
+                horizontal
+                data={outlines}
+                showsHorizontalScrollIndicator={false}
+                renderItem={this.renderBeatDot}
+                keyExtractor={this.extractOutlineKey}
+                contentContainerStyle={styles.dotslist}
+                onScrollToIndexFailed={this.handleScrollFail}
+                ref={this.handleDotsRef}
+              />
+            </View>
+          )}
+          <Grid>
+            {IS_TABLET && (
+              <Col size={5}>
+                <MainList
+                  numbered
+                  list={outlines}
+                  title={t('Outline')}
+                  type={t('Outline')}
+                  activeKey='id'
+                  activeValue={selectedLineId || chapters[0]?.id}
+                  onPressItem={this.handleSelectOutline}
+                />
+              </Col>
+            )}
+            <Col size={10}>
+              <FlatList
+                data={outlines}
+                renderItem={this.returnChapterRenderer(cardMap)}
+                keyExtractor={this.extractOutlineKey}
+                contentContainerStyle={styles.outline}
+                ref={this.handleListRef}
+                initialNumToRender={3}
+                onScrollToIndexFailed={this.handleScrollFail}
+                onViewableItemsChanged={this.handleViewableItemsChanged}
+                onScrollBeginDrag={this.handleScrollDrag}
               />
             </Col>
-          )}
-          <Col size={10}>
-            <FlatList
-              data={outlines}
-              renderItem={this.returnChapterRenderer(cardMap)}
-              keyExtractor={this.extractOutlineKey}
-              contentContainerStyle={styles.outline}
-              ref={this.handleListRef}
-              initialNumToRender={3}
-              onScrollToIndexFailed={this.handleScrollFail}
-              onViewableItemsChanged={this.handleViewableItemsChanged}
-              onScrollBeginDrag={this.handleScrollDrag}
-            />
-          </Col>
-        </Grid>
+          </Grid>
+        </View>
       </View>
     )
   }
@@ -241,13 +287,24 @@ Outline.propTypes = {
 }
 
 function mapStateToProps(state) {
+  const bookId = selectors.currentTimelineSelector(state)
   return {
     chapters: selectors.sortedBeatsByBookSelector(state),
     lines: selectors.sortedLinesByBookSelector(state),
     card2Dmap: selectors.cardMapSelector(state),
     positionOffset: selectors.positionOffsetSelector(state),
-    filters: state.ui.outlineFilter
+    filters: state.ui.outlineFilter,
+    bookId
   }
 }
 
-export default connect(mapStateToProps, null)(Outline)
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions.ui, dispatch),
+    lineActions: bindActionCreators(actions.line, dispatch),
+    cardActions: bindActionCreators(actions.card, dispatch),
+    beatActions: bindActionCreators(actions.beat, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Outline)

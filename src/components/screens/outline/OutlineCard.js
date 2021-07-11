@@ -10,6 +10,8 @@ import {
   Text,
   Button,
   Input,
+  Icon,
+  ScrollerView,
   AddButton,
   IconButton,
   RichEditor,
@@ -17,6 +19,9 @@ import {
 } from '../../shared/common'
 import Fonts from '../../../fonts'
 import { Metrics } from '../../../utils'
+import { showAlert } from '../../shared/common/AlertDialog'
+import Popover from 'react-native-popover-view'
+import tinycolor from 'tinycolor2'
 
 const { ifTablet, IS_TABLET } = Metrics
 const { size } = Fonts
@@ -27,7 +32,12 @@ class OutlineCard extends Component {
     const {
       card: { title, description }
     } = this.props
-    this.state = { editMode: false, title, description }
+    this.state = {
+      editMode: false,
+      title,
+      description,
+      showLineSelector: false
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -50,6 +60,25 @@ class OutlineCard extends Component {
     } = this.props
     if (IS_TABLET) this.setState({ editMode: true, title, description })
     else navigation.navigate('SceneDetails', { scene })
+  }
+
+  handleDeleteCard = () => {
+    const {
+      actions,
+      card: { title, id }
+    } = this.props
+    showAlert({
+      title: t('Delete Scene', { name }),
+      message: t('Delete Scene "{name}"?', { name: title || t('Untitled') }),
+      actions: [
+        {
+          name: t('Yes, Delete'),
+          positive: true,
+          callback: () => actions.deleteCard(id)
+        },
+        { name: t('Cancel') }
+      ]
+    })
   }
 
   handleSaveOutline = () => {
@@ -84,9 +113,38 @@ class OutlineCard extends Component {
     onReorder && onReorder(card, index, move)
   }
 
+  handleChangeLine = (val) => {
+    const { card = {} } = this.props
+    this.setState({ showLineSelector: false })
+    this.props.actions.changeLine(card.id, val)
+  }
+
+  handleToggleLineSelector = () => {
+    const { showLineSelector } = this.state
+    this.setState({ showLineSelector: !showLineSelector })
+  }
+
+  renderLineMenuItem = (line, i) => {
+    const { card = {} } = this.props
+    const isSelected = card.lineId == line.id
+    const color = tinycolor(line.color).toHexString() // isSelected ? 'orange' : 'textGray'
+    const fontStyle = isSelected ? 'bold' : 'regular'
+    return (
+      <ShellButton
+        data={line.id}
+        key={i}
+        style={styles.menuItem}
+        onPress={this.handleChangeLine}>
+        <Text center fontStyle={fontStyle} color={color}>
+          {line.title}
+        </Text>
+      </ShellButton>
+    )
+  }
+
   render() {
     const { lines, card } = this.props
-    const { title, description, editMode } = this.state
+    const { title, description, editMode, showLineSelector } = this.state
     const line = lines.find((line) => line.id == card.lineId)
     const { title: lineTitle, color: lineColor } = line
     const color = (lineColor || 'black').toLowerCase()
@@ -121,11 +179,28 @@ class OutlineCard extends Component {
             </View>
           */}
           <View style={styles.cardHead}>
-            <View style={[styles.cardHeader, borderStyle]}>
-              <Text color={color} style={styles.cardHeaderText}>
-                {lineTitle}
-              </Text>
-            </View>
+            <Popover
+              isVisible={showLineSelector}
+              popoverStyle={styles.menuPopover}
+              onRequestClose={this.handleToggleLineSelector}
+              from={
+                <ShellButton
+                  style={[styles.cardHeader, borderStyle]}
+                  onPress={this.handleToggleLineSelector}>
+                  <Text color={color} style={styles.cardHeaderText}>
+                    {lineTitle || t('Unnamed Plotline')}
+                  </Text>
+                  <IconButton
+                    style={styles.lineCaret}
+                    type='FontAwesome5'
+                    name='chevron-down'
+                  />
+                </ShellButton>
+              }>
+              <ScrollerView style={styles.menuScroller}>
+                {lines.map(this.renderLineMenuItem)}
+              </ScrollerView>
+            </Popover>
             <View style={styles.cardTitle}>
               {editMode ? (
                 <Input
@@ -151,6 +226,11 @@ class OutlineCard extends Component {
               onChange={this.handleDescription}
             />
             <View style={styles.cardFoot}>
+              <AddButton
+                color='lightGray'
+                icon='trash'
+                onPress={this.handleDeleteCard}
+              />
               {editMode ? (
                 <View style={[styles.actions, styles.editActions]}>
                   <Button

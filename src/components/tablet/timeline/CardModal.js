@@ -25,10 +25,11 @@ import {
 import styles from './CardModalStyles'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Collapsible from 'react-native-collapsible'
-import Metrics from '../../../utils/Metrics'
 import Fonts from '../../../fonts'
+import { Colors, Metrics } from '../../../utils'
 import * as Animatable from 'react-native-animatable'
 import BeatItemTitle from '../../shared/BeatItemTitle'
+import tinycolor from 'tinycolor2'
 
 const AnimeTouchableNoFeedback = Animatable.createAnimatableComponent(
   TouchableWithoutFeedback
@@ -59,7 +60,7 @@ class CardModal extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.handleSaveChanges()
   }
 
@@ -154,7 +155,7 @@ class CardModal extends Component {
     const { card = {} } = this.state
     const isSelected = card.beatId == beat.id
     const color = isSelected ? 'orange' : 'textGray'
-    const fontStyle = isSelected ? 'bold' : 'semiBold'
+    const fontStyle = isSelected ? 'bold' : 'regular'
     return (
       <ShellButton
         data={beat.id}
@@ -171,8 +172,8 @@ class CardModal extends Component {
   renderLineMenuItem = (line, i) => {
     const { card = {} } = this.state
     const isSelected = card.lineId == line.id
-    const color = isSelected ? 'orange' : 'textGray'
-    const fontStyle = isSelected ? 'bold' : 'semiBold'
+    const color = tinycolor(line.color).toHexString() // isSelected ? 'orange' : 'textGray'
+    const fontStyle = isSelected ? 'bold' : 'regular'
     return (
       <ShellButton
         data={line.id}
@@ -190,9 +191,10 @@ class CardModal extends Component {
     const { lines = [] } = this.props
     const { card } = this.state
     const { lineId } = card
-    const line = lines.filter((line) => line.id == lineId)[0]
-    const lineTitle = (line && line.title) || 'Unnamed Plotline'
-    return lineTitle
+    const { title, color } = lines.filter((line) => line.id == lineId)[0] || {}
+    const lineTitle = title || t('Unnamed Plotline')
+    const lineColor = tinycolor(color).toHexString()
+    return { lineTitle, lineColor }
   }
 
   render() {
@@ -218,11 +220,13 @@ class CardModal extends Component {
     const { id: cardId, title, description, beatId, characters, places, tags } =
       card || {}
     const beat = this.getBeatById(beatId)
+    const { lineTitle, lineColor } = this.renderLineTitle()
+
     const editCardFragment = (
       <React.Fragment>
         <ScrollView>
           <TouchableWithoutFeedback onPress={this.handleDismissKeyboard}>
-            <View>
+            <View style={styles.wrapper}>
               <View style={styles.breadCrumbs}>
                 <Popover
                   popoverStyle={styles.menuPopover}
@@ -246,14 +250,16 @@ class CardModal extends Component {
                 <View style={styles.divider} />
                 <Popover
                   popoverStyle={styles.menuPopover}
-                  // placement={PopoverPlacement.RIGHT}
+                  placement={PopoverPlacement.BOTTOM}
                   from={
                     <ShellButton style={styles.crumb}>
-                      <Text numberOfLines={1} style={styles.chapterText}>
-                        {this.renderLineTitle()}
+                      <Text
+                        numberOfLines={1}
+                        style={[styles.chapterText, { color: lineColor }]}>
+                        {lineTitle}
                       </Text>
                       <Icon
-                        style={styles.crumbIcon}
+                        style={[styles.crumbIcon, { color: Colors.orange }]}
                         type='FontAwesome5'
                         name='chevron-down'
                       />
@@ -288,9 +294,7 @@ class CardModal extends Component {
                   <View style={styles.labels}>
                     <Text style={styles.label}>{t('Characters')}</Text>
                     <View style={styles.count}>
-                      <Text style={styles.countText}>
-                        {characters.length}
-                      </Text>
+                      <Text style={styles.countText}>{characters.length}</Text>
                     </View>
                     <ShellButton
                       style={styles.collapseButton}
@@ -323,9 +327,7 @@ class CardModal extends Component {
                   <View style={styles.labels}>
                     <Text style={styles.label}>{t('Places')}</Text>
                     <View style={styles.count}>
-                      <Text style={styles.countText}>
-                        {places.length}
-                      </Text>
+                      <Text style={styles.countText}>{places.length}</Text>
                     </View>
                     <ShellButton
                       style={styles.collapseButton}
@@ -392,16 +394,15 @@ class CardModal extends Component {
           </TouchableWithoutFeedback>
         </ScrollView>
         <Collapsible style={styles.actions} collapsed={!changes}>
-          <Button
-            tight
-            style={styles.action}
-            onPress={this.handleSaveChanges}>
+          <Button tight style={styles.action} onPress={this.handleSaveChanges}>
             {t('Save')}
           </Button>
         </Collapsible>
       </React.Fragment>
     )
-    return isEmbedded ? editCardFragment : (
+    return isEmbedded ? (
+      editCardFragment
+    ) : (
       <Modal
         visible={true}
         // animationType='slide'

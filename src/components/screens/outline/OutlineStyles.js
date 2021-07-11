@@ -12,6 +12,7 @@ const {
   doubleSection
 } = Metrics
 const {
+  white,
   orange,
   warmWhite,
   warmWhiter,
@@ -19,6 +20,7 @@ const {
   warmGray,
   warmWhiteBG,
   warmTextGray,
+  textGrayTone,
   warmTextDarkGray
 } = Colors
 const { size, style } = Fonts
@@ -29,17 +31,22 @@ export default ScaledSheet.create({
     flex: 1,
     backgroundColor: warmWhite
   },
-  chapterList: {
-    height: '100%',
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2
+  wrapper: {
+    flex: 1,
+    backgroundColor: warmBG
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: doubleBaseMargin,
+    paddingVertical: baseMargin,
+    color: textGrayTone
+  },
+  titleText: {
+    fontSize: ifTablet(size.h5, size.h2),
+    ...style.bold,
+    marginRight: baseMargin,
+    color: textGrayTone
   },
   chapter: {
     paddingLeft: ifTablet(0, baseMargin * 1.5),
@@ -77,6 +84,7 @@ export default ScaledSheet.create({
     alignItems: 'center'
   },
   cardHeader: {
+    flexDirection: 'row',
     borderWidth: 1,
     borderColor: 'black',
     borderTopWidth: 0,
@@ -90,6 +98,10 @@ export default ScaledSheet.create({
   cardHeaderText: {
     ...style.bold,
     fontSize: ifTablet(size.tiny)
+  },
+  lineCaret: {
+    marginLeft: baseMargin / 2,
+    marginTop: baseMargin / 2.75
   },
   cardTitle: {
     marginBottom: baseMargin / 2
@@ -129,6 +141,8 @@ export default ScaledSheet.create({
     minHeight: 50
   },
   cardFoot: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'flex-end',
     paddingBottom: baseMargin,
     marginTop: -baseMargin / 2,
@@ -182,11 +196,14 @@ export default ScaledSheet.create({
     padding: baseMargin * 1.5
   },
   beatDots: {
+    marginTop: -baseMargin / 4,
     paddingVertical: baseMargin / 4,
     paddingHorizontal: baseMargin / 2,
     backgroundColor: warmWhiteBG,
     borderRadius: 20,
-    margin: baseMargin / 2,
+    marginLeft: baseMargin * 1.5,
+    marginRight: baseMargin * 1.5,
+    // margin: baseMargin / 2,
     marginBottom: baseMargin / 1.5
   },
   dotslist: {
@@ -211,10 +228,32 @@ export default ScaledSheet.create({
   },
   dotText: {
     ...style.semiBold,
-    color: orange,
+    color: warmTextGray,
     fontSize: size.tiny
   },
   activeDotText: {
     color: warmWhite
+  },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: warmWhiteBG,
+    // padding: baseMargin / 3,
+    marginRight: baseMargin,
+    paddingRight: baseMargin,
+    borderRadius: 30
+  },
+  addIconButton: {
+    borderWidth: 2,
+    borderColor: white
+  },
+  addButtonText: {
+    ...style.semiBold,
+    fontSize: size.h5,
+    marginLeft: baseMargin / 2,
+    color: orange
+  },
+  addCardButton: {
+    marginLeft: baseMargin / 1.5
   }
 })

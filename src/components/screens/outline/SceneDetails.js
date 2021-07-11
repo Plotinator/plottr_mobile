@@ -28,8 +28,9 @@ export default class SceneDetails extends Component {
   saveScene = () => {}
 
   render() {
-    const { navigation, route, openDrawer } = this.props
-    const scene = route && route.params.scene
+    const { navigation, route = { params: {} }, openDrawer } = this.props
+    const { scene, isNew, beatId, lineId } = route.params || {}
+
     if (!scene) return null
 
     return (
@@ -51,6 +52,9 @@ export default class SceneDetails extends Component {
                 isEmbedded
                 key={scene.id}
                 card={scene}
+                isNewCard={isNew}
+                beatId={beatId}
+                lineId={lineId}
                 // onSave={this.saveScene}
                 navigation={navigation}
               />
