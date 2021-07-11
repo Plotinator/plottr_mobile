@@ -12,7 +12,9 @@ import styles from './OutlineStyles'
 import {
   Text,
   MainList,
+  ShellButton,
   HeaderFilter,
+  ScrollerView,
   HeaderAttributes,
   AttributesButton,
   HeaderButtonOptions
@@ -24,7 +26,13 @@ import { Metrics } from '../../../utils'
 const { IS_TABLET, ifTablet } = Metrics
 
 class Outline extends Component {
-  state = { linesById: {}, currentLine: null, selectedLine: null }
+  state = {
+    linesById: {},
+    currentLine: null,
+    selectedLine: null,
+    viewables: [{ index: 0, isViewable: true }],
+    autoType: 'scroll' // list
+  }
   outlineListRef = null
 
   static getDerivedStateFromProps(props, state) {
@@ -36,11 +44,14 @@ class Outline extends Component {
 
   extractOutlineKey = (item) => item.id.toString()
 
-  handleSelectOutline = ({ listIndex, id }) => {
+  handleSelectOutline = ({ listIndex, index, id }) => {
     this.setState({
+      autoType: 'list',
       selectedLineId: id
     })
-    this.outlineListRef.scrollToIndex({ index: listIndex })
+    this.outlineListRef.scrollToIndex({
+      index: listIndex || index
+    })
   }
 
   handleScrollFail = () => {
@@ -49,6 +60,44 @@ class Outline extends Component {
 
   handleListRef = (ref) => {
     this.outlineListRef = ref
+  }
+
+  handleDotsRef = (ref) => {
+    this.outlineDotsRef = ref
+  }
+
+  handleViewableItemsChanged = ({ viewableItems, changed }) => {
+    const { selectedLineId, autoType } = this.state
+    const last = viewableItems.length - 1
+    const lastViewing = viewableItems[last]
+    const isFound = viewableItems.find(
+      (o) => o.isViewable && o.item.id == selectedLineId
+    )
+    if (
+      autoType == 'scroll' &&
+      lastViewing &&
+      lastViewing.isViewable &&
+      lastViewing.item.id !== selectedLineId &&
+      !isFound
+    ) {
+      if (IS_TABLET) {
+        this.setState({
+          selectedLineId: lastViewing.item.id
+        })
+      } else {
+        this.outlineDotsRef.scrollToIndex({
+          index: lastViewing.index
+        })
+      }
+    }
+
+    this.setState({ viewables: viewableItems })
+  }
+
+  handleScrollDrag = () => {
+    this.setState({
+      autoType: 'scroll'
+    })
   }
 
   renderOutlineChapter(chapter, cardMap, i) {
@@ -64,6 +113,28 @@ class Outline extends Component {
 
   returnChapterRenderer = (cardMap) => ({ item }, i) =>
     this.renderOutlineChapter(item, cardMap, i)
+
+  renderBeatDot = ({ item: outline }) => {
+    const { viewables } = this.state
+    const isActive = viewables.find(
+      (o) => o.index == outline.index && o.isViewable == true
+    )
+
+    return (
+      <ShellButton
+        data={outline}
+        key={outline.id}
+        hitSize={10}
+        style={[styles.beatDot, isActive && styles.activeDot]}
+        onPress={this.handleSelectOutline}>
+        <Text style={[styles.dotText, isActive && styles.activeDotText]}>
+          {outline.index + 1}
+          {'. '}
+          {outline.title}
+        </Text>
+      </ShellButton>
+    )
+  }
 
   render() {
     const {
@@ -81,11 +152,13 @@ class Outline extends Component {
       card2Dmap,
       this.state.currentLine
     )
-    const outlines = chapters.map((chapter, i) => ({
-      ...chapter,
-      title: <BeatItemTitle beat={chapter} />,
-      colors: cardMap[chapter.id].map(({ lineId }) => linesById[lineId].color)
-    }))
+    const outlines =
+      chapters.map((chapter, i) => ({
+        ...chapter,
+        index: i,
+        title: <BeatItemTitle beat={chapter} />,
+        colors: cardMap[chapter.id].map(({ lineId }) => linesById[lineId].color)
+      })) || []
     const filterCount = Object.values(filters || {}).map(
       (filter) => filter.length
     )
@@ -104,6 +177,19 @@ class Outline extends Component {
             </HeaderButtonOptions>
           </View>
         </Toolbar>
+        {!IS_TABLET && (
+          <View style={styles.beatDots}>
+            <FlatList
+              horizontal
+              data={outlines}
+              showsHorizontalScrollIndicator={false}
+              renderItem={this.renderBeatDot}
+              keyExtractor={this.extractOutlineKey}
+              contentContainerStyle={styles.dotslist}
+              ref={this.handleDotsRef}
+            />
+          </View>
+        )}
         <Grid>
           {IS_TABLET && (
             <Col size={5}>
@@ -125,8 +211,10 @@ class Outline extends Component {
               keyExtractor={this.extractOutlineKey}
               contentContainerStyle={styles.outline}
               ref={this.handleListRef}
-              initialNumToRender={2}
+              initialNumToRender={3}
               onScrollToIndexFailed={this.handleScrollFail}
+              onViewableItemsChanged={this.handleViewableItemsChanged}
+              onScrollBeginDrag={this.handleScrollDrag}
             />
           </Col>
         </Grid>

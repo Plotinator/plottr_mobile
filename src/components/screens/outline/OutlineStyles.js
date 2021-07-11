@@ -14,6 +14,7 @@ const {
 const {
   orange,
   warmWhite,
+  warmWhiter,
   warmBG,
   warmGray,
   warmWhiteBG,
@@ -187,5 +188,41 @@ export default ScaledSheet.create({
     flex: 1,
     backgroundColor: warmWhiteBG,
     padding: baseMargin * 1.5
+  },
+  beatDots: {
+    paddingVertical: baseMargin / 4,
+    paddingHorizontal: baseMargin / 2,
+    backgroundColor: warmWhiteBG,
+    borderRadius: 20,
+    margin: baseMargin / 2,
+    marginBottom: baseMargin / 1.5
+  },
+  dotslist: {
+    flexDirection: 'row',
+    // flexWrap: 'wrap',
+    justifyContent: 'center'
+  },
+  beatDot: {
+    // width: 15,
+    width: 'auto',
+    paddingHorizontal: baseMargin / 2,
+    height: 15,
+    borderRadius: 20,
+    margin: baseMargin / 2,
+    backgroundColor: warmWhite,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  activeDot: {
+    width: 'auto',
+    backgroundColor: orange
+  },
+  dotText: {
+    ...style.semiBold,
+    color: orange,
+    fontSize: size.tiny
+  },
+  activeDotText: {
+    color: warmWhite
   }
 })
