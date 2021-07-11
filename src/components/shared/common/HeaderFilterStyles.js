@@ -16,6 +16,8 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     // flexWrap: 'wrap',
     width: 'auto',
+    minHeight: 120,
+    minWidth: 150,
     maxHeight: '80%',
     padding: baseMargin,
     marginBottom: -baseMargin
