@@ -37,21 +37,6 @@ export default ScaledSheet.create({
     textAlign: 'center',
     marginBottom: 8
   },
-  placeItem: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingLeft: 8,
-    borderColor: 'hsl(210, 36%, 96%)', //gray-9
-    borderWidth: 1
-  },
-  activeItem: {
-    borderColor: 'hsl(208, 88%, 62%)', //blue-6
-    backgroundColor: 'hsl(210, 31%, 80%)', //gray-7
-    borderStyle: 'dashed'
-  },
   buttonWrapper: {
     flexDirection: 'row',
     marginLeft: 'auto'
