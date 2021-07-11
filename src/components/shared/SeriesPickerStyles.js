@@ -16,7 +16,7 @@ export default ScaledSheet.create({
     paddingRight: doubleBaseMargin / 1.5,
     borderRadius: cornerRadius / 2,
     borderColor: Colors.borderGray,
-    backgroundColor: 'white',
+    backgroundColor: Colors.warmWhiteBG,
     alignSelf: 'center',
     shadowColor: '#000000',
     shadowOffset: {
@@ -32,7 +32,7 @@ export default ScaledSheet.create({
     height: 60
   },
   seriesListItem: {
-    backgroundColor: Colors.warmWhite
+    backgroundColor: Colors.warmWhiteBG
   },
   title: {
     ...fontStyles.bold,

@@ -25,7 +25,7 @@ class SeriesPicker extends Component {
     this.setState({ open: false })
   }
 
-  handleSwitchToSeries() {
+  handleSwitchToSeries = () => {
     this.handleChange('series')
   }
 

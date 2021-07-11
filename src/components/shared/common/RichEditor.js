@@ -12,6 +12,7 @@ import { trim } from 'lodash'
 const { IS_ANDROID } = Metrics
 
 export default class RichTextEditor extends Component {
+  preLength = 0
   getEditor = () => this.richText
 
   setEditor = (ref) => (this.richText = ref)
@@ -83,17 +84,22 @@ export default class RichTextEditor extends Component {
     const placeholderText = placeholder || ''
     const html = initialHTMLText || initialValue
     const initialText = typeof html == 'object' ? SlateToHTML(html) : html
-    const isEmpty =
-      trim(String(initialText || '').replace(/(<([^>]+)>)/gi, '')) === ''
+    const strippedText = trim(
+      String(initialText || '').replace(/(<([^>]+)>)/gi, '')
+    )
+    const isEmpty = strippedText === ''
     const contentCSSText = `font-family: "Open Sans" !important; font-size: ${fontSize}px; color: ${color} !important; line-height: ${lineHeight}em; padding: 0 0 30px 0;`
     const cssText = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); p { margin-top: 0 !important; } body {  background-color: ${
       Colors[bgColor] || bgColor
     } !important; }`
+    // if (disabled && this.preLength != strippedText.length) {
+    //   this.preLength = strippedText.length
+    // }
     return isEmpty && hideOnEmpty ? null : (
       <TouchableWithoutFeedback
         onPress={this.handleFocusEditor}
         onPressOut={this.handleBlurEditor}>
-        <View style={containerStyles}>
+        <View style={containerStyles} key={this.preLength}>
           <RichEditor
             pasteAsPlainText
             ref={this.setEditor}

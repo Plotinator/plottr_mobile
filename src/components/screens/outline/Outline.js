@@ -6,7 +6,7 @@ import { keyBy } from 'lodash'
 import { t } from 'plottr_locales'
 import { selectors, actions, helpers } from 'pltr/v2'
 import { Col, Grid } from 'react-native-easy-grid'
-import Toolbar from '../Toolbar'
+import Toolbar from '../../shared/Toolbar'
 import SeriesPicker from '../../shared/SeriesPicker'
 import styles from './OutlineStyles'
 import {
@@ -18,7 +18,7 @@ import {
   HeaderButtonOptions
 } from '../../shared/common'
 import OutlineChapter from './OutlineChapter'
-import BeatItemTitle from '../BeatItemTitle'
+import BeatItemTitle from '../../shared/BeatItemTitle'
 import { Metrics } from '../../../utils'
 
 const { IS_TABLET, ifTablet } = Metrics
@@ -52,7 +52,14 @@ class Outline extends Component {
   }
 
   renderOutlineChapter(chapter, cardMap, i) {
-    return <OutlineChapter key={i} chapter={chapter} cardMap={cardMap} />
+    return (
+      <OutlineChapter
+        key={i}
+        chapter={chapter}
+        cardMap={cardMap}
+        navigation={this.props.navigation}
+      />
+    )
   }
 
   returnChapterRenderer = (cardMap) => ({ item }, i) =>

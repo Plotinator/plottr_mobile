@@ -1,8 +1,11 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
-import ErrorBoundary from '../ErrorBoundary'
+import ErrorBoundary from '../../shared/ErrorBoundary'
 import Outline from './Outline'
 import styles from './OutlineStyles'
+import SceneDetails from './SceneDetails'
+
+export { SceneDetails }
 
 export default (props) => {
   const { navigation } = props

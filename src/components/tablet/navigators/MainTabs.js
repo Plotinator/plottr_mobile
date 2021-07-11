@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Project from '../../screens/project'
-import OutlineHome from '../outline/OutlineHome'
+import OutlineHome from '../../screens/outline'
 import TimelineHome from '../timeline/TimelineHome'
 import NotesHome from '../../screens/notes'
 import CharactersHome from '../../screens/characters'

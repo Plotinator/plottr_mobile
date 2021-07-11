@@ -18,7 +18,7 @@ import {
 import Fonts from '../../../fonts'
 import { Metrics } from '../../../utils'
 
-const { ifTablet } = Metrics
+const { ifTablet, IS_TABLET } = Metrics
 const { size } = Fonts
 
 class OutlineCard extends Component {
@@ -30,23 +30,45 @@ class OutlineCard extends Component {
     this.state = { editMode: false, title, description }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!prevState.editMode && nextProps.card) {
+      prevState.title = nextProps.card.title
+      prevState.description = nextProps.card.description
+    }
+    return prevState
+  }
+
   handleTitle = (title) => this.setState({ title })
 
   handleDescription = (description) => this.setState({ description })
 
   handleEditCard = () => {
     const {
+      navigation,
+      card: scene,
       card: { title, description }
     } = this.props
-    this.setState({ editMode: true, title, description })
+    if (IS_TABLET) this.setState({ editMode: true, title, description })
+    else navigation.navigate('SceneDetails', { scene })
   }
 
   handleSaveOutline = () => {
     const {
-      card: { id }
+      index,
+      cardMap,
+      card: { id, beatId }
     } = this.props
+    const length = cardMap[beatId].length
     const { title, description } = this.state
+
+    for (let i = 0; i < length; i++) {
+      if (cardMap[beatId][i].id === id) {
+        cardMap[beatId][i] = { ...card, title, description }
+      }
+    }
+
     this.props.actions.editCard(id, title, description, [], {})
+
     this.setState({ editMode: false })
   }
 

@@ -5,6 +5,7 @@ import Fonts from '../../../fonts'
 import FormStyles from '../../shared/form/Styles'
 
 const {
+  ifTablet,
   baseMargin,
   doubleBaseMargin,
   section,
@@ -41,23 +42,22 @@ export default ScaledSheet.create({
     borderRadius: cornerRadius
   },
   crumb: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: baseMargin,
+    paddingLeft: baseMargin * ifTablet(1, 1.5),
     paddingVertical: baseMargin,
     paddingRight: doubleBaseMargin,
     maxWidth: '50%'
   },
   chapterText: {
     ...style.bold,
-    fontSize: size.small,
+    fontSize: ifTablet(size.small),
     color: textLightGray
   },
   crumbIcon: {
     fontSize: size.tiny,
     color: textLightGray,
-    marginTop: 4,
+    marginTop: ifTablet(4, 0),
     marginLeft: baseMargin / 2
   },
   divider: {

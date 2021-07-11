@@ -82,6 +82,8 @@ class OutlineChapter extends Component {
       key={key}
       index={key}
       card={card}
+      cardMap={this.props.cardMap}
+      navigation={this.props.navigation}
       onReorder={this.handleReorderCard}
     />
   )

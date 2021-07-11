@@ -26,7 +26,7 @@ export default ScaledSheet.create({
   ...FormStyles,
   container: {
     flex: 1,
-    backgroundColor: warmBG
+    backgroundColor: warmWhite
   },
   chapterList: {
     height: '100%',
@@ -41,9 +41,8 @@ export default ScaledSheet.create({
     elevation: 2
   },
   chapter: {
-    // padding: baseMargin,
-    paddingLeft: 0,
-    paddingRight: baseMargin
+    paddingLeft: ifTablet(0, baseMargin * 1.5),
+    paddingRight: baseMargin * 1.5
   },
   chapterTitle: {
     paddingTop: baseMargin * 1.5,
@@ -56,7 +55,7 @@ export default ScaledSheet.create({
   chapterText: {
     ...style.bold,
     color: warmTextGray,
-    fontSize: ifTablet(size.h6)
+    fontSize: ifTablet(size.h6, size.h4)
   },
   cardWrapper: {
     marginLeft: -16
@@ -70,7 +69,7 @@ export default ScaledSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     backgroundColor: warmWhiteBG,
-    marginBottom: baseMargin,
+    marginBottom: ifTablet(baseMargin, baseMargin * 1.5),
     paddingHorizontal: baseMargin * 1.5
   },
   cardHead: {
@@ -180,5 +179,13 @@ export default ScaledSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end'
+  },
+  leanRight: {
+    marginRight: -baseMargin
+  },
+  scene: {
+    flex: 1,
+    backgroundColor: warmWhiteBG,
+    padding: baseMargin * 1.5
   }
 })
