@@ -93,9 +93,9 @@ class HeaderAttributes extends Component {
   render() {
     const { style, attributes = [], actions, type, isCategory } = this.props
     const { addingNew } = this.state
-    const capitalType = `${type.substring(0, 1).toUpperCase()}${type.substring(
-      1
-    )}`
+    const capitalType = `${type.charAt(0).toUpperCase()}${type
+      .replace(/([A-Z]{1})/g, ' $1')
+      .substring(1)}`
     return (
       <View style={styles.container}>
         <View style={styles.container}>
@@ -103,7 +103,9 @@ class HeaderAttributes extends Component {
             {t('Custom Attributes for { type }', { type: capitalType })}
           </Text>
           <Text style={styles.subtitle}>
-            {t('Choose what you want to track about your { type }', { type })}
+            {t('Choose what you want to track about your { type }', {
+              type: capitalType
+            })}
           </Text>
           <ScrollerView
             scrollerProps={{
