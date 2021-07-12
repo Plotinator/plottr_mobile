@@ -35,7 +35,7 @@ export default ScaledSheet.create({
     borderRadius: buttonRadius / ifTablet(1.5, 1),
     // minHeight: 120,
     minWidth: 200,
-    maxWidth: ifTablet('50%', '80%'),
+    maxWidth: ifTablet('50%', '85%'),
     alignItems: 'center',
     height: 'auto',
     width: 'auto'

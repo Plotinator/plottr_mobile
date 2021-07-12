@@ -17,6 +17,9 @@ import {
 import Fonts from '../../../fonts'
 import OutlineCard from './OutlineCard'
 import BeatItemTitle from '../../shared/BeatItemTitle'
+import { Metrics } from '../../../utils'
+
+const { ifTablet } = Metrics
 
 class OutlineChapter extends Component {
   handleAutoSortChapter = () => {
@@ -125,16 +128,31 @@ class OutlineChapter extends Component {
         <ErrorBoundary>
           <View style={styles.chapter}>
             <View style={styles.chapterTitle}>
-              <Text style={styles.chapterText}>{chapterTitle}</Text>
-              <AddButton
-                size={20}
-                style={styles.addCardButton}
-                onPress={this.handleNewCard}
-              />
+              <Text center style={styles.chapterText}>
+                {chapterTitle}
+              </Text>
+              {/*
+                <AddButton
+                  icon={'pen'}
+                  size={20}
+                  style={styles.addCardButton}
+                  onPress={this.handleEditBeat}
+                />
+              */}
               {this.renderManuallySorted(isManuallSorted)}
             </View>
             <View style={styles.cards}>
               {this.renderSortedCards(sortedCards)}
+            </View>
+            <View style={styles.cardActions}>
+              <ShellButton
+                style={styles.addSceneButton}
+                onPress={this.handleNewCard}>
+                <IconButton size={ifTablet(10, 12)} name='plus' />
+                <Text style={styles.addSceneText}>
+                  {t(`Add ${sortedCards.length ? 'Another ' : ''}Scene`)}
+                </Text>
+              </ShellButton>
             </View>
           </View>
         </ErrorBoundary>

@@ -30,6 +30,7 @@ import Popover, {
   PopoverMode,
   PopoverPlacement
 } from 'react-native-popover-view'
+import { showAlert, showInputAlert } from '../../shared/common/AlertDialog'
 
 const { IS_TABLET, ifTablet } = Metrics
 
@@ -116,7 +117,26 @@ class Outline extends Component {
     const { bookId, lineActions, beatActions } = this.props
     switch (type) {
       case 'plotline':
-        lineActions.addLineWithTitle(t('New Plotline'), this.props.bookId)
+        showInputAlert({
+          title: t('New Plotline'),
+          message: t("Enter Plotline's name"),
+          inputText: '',
+          actions: [
+            {
+              name: t('Save Plotline'),
+              callback: ({ input }) =>
+                lineActions.addLineWithTitle(
+                  input || t('New Plotline'),
+                  bookId
+                ),
+              positive: true
+            },
+            {
+              name: t('Cancel')
+            }
+          ]
+        })
+
         break
       case 'chapter':
         beatActions.addBeat(bookId)

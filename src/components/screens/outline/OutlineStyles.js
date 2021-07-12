@@ -108,7 +108,7 @@ export default ScaledSheet.create({
   },
   cardTitleText: {
     ...style.bold,
-    textAlign: 'center',
+    // textAlign: 'center',
     fontSize: ifTablet(size.tiny),
     color: warmTextGray
   },
@@ -144,9 +144,9 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    paddingBottom: baseMargin,
-    marginTop: -baseMargin / 2,
-    marginRight: -baseMargin / 2
+    paddingBottom: baseMargin
+    // marginTop: -baseMargin / 2,
+    // marginRight: -baseMargin / 2
   },
   editActions: {
     paddingBottom: baseMargin
@@ -161,10 +161,10 @@ export default ScaledSheet.create({
     ...style.bold,
     color: warmTextGray,
     paddingHorizontal: 0,
-    fontSize: ifTablet(Fonts.size.tiny)
+    fontSize: ifTablet(size.tiny)
   },
   labelText: {
-    fontSize: ifTablet(Fonts.size.tiny)
+    fontSize: ifTablet(size.tiny)
   },
   reorderButtons: {
     position: 'absolute',
@@ -257,5 +257,24 @@ export default ScaledSheet.create({
   },
   addCardButton: {
     marginLeft: baseMargin / 1.5
+  },
+  cardActions: {
+    minHeight: 50,
+    alignItems: 'center'
+  },
+  addSceneButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: cornerRadius,
+    paddingVertical: ifTablet(baseMargin / 2, baseMargin),
+    paddingHorizontal: ifTablet(baseMargin, doubleBaseMargin),
+    backgroundColor: warmWhite,
+    borderColor: warmGray
+  },
+  addSceneText: {
+    ...style.semiBoldItalic,
+    color: orange,
+    fontSize: ifTablet(size.tiny, size.small),
+    marginLeft: baseMargin / 2
   }
 })

@@ -175,6 +175,9 @@ export default {
     padding: baseMargin,
     paddingVertical: baseMargin / 2
   },
+  menuItemText: {
+    fontSize: ifTablet(size.tiny, size.h5)
+  },
   additionals: {
     flex: 1,
     flexDirection: 'row',

@@ -135,7 +135,11 @@ class OutlineCard extends Component {
         key={i}
         style={styles.menuItem}
         onPress={this.handleChangeLine}>
-        <Text center fontStyle={fontStyle} color={color}>
+        <Text
+          center
+          fontStyle={fontStyle}
+          color={color}
+          fontSize={ifTablet(size.tiny, size.h5)}>
           {line.title}
         </Text>
       </ShellButton>
@@ -194,6 +198,7 @@ class OutlineCard extends Component {
                     style={styles.lineCaret}
                     type='FontAwesome5'
                     name='chevron-down'
+                    size={ifTablet(9, 12)}
                   />
                 </ShellButton>
               }>
@@ -226,11 +231,6 @@ class OutlineCard extends Component {
               onChange={this.handleDescription}
             />
             <View style={styles.cardFoot}>
-              <AddButton
-                color='lightGray'
-                icon='trash'
-                onPress={this.handleDeleteCard}
-              />
               {editMode ? (
                 <View style={[styles.actions, styles.editActions]}>
                   <Button
@@ -248,7 +248,14 @@ class OutlineCard extends Component {
                   </Button>
                 </View>
               ) : (
-                <AddButton icon='pen' onPress={this.handleEditCard} />
+                <React.Fragment>
+                  <AddButton
+                    color='lightGray'
+                    icon='trash'
+                    onPress={this.handleDeleteCard}
+                  />
+                  <AddButton icon='pen' onPress={this.handleEditCard} />
+                </React.Fragment>
               )}
             </View>
           </View>
