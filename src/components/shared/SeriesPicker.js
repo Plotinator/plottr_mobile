@@ -88,7 +88,9 @@ class SeriesPicker extends Component {
             iconRight
             style={styles.picker}
             onPress={this.handleToggleOpen}>
-            <Text style={styles.title}>{selectedTitle}</Text>
+            <Text style={styles.title} numberOfLines={1}>
+              {selectedTitle}
+            </Text>
             <Icon
               type='FontAwesome5'
               name='chevron-down'

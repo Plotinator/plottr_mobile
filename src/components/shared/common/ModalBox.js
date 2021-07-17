@@ -19,12 +19,12 @@ export default class ModalBox extends Component {
     shadeBase: 0
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Keyboard.addListener('keyboardDidShow', this.handleKeyboardShow)
     Keyboard.addListener('keyboardDidHide', this.handleKeyboardHide)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     Keyboard.removeListener('keyboardDidShow', this.handleKeyboardShow)
     Keyboard.removeListener('keyboardDidHide', this.handleKeyboardHide)
   }
@@ -71,7 +71,7 @@ export default class ModalBox extends Component {
     this.hide()
   }
 
-  render () {
+  render() {
     const { shadeBase, initial, visible: visibleState } = this.state
     const { visible, title = 'Plottr', children } = this.props
     const isVisible = visible === undefined ? visibleState : visible
@@ -81,7 +81,7 @@ export default class ModalBox extends Component {
       // { paddingBottom: ifIOS(shadeBase, 0) }
     ]
     return initial && !isVisible ? null : (
-      <AnimeTouchableNoFeedback onPress={this.handleOnClose}>
+      <AnimeTouchableNoFeedback onPresss={this.handleOnClose}>
         <Animatable.View
           transition={['opacity', 'paddingBottom']}
           delay={isVisible ? 0 : 100}

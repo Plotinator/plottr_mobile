@@ -44,6 +44,7 @@ export default ScaledSheet.create({
   dialogTitle: {
     flexDirection: 'row',
     minHeight: 40,
+    marginTop: baseMargin,
     padding: baseMargin,
     paddingTop: baseMargin * 1.2,
     marginBottom: baseMargin / 2

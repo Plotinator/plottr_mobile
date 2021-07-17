@@ -64,6 +64,7 @@ export default ScaledSheet.create({
     alignItems: 'center'
   },
   input: {
+    marginTop: baseMargin,
     maxWidth: '55%'
   },
   inputText: {

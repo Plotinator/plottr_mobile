@@ -111,7 +111,7 @@ class OutlineChapter extends Component {
   renderSortedCards = (sortedCards) => sortedCards.map(this.renderCard)
 
   render() {
-    const { chapter, cardMap } = this.props
+    const { chapter, cardMap, onPressChapter } = this.props
     const { id, autoOutlineSort } = chapter
     const { positionOffset, lines } = this.props
     const chapterTitle = <BeatItemTitle beat={chapter} />
@@ -124,13 +124,15 @@ class OutlineChapter extends Component {
     const isManuallSorted = !autoOutlineSort && cards.length
 
     return (
-      <TouchableWithoutFeedback>
-        <ErrorBoundary>
+      <ErrorBoundary>
+        <TouchableWithoutFeedback>
           <View style={styles.chapter}>
             <View style={styles.chapterTitle}>
-              <Text center style={styles.chapterText}>
-                {chapterTitle}
-              </Text>
+              <ShellButton data={chapter} onPress={onPressChapter}>
+                <Text center style={styles.chapterText}>
+                  {chapterTitle}
+                </Text>
+              </ShellButton>
               {/*
                 <AddButton
                   icon={'pen'}
@@ -155,8 +157,8 @@ class OutlineChapter extends Component {
               </ShellButton>
             </View>
           </View>
-        </ErrorBoundary>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </ErrorBoundary>
     )
   }
 }

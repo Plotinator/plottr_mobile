@@ -141,6 +141,7 @@ export default class AlertDialog extends Component {
     return (
       <Input
         center
+        rounded
         autoFocus
         selectTextOnFocus
         value={inputText}

@@ -8,6 +8,7 @@ const { ifTablet, baseMargin, doubleBaseMargin, cornerRadius } = Metrics
 
 export default ScaledSheet.create({
   picker: {
+    flex: 2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

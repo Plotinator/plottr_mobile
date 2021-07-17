@@ -31,6 +31,7 @@ import Popover, {
   PopoverPlacement
 } from 'react-native-popover-view'
 import { showAlert, showInputAlert } from '../../shared/common/AlertDialog'
+import BeatModal from '../../shared/BeatModal'
 
 const { IS_TABLET, ifTablet } = Metrics
 
@@ -38,7 +39,8 @@ class Outline extends Component {
   state = {
     linesById: {},
     currentLine: null,
-    selectedLine: null,
+    currentChapter: {},
+    selectedLineId: null,
     viewables: [{ index: 0, isViewable: true }],
     autoType: 'list' // list
   }
@@ -52,6 +54,7 @@ class Outline extends Component {
   }
 
   extractOutlineKey = (item) => item.id.toString()
+  setBeatModalRef = (ref) => (this._BeatModal = ref)
 
   handleSelectOutline = ({ listIndex, index, id }) => {
     this.setState({
@@ -114,7 +117,7 @@ class Outline extends Component {
   }
 
   handleNew = (type) => {
-    const { bookId, lineActions, beatActions } = this.props
+    const { bookId, lineActions, beatActions, chapters } = this.props
     switch (type) {
       case 'plotline':
         showInputAlert({
@@ -140,8 +143,37 @@ class Outline extends Component {
         break
       case 'chapter':
         beatActions.addBeat(bookId)
+        const lastIndex = chapters.length
+        const lastChapter = chapters[lastIndex]
+        this.setState(
+          {
+            viewables: [{ index: lastIndex, isViewable: true }]
+          },
+          () =>
+            setTimeout(() => {
+              this.outlineDotsRef.scrollToEnd()
+              this.outlineDotsRef.scrollToIndex({
+                index: lastIndex
+              })
+              this.outlineListRef.scrollToEnd()
+              this.outlineListRef.scrollToIndex({
+                index: lastIndex
+              })
+            }, 200)
+        )
         break
     }
+  }
+
+  handleEditChapter = (chapter) => {
+    // this.setState(
+    //   {
+    //     currentChapter: { ...chapter }
+    //   },
+    //   () =>
+    this._BeatModal.editBeat(chapter)
+    console.log('this._BeatModal', this._BeatModal)
+    // )
   }
 
   renderOutlineChapter(chapter, cardMap, i) {
@@ -151,6 +183,7 @@ class Outline extends Component {
         chapter={chapter}
         cardMap={cardMap}
         navigation={this.props.navigation}
+        onPressChapter={this.handleEditChapter}
       />
     )
   }
@@ -280,7 +313,7 @@ class Outline extends Component {
                 keyExtractor={this.extractOutlineKey}
                 contentContainerStyle={styles.outline}
                 ref={this.handleListRef}
-                initialNumToRender={3}
+                // initialNumToRender={3}
                 onScrollToIndexFailed={this.handleScrollFail}
                 onViewableItemsChanged={this.handleViewableItemsChanged}
                 onScrollBeginDrag={this.handleScrollDrag}
@@ -288,6 +321,7 @@ class Outline extends Component {
             </Col>
           </Grid>
         </View>
+        <BeatModal sendRef={this.setBeatModalRef} />
       </View>
     )
   }
