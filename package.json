@@ -9,7 +9,7 @@
     "test": "jest",
     "postinstall": "cd ios && pod install && cd .. && patch-package",
     "lint": "eslint .",
-    "extract-strings": "format-message extract -o src/locales/en.json \"src/**/*.js\""
+    "extract-strings": "format-message extract -o lib/plottr_locales/src/en.json \"src/**/*.js\""
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.0",
