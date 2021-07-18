@@ -185,5 +185,8 @@ export default {
   },
   leanRight: {
     marginRight: -baseMargin
+  },
+  leanMoreRight: {
+    marginRight: -doubleBaseMargin
   }
 }

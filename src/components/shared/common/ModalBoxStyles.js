@@ -5,6 +5,7 @@ import Colors from '../../../utils/Colors'
 
 const { borderGray, darkGray, textGray, white, orange, green, red } = Colors
 const {
+  ifTablet,
   section,
   baseMargin,
   buttonRadius,
@@ -50,9 +51,11 @@ export default ScaledSheet.create({
     marginBottom: baseMargin / 2
   },
   titleText: {
+    ...style.bold,
     alignSelf: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    fontSize: ifTablet(size.h6, size.h4)
   },
   dialogBody: {
     paddingHorizontal: section,
@@ -69,7 +72,7 @@ export default ScaledSheet.create({
     right: 0
   },
   closeIcon: {
-    fontSize: size.h1,
+    fontSize: ifTablet(size.h4, size.h2),
     paddingBottom: 0,
     color: textGray
   }
