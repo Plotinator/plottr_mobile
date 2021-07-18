@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Modal } from 'react-native'
+import { TouchableWithoutFeedback, View, Modal } from 'react-native'
 import ColorPickerList from '../ColorPickerList'
 import tinycolor from 'tinycolor2'
 import { t } from 'plottr_locales'
@@ -41,7 +41,9 @@ export default function ColorPickerModal(props) {
     </View>
   )
   return expressMode ? (
-    <View style={styles.modal}>{bodyElement}</View>
+    <TouchableWithoutFeedback onPress={onClose}>
+      <View style={styles.modal}>{bodyElement}</View>
+    </TouchableWithoutFeedback>
   ) : (
     <Modal
       style={styles.modal}
@@ -50,7 +52,9 @@ export default function ColorPickerModal(props) {
       transparent
       onDismiss={onClose}
       onRequestClose={onClose}>
-      {bodyElement}
+      <TouchableWithoutFeedback onPress={onClose}>
+        <React.Fragment>{bodyElement}</React.Fragment>
+      </TouchableWithoutFeedback>
     </Modal>
   )
 }

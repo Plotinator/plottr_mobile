@@ -16,7 +16,7 @@ export default ScaledSheet.create({
   base: {
     backgroundColor: warmWhiteBG,
     width: '100%',
-    height: '80%',
+    height: '100%',
     borderRadius: cornerRadius * 1.5,
     shadowColor: '#000',
     shadowOffset: {
@@ -42,14 +42,13 @@ export default ScaledSheet.create({
     zIndex: 9,
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: size.h2,
-    height: 37,
-    width: 37,
+    height: ifTablet(45, 37),
+    width: ifTablet(45, 37),
     backgroundColor: warmWhiteBG,
     borderRadius: 20
   },
   closeIcon: {
-    fontSize: size.h2
+    fontSize: ifTablet(size.h4, size.h2)
   },
   currentColorWrapper: {
     zIndex: -1,
@@ -74,6 +73,7 @@ export default ScaledSheet.create({
     fontWeight: 'bold'
   },
   modal: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -82,6 +82,6 @@ export default ScaledSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    backgroundColor: '#00000050'
   }
 })
