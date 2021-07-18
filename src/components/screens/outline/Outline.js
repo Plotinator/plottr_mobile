@@ -143,6 +143,7 @@ class Outline extends Component {
 
         break
       case 'chapter':
+      default:
         beatActions.addBeat(bookId)
         const lastIndex = chapters.length
         const lastChapter = chapters[lastIndex]
@@ -152,14 +153,18 @@ class Outline extends Component {
           },
           () =>
             setTimeout(() => {
-              this.outlineListRef.scrollToEnd()
-              this.outlineListRef.scrollToIndex({
-                index: lastIndex
-              })
-              this.outlineDotsRef.scrollToEnd()
-              this.outlineDotsRef.scrollToIndex({
-                index: lastIndex
-              })
+              if (this.outlineListRef) {
+                this.outlineListRef.scrollToEnd()
+                this.outlineListRef.scrollToIndex({
+                  index: lastIndex
+                })
+              }
+              if (this.outlineDotsRef) {
+                this.outlineDotsRef.scrollToEnd()
+                this.outlineDotsRef.scrollToIndex({
+                  index: lastIndex
+                })
+              }
             }, 200)
         )
         break
@@ -251,6 +256,11 @@ class Outline extends Component {
         <Toolbar onPressDrawer={openDrawer}>
           <SeriesPicker />
           <View style={[styles.additionals, styles.leanRight]}>
+            {IS_TABLET && (
+              <HeaderButtonOptions title={t('Plotlines')} icon='list'>
+                <HeaderPlotlines />
+              </HeaderButtonOptions>
+            )}
             <HeaderButtonOptions
               title={t('Filter')}
               icon='filter'
@@ -311,6 +321,7 @@ class Outline extends Component {
                   activeKey='id'
                   activeValue={selectedLineId || chapters[0]?.id}
                   onPressItem={this.handleSelectOutline}
+                  onPressAdd={this.handleNew}
                 />
               </Col>
             )}
