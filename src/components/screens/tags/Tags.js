@@ -18,7 +18,7 @@ import DrawerButton from '../../ui/DrawerButton'
 import { Text, AddButton, MainList } from '../../shared/common'
 import { Colors, Metrics } from '../../../utils'
 import TagCell from './TagCell'
-import ColorPickerModal from '../../tablet/shared/ColorPickerModal'
+import ColorPickerModal from '../../shared/ColorPickerModal'
 import styles from './TagsStyles'
 import { showAlert } from '../../shared/common/AlertDialog'
 

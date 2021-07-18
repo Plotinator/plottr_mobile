@@ -8,7 +8,7 @@ const { size } = Fonts
 
 export default ScaledSheet.create({
   container: {
-    // minWidth: 240,
+    maxWidth: 350,
     alignItems: 'center'
   },
   row: {
@@ -21,13 +21,14 @@ export default ScaledSheet.create({
     marginBottom: 0
   },
   description: {
-    fontSize: ifTablet(size.h4)
+    fontSize: ifTablet(size.h7, size.h5)
   },
   input: {
     flex: 1
   },
   inputStyle: {
-    paddingTop: baseMargin * 0.8
+    paddingTop: baseMargin * 0.8,
+    fontSize: ifTablet(size.h7, size.h5)
   },
   colorSwatch: {
     width: 60,
@@ -57,7 +58,7 @@ export default ScaledSheet.create({
     marginRight: baseMargin
   },
   trash: {
-    fontSize: size.h4,
+    fontSize: ifTablet(size.h5, size.h3),
     color: Colors.lightGray
   }
 })
