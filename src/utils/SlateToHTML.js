@@ -1,7 +1,7 @@
-export default function SlateToHTML (slate) {
+export default function SlateToHTML(slate) {
   let HTML = ''
   if (typeof slate === 'object') {
-    slate.map(obj => {
+    slate.map((obj) => {
       switch (obj.type) {
         case 'heading-one':
           HTML += `<h1>${SlateToHTML(obj.children)}</h1>`
@@ -35,7 +35,7 @@ export default function SlateToHTML (slate) {
           break
         default:
           if (obj.text == '') {
-            HTML += '<div><br/></div>'
+            HTML += '<p></p>'
           }
           if (obj.text || typeof obj === 'string') {
             HTML += SlateTextToHTML(obj)
@@ -50,7 +50,7 @@ export default function SlateToHTML (slate) {
   }
 }
 
-export function SlateTextToHTML (slate) {
+export function SlateTextToHTML(slate) {
   const { text, strike, bold, strong, underline, italic } = slate
   const HTMLText = typeof slate === 'string' ? slate : text
   let HTML = `<span>${HTMLText}</span>`

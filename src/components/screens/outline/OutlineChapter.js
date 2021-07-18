@@ -4,7 +4,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { View, TouchableWithoutFeedback } from 'react-native'
 import { t } from 'plottr_locales'
-import { selectors, actions, helpers } from 'pltr/v2'
+import { selectors, actions, helpers, initialState } from 'pltr/v2'
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import styles from './OutlineStyles'
 import {
@@ -18,8 +18,9 @@ import Fonts from '../../../fonts'
 import OutlineCard from './OutlineCard'
 import BeatItemTitle from '../../shared/BeatItemTitle'
 import { Metrics } from '../../../utils'
+import { cloneDeep } from 'lodash'
 
-const { ifTablet } = Metrics
+const { ifTablet, IS_TABLET } = Metrics
 
 class OutlineChapter extends Component {
   handleAutoSortChapter = () => {
@@ -68,15 +69,26 @@ class OutlineChapter extends Component {
   }
 
   handleNewCard = () => {
-    const { navigation, chapter, lines } = this.props
+    const { navigation, chapter, lines, cardActions, nextCardId } = this.props
     const { id: beatId } = chapter
     const lineId = lines[0].id
-    navigation.navigate('SceneDetails', {
-      isNew: true,
-      scene: {},
-      beatId,
-      lineId
-    })
+    if (IS_TABLET) {
+      this.newEdit = nextCardId
+      console.log('nextCardId', nextCardId)
+      cardActions.addCard({
+        ...cloneDeep(initialState.card),
+        beatId,
+        lineId
+      })
+    } else {
+      // phone
+      navigation.navigate('SceneDetails', {
+        isNew: true,
+        scene: {},
+        beatId,
+        lineId
+      })
+    }
   }
 
   renderManuallySorted(isManuallSorted) {
@@ -96,8 +108,10 @@ class OutlineChapter extends Component {
     const { filters } = this.props
     const { line: lineFilters } = filters || {}
     const hasFitler = lineFilters && lineFilters.length
+    const newEdit = this.newEdit === card.id
     return !hasFitler || (hasFitler && lineFilters.includes(card.lineId)) ? (
       <OutlineCard
+        newEdit={newEdit}
         key={key}
         index={key}
         card={card}
@@ -172,7 +186,8 @@ function mapStateToProps(state) {
   return {
     lines: selectors.sortedLinesByBookSelector(state),
     positionOffset: selectors.positionOffsetSelector(state),
-    filters: state.ui.outlineFilter
+    filters: state.ui.outlineFilter,
+    nextCardId: selectors.nextCardIdSelector(state)
   }
 }
 

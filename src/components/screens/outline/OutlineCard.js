@@ -33,7 +33,7 @@ class OutlineCard extends Component {
       card: { title, description }
     } = this.props
     this.state = {
-      editMode: false,
+      editMode: props.newEdit ? true : false,
       title,
       description,
       showLineSelector: false
@@ -68,7 +68,7 @@ class OutlineCard extends Component {
       card: { title, id }
     } = this.props
     showAlert({
-      title: t('Delete Scene', { name }),
+      title: t('Delete Scene'),
       message: t('Delete Scene "{name}"?', { name: title || t('Untitled') }),
       actions: [
         {
@@ -85,6 +85,7 @@ class OutlineCard extends Component {
     const {
       index,
       cardMap,
+      card,
       card: { id, beatId }
     } = this.props
     const length = cardMap[beatId].length
@@ -267,7 +268,8 @@ class OutlineCard extends Component {
 
 OutlineCard.propTypes = {
   lines: PropTypes.array.isRequired,
-  card: PropTypes.object.isRequired
+  card: PropTypes.object.isRequired,
+  newEdit: PropTypes.bool
 }
 
 function mapStateToProps(state) {
