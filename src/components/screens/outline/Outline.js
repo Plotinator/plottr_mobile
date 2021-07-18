@@ -19,6 +19,7 @@ import {
   ShellButton,
   HeaderFilter,
   ScrollerView,
+  HeaderPlotlines,
   HeaderAttributes,
   AttributesButton,
   HeaderButtonOptions
@@ -151,12 +152,12 @@ class Outline extends Component {
           },
           () =>
             setTimeout(() => {
-              this.outlineDotsRef.scrollToEnd()
-              this.outlineDotsRef.scrollToIndex({
-                index: lastIndex
-              })
               this.outlineListRef.scrollToEnd()
               this.outlineListRef.scrollToIndex({
+                index: lastIndex
+              })
+              this.outlineDotsRef.scrollToEnd()
+              this.outlineDotsRef.scrollToIndex({
                 index: lastIndex
               })
             }, 200)
@@ -269,6 +270,12 @@ class Outline extends Component {
                 <AddButton size={26} style={styles.addIconButton} />
                 <Text style={styles.addButtonText}>{t('Chapter')}</Text>
               </ShellButton>
+              <View style={[styles.additionals, styles.leanRight]}>
+                <HeaderButtonOptions title={t('Plotlines')} icon='list'>
+                  <HeaderPlotlines />
+                </HeaderButtonOptions>
+              </View>
+              {/*
               <ShellButton
                 data={'plotline'}
                 style={styles.addButton}
@@ -276,6 +283,7 @@ class Outline extends Component {
                 <AddButton size={26} style={styles.addIconButton} />
                 <Text style={styles.addButtonText}>{t('Plotline')}</Text>
               </ShellButton>
+              */}
             </View>
           )}
           {!IS_TABLET && (
@@ -333,11 +341,8 @@ Outline.propTypes = {
   card2Dmap: PropTypes.object.isRequired,
   positionOffset: PropTypes.number.isRequired,
   navigation: PropTypes.object.isRequired,
-  beatTree: PropTypes.object.isRequired,
-  hierarchyLevels: PropTypes.array.isRequired,
-  isSeries: PropTypes.bool.isRequired,
-  hierarchyEnabled: PropTypes.bool,
-  filters: PropTypes.object.isRequired
+  filters: PropTypes.array.isRequired,
+  bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
 
 function mapStateToProps(state) {

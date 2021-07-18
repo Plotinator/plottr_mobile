@@ -134,7 +134,11 @@ class OutlineCard extends Component {
       <ShellButton
         data={line.id}
         key={i}
-        style={styles.menuItem}
+        style={[
+          styles.menuItem,
+          styles.outlineItem,
+          { borderColor: color, borderWidth: isSelected ? 2 : 1 }
+        ]}
         onPress={this.handleChangeLine}>
         <Text
           center

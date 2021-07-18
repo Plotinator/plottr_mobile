@@ -192,7 +192,7 @@ class AttributeItem extends Component {
         setEditing(null)
       }
       this.setState({ offsetY: 0 })
-      setOffset(null, null)
+      setOffset && setOffset(null, null)
       if (dy === 0) {
         // click
         // this.handleEdit()

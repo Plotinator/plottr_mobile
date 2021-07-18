@@ -276,5 +276,10 @@ export default ScaledSheet.create({
     color: orange,
     fontSize: ifTablet(size.tiny, size.small),
     marginLeft: baseMargin / 2
+  },
+  outlineItem: {
+    marginHorizontal: baseMargin,
+    marginVertical: baseMargin / 4,
+    borderRadius: cornerRadius
   }
 })

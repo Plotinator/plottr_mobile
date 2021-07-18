@@ -258,8 +258,8 @@ function mapDispatchToProps(dispatch, { type }) {
 
 HeaderFilter.propTypes = {
   onFilter: PropTypes.func,
-  filters: PropTypes.object.isRequired,
-  filteredItems: PropTypes.object.isRequired,
+  filters: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  filteredItems: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   filterOptions: PropTypes.array.isRequired
 }
 
