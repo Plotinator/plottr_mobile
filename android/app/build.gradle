@@ -133,8 +133,8 @@ android {
         applicationId "com.fictionaldevices.plottr"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 27
-        versionName "2.2.7"
+        versionCode 28
+        versionName "2.2.8"
         resValue "string", "build_config_package", "com.plottr_mobile"
     }
     splits {
