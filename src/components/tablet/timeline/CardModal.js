@@ -18,6 +18,7 @@ import {
   Input,
   Text,
   Button,
+  IconButton,
   RichEditor,
   ShellButton,
   Attachments
@@ -30,12 +31,13 @@ import { Colors, Metrics } from '../../../utils'
 import * as Animatable from 'react-native-animatable'
 import BeatItemTitle from '../../shared/BeatItemTitle'
 import tinycolor from 'tinycolor2'
+import { showAlert } from '../../shared/common/AlertDialog'
 
 const AnimeTouchableNoFeedback = Animatable.createAnimatableComponent(
   TouchableWithoutFeedback
 )
 
-const { ifIOS, ifTablet } = Metrics
+const { ifIOS, ifTablet, IS_TABLET } = Metrics
 
 class CardModal extends Component {
   state = {}
@@ -61,7 +63,9 @@ class CardModal extends Component {
   }
 
   componentWillUnmount() {
-    this.handleSaveChanges()
+    if (!IS_TABLET) {
+      this.handleSaveChanges()
+    }
   }
 
   handleDismissKeyboard = () => {
@@ -118,6 +122,28 @@ class CardModal extends Component {
     this.setState({ isNewCard: false, changes: false })
     onClose && onClose()
     onSave && onSave()
+  }
+
+  handleDeleteCard = () => {
+    const { actions, onClose } = this.props
+    const {
+      card: { title, id }
+    } = this.state
+    showAlert({
+      title: t('Delete Scene'),
+      message: t('Delete Scene "{name}"?', { name: title || t('Untitled') }),
+      actions: [
+        {
+          name: t('Yes, Delete'),
+          positive: true,
+          callback: () => {
+            onClose && onClose()
+            actions.deleteCard(id)
+          }
+        },
+        { name: t('Cancel') }
+      ]
+    })
   }
 
   changeChapter = (val) => {
@@ -390,6 +416,12 @@ class CardModal extends Component {
                   </Collapsible>
                 </View>
               </View>
+              <IconButton
+                name='trash'
+                onPress={this.handleDeleteCard}
+                style={styles.trashButton}
+                color='warmGray'
+              />
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>

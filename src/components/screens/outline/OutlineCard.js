@@ -254,9 +254,10 @@ class OutlineCard extends Component {
                 </View>
               ) : (
                 <React.Fragment>
-                  <AddButton
-                    color='lightGray'
-                    icon='trash'
+                  <IconButton
+                    color='warmGray'
+                    name='trash'
+                    style={styles.trashButton}
                     onPress={this.handleDeleteCard}
                   />
                   <AddButton icon='pen' onPress={this.handleEditCard} />

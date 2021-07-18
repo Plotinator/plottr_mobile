@@ -25,13 +25,13 @@ export default ScaledSheet.create({
   },
   title: {
     ...style.bold,
-    fontSize: size.h4,
+    fontSize: ifTablet(size.h6, size.h4),
     marginVertical: baseMargin / 2,
     marginLeft: baseMargin
   },
   colorSwatch: {
-    width: 40,
-    height: 40,
+    width: ifTablet(47, 39),
+    height: ifTablet(47, 39),
     margin: baseMargin / 2,
     borderBottomRightRadius: baseMargin,
     borderTopLeftRadius: baseMargin

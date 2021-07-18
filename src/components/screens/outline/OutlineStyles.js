@@ -281,5 +281,10 @@ export default ScaledSheet.create({
     marginHorizontal: baseMargin,
     marginVertical: baseMargin / 4,
     borderRadius: cornerRadius
+  },
+  trashButton: {
+    fontSize: ifTablet(size.h7, size.h5),
+    marginLeft: -baseMargin / 4,
+    marginTop: baseMargin / 2
   }
 })
