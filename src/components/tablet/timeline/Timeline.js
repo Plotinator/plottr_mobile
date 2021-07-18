@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux'
 import { t } from 'plottr_locales'
 import ChapterTitleCell from './ChapterTitleCell'
 import { BlankCell } from './BlankCell'
-import Cell from '../shared/Cell'
+import Cell from './Cell'
 import CardCell from './CardCell'
 import CardModal from './CardModal'
 import {
@@ -25,11 +25,12 @@ import {
 import { Icon } from 'native-base'
 import tinycolor from 'tinycolor2'
 import LineTitleCell from './LineTitleCell'
-import ColorPickerModal from '../shared/ColorPickerModal'
+import ColorPickerModal from '../../shared/ColorPickerModal'
 import BeatItemTitle from '../../shared/BeatItemTitle'
 import { Text, Input, Button, ShellButton, ModalBox } from '../../shared/common'
 import styles from './TimelineStyles'
 import { showAlert } from '../../shared/common/AlertDialog'
+import BeatModal from '../../shared/BeatModal'
 import { cloneDeep } from 'lodash'
 
 import { actions, selectors, helpers, newIds } from 'pltr/v2'
@@ -65,8 +66,7 @@ class Timeline extends Component {
       showCardModal: false,
       lineMapKeys: {},
       showColorPicker: false,
-      currentLine: {},
-      currentBeat: {}
+      currentLine: {}
     }
     this.dropCoordinates = []
   }
@@ -207,84 +207,7 @@ class Timeline extends Component {
   }
 
   handleEditBeat = (beat) => {
-    this.setState(
-      {
-        currentBeat: { ...beat }
-      },
-      () => {
-        this._BeatModal.show()
-      }
-    )
-  }
-
-  handleHideBeatModal = () => this._BeatModal.hide()
-
-  handleSetBeatTitle = (title) => {
-    const { currentBeat } = this.state
-    currentBeat.title = title
-    this.setState({ currentBeat })
-  }
-
-  handleClearCurrentBeat = (title) => {
-    this.setState({ currentBeat: {} })
-  }
-
-  handleSaveBeat = () => {
-    const {
-      currentBeat: { id, bookId, title }
-    } = this.state
-    const {
-      beatActions,
-      beatTree,
-      hierarchyLevels,
-      isSeries,
-      hierarchyEnabled
-    } = this.props
-    this._BeatModal.hide()
-    beatActions.editBeatTitle(id, bookId, title || 'auto')
-    this.handleClearCurrentBeat()
-  }
-
-  handleAskToDeleteBeat = () => {
-    // delay for 1 sec
-    const {
-      currentBeat,
-      currentBeat: { title }
-    } = this.state
-    const {
-      positionOffset,
-      beatTree,
-      hierarchyLevels,
-      isSeries,
-      hierarchyEnabled,
-      beatIndex
-    } = this.props
-    const name = <BeatItemTitle beat={currentBeat} />
-    showAlert({
-      title: t('Delete Chapter'),
-      message: t('Delete Chapter {name}?', { name }),
-      actions: [
-        {
-          icon: 'trash',
-          danger: true,
-          name: t('Delete Chapter'),
-          callback: this.handleDeleteBeat
-        },
-        {
-          name: t('Cancel')
-        }
-      ]
-    })
-  }
-
-  handleDeleteBeat = () => {
-    const {
-      currentBeat: { id, bookId }
-    } = this.state
-    const { beatActions } = this.props
-    this._BeatModal.hide()
-    beatActions.deleteBeat(id, bookId)
-    this.handleClearCurrentBeat()
+    this._BeatModal.editBeat(beat)
   }
 
   handleHideColorPicker = () => this.setState({ showColorPicker: false })
@@ -683,50 +606,6 @@ class Timeline extends Component {
     )
   }
 
-  renderBeatModal() {
-    const {
-      currentBeat: { title }
-    } = this.state
-    return (
-      <ModalBox
-        title={t('Edit Chapter')}
-        ref={this.setBeatModalRef}
-        onHide={this.handleClearCurrentBeat}>
-        <View style={styles.row}>
-          <Text center fontStyle='semiBold' fontSize='tiny'>
-            {t("Enter Chapter's name or enter")}
-          </Text>
-        </View>
-        <View style={styles.row}>
-          <Input
-            rounded
-            small
-            placeholder={t('Title')}
-            value={title}
-            placeholder='auto'
-            style={styles.input}
-            autoCapitalize='sentences'
-            onChangeText={this.handleSetBeatTitle}
-          />
-        </View>
-        <View style={[styles.row, styles.last]}>
-          <View style={styles.ctaButtons}>
-            <Button center style={styles.button} onPress={this.handleSaveBeat}>
-              {t('Save Chapter')}
-            </Button>
-            <Button
-              center
-              buttonColor='transparent'
-              style={styles.trashButton}
-              onPress={this.handleAskToDeleteBeat}>
-              <Icon name='trash' type='FontAwesome5' style={styles.trash} />
-            </Button>
-          </View>
-        </View>
-      </ModalBox>
-    )
-  }
-
   renderColorPicker() {
     const {
       showColorPicker,
@@ -784,7 +663,7 @@ class Timeline extends Component {
         />
         {this.renderPlotlineModal()}
         {this.renderCardModal()}
-        {this.renderBeatModal()}
+        <BeatModal sendRef={this.setBeatModalRef} />
       </View>
     )
   }

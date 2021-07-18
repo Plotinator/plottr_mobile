@@ -7,7 +7,7 @@ import {
   Animated,
   TouchableOpacity
 } from 'react-native'
-import Cell from '../shared/Cell'
+import Cell from './Cell'
 import CardModal from './CardModal'
 import { useRegisterCoordinates } from './hooks'
 import { Text } from '../../shared/common'

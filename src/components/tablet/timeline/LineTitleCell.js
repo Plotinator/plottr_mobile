@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { StyleSheet, View, PanResponder } from 'react-native'
-import Cell from '../shared/Cell'
+import Cell from './Cell'
 import { LEFT_COLUMN_WIDTH, CELL_HEIGHT } from '../../../utils/constants'
 import { Text, Button, Input } from '../../shared/common'
 import { moderateScale } from 'react-native-size-matters'

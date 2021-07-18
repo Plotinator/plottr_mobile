@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import { View } from 'native-base'
 import tinycolor from 'tinycolor2'
 import { StyleSheet } from 'react-native'
-import Cell from '../shared/Cell'
+import Cell from './Cell'
 import { useRegisterCoordinates } from './hooks'
 import CardModal from './CardModal'
 

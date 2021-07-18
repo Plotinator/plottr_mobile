@@ -14,15 +14,26 @@ import { bindActionCreators } from 'redux'
 import { t } from 'plottr_locales'
 import ChapterTitleCell from './ChapterTitleCell'
 import { BlankCell } from './BlankCell'
-import Cell from '../shared/Cell'
+import Cell from './Cell'
 import CardCell from './CardCell'
 import CardModal from './CardModal'
-import { CELL_HEIGHT, CELL_WIDTH, MIGRATION_VERSION } from '../../../utils/constants'
+import {
+  CELL_HEIGHT,
+  CELL_WIDTH,
+  MIGRATION_VERSION
+} from '../../../utils/constants'
 import { Icon } from 'native-base'
 import tinycolor from 'tinycolor2'
 import LineTitleCell from './LineTitleCell'
-import ColorPickerModal from '../shared/ColorPickerModal'
-import { Text, Input, Button, ShellButton, ScrollerView, ModalBox } from '../../shared/common'
+import ColorPickerModal from '../../shared/ColorPickerModal'
+import {
+  Text,
+  Input,
+  Button,
+  ShellButton,
+  ScrollerView,
+  ModalBox
+} from '../../shared/common'
 import styles from './NewTimelineStyles'
 import { showAlert } from '../../shared/common/AlertDialog'
 import { cloneDeep } from 'lodash'
@@ -31,7 +42,7 @@ import { actions, selectors, helpers, newIds } from 'pltr/v2'
 import Migrator from '../../../../lib/pltr/v2/migrator/migrator'
 const {
   beats: { nextId },
-  lists: { reorderList },
+  lists: { reorderList }
 } = helpers
 
 const {
@@ -41,7 +52,7 @@ const {
 } = selectors
 
 class Timeline extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.headerScrollView = null
     this.scrollPosition = new Animated.Value(0)
@@ -62,12 +73,12 @@ class Timeline extends Component {
       lineMapKeys: {},
       showColorPicker: false,
       currentLine: {},
-      currentBeat: {},
+      currentBeat: {}
     }
     this.dropCoordinates = []
   }
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     const { lineMap } = props
     return {
       lineMapKeys: Object.keys(lineMap),
@@ -75,7 +86,7 @@ class Timeline extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.listener = this.scrollPosition.addListener((position) => {
       this.scrollX = position.value
       this.headerScrollView.scrollTo({ x: position.value, animated: false })
@@ -85,7 +96,7 @@ class Timeline extends Component {
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.scrollPosition.removeAllListeners()
     this.verticalScrollPosition.removeAllListeners()
   }
@@ -100,7 +111,7 @@ class Timeline extends Component {
     beatActions.addBeat(bookId)
   }
 
-  handleHorizontalScroll = ({ nativeEvent: { contentOffset }}) => {
+  handleHorizontalScroll = ({ nativeEvent: { contentOffset } }) => {
     this.setState({
       horizontalOffset: contentOffset
     })
@@ -125,7 +136,7 @@ class Timeline extends Component {
     const success = this.dropCoordinates.some((coord) => {
       // using .some to short circuit once we find one
       // check if it's within this one's bounds
-      if (this.isWithinCell (trueX, trueY, coord)) {
+      if (this.isWithinCell(trueX, trueY, coord)) {
         // do nothing for dropping on itself
         if (
           coord.beatId != droppedCard.beatId ||
@@ -160,7 +171,8 @@ class Timeline extends Component {
       })
       Vibration.vibrate()
       // move the card to these coordinates
-      console.log('CARD MOVE',
+      console.log(
+        'CARD MOVE',
         droppedCard.id,
         moveToLineId,
         moveToBeatId,
@@ -217,7 +229,9 @@ class Timeline extends Component {
   }
 
   handleSaveBeat = () => {
-    const { currentBeat: { id, bookId, title } } = this.state
+    const {
+      currentBeat: { id, bookId, title }
+    } = this.state
     const {
       beatActions,
       beatTree,
@@ -232,7 +246,10 @@ class Timeline extends Component {
 
   handleAskToDeleteBeat = () => {
     // delay for 1 sec
-    const { currentBeat, currentBeat: { title } } = this.state
+    const {
+      currentBeat,
+      currentBeat: { title }
+    } = this.state
     const {
       positionOffset,
       beatTree,
@@ -251,20 +268,24 @@ class Timeline extends Component {
     showAlert({
       title: t('Delete Chapter'),
       message: t('Delete Chapter {name}?', { name }),
-      actions: [{
-        icon: 'trash',
-        danger: true,
-        name: t('Delete Chapter'),
-        callback: this.handleDeleteBeat
-      },
-      {
-        name: t('Cancel')
-      }]
+      actions: [
+        {
+          icon: 'trash',
+          danger: true,
+          name: t('Delete Chapter'),
+          callback: this.handleDeleteBeat
+        },
+        {
+          name: t('Cancel')
+        }
+      ]
     })
   }
 
   handleDeleteBeat = () => {
-    const { currentBeat: { id, bookId } } = this.state
+    const {
+      currentBeat: { id, bookId }
+    } = this.state
     const { beatActions } = this.props
     this._BeatModal.hide()
     beatActions.deleteBeat(id, bookId)
@@ -362,7 +383,8 @@ class Timeline extends Component {
 
   handleMoveBeat = (unboundedBeatPosition, beat) => {
     const { beats, bookId } = this.props
-    const newBeatPosition = unboundedBeatPosition < 0 ? 0 : unboundedBeatPosition;
+    const newBeatPosition =
+      unboundedBeatPosition < 0 ? 0 : unboundedBeatPosition
     if (!beats[newBeatPosition]) return
     this.props.beatActions.reorderBeats(
       beat.id,
@@ -440,7 +462,7 @@ class Timeline extends Component {
 
   handleBeatScrollRef = (ref) => (this.headerScrollView = ref)
 
-  getMaxCards (id) {
+  getMaxCards(id) {
     const { linesMaxCards } = this.props
     return (linesMaxCards[id] || 1) - 1
   }
@@ -448,7 +470,7 @@ class Timeline extends Component {
   setPlotModalRef = (ref) => (this._PlotModal = ref)
   setBeatModalRef = (ref) => (this._BeatModal = ref)
 
-  renderCardModal () {
+  renderCardModal() {
     const { showCardModal, card } = this.state
     const { navigation } = this.props
     if (!showCardModal) return null
@@ -461,15 +483,15 @@ class Timeline extends Component {
     )
   }
 
-  renderBlankLineTitleCell (key) {
+  renderBlankLineTitleCell(key) {
     return <Cell key={key} style={styles.lineTitleCell} />
   }
 
-  renderSpacerCard (key) {
+  renderSpacerCard(key) {
     return <Cell key={key} />
   }
 
-  renderPlusButton (id, onPress) {
+  renderPlusButton(id, onPress) {
     return (
       <Cell key={id} style={styles.addCell} onPress={onPress}>
         <Icon type='FontAwesome5' name='plus' style={styles.plusButton} />
@@ -477,7 +499,7 @@ class Timeline extends Component {
     )
   }
 
-  renderCornerCell () {
+  renderCornerCell() {
     return <Cell key='corner-cell' style={styles.cornerCell} />
   }
 
@@ -544,7 +566,7 @@ class Timeline extends Component {
     return <View style={styles.column}>{cells}</View>
   }
 
-  renderBeatTitles () {
+  renderBeatTitles() {
     const { beats, bookId } = this.props
     const { horizontalOffset } = this.state
     let cols = beats.map((ch) => (
@@ -567,8 +589,7 @@ class Timeline extends Component {
           ref={this.handleBeatScrollRef}
           horizontal={true}
           scrollEnabled={false}
-          scrollEventThrottle={64}
-          >
+          scrollEventThrottle={64}>
           <TouchableWithoutFeedback>
             <View style={styles.table}>{cols}</View>
           </TouchableWithoutFeedback>
@@ -577,7 +598,7 @@ class Timeline extends Component {
     )
   }
 
-  renderLineTitles () {
+  renderLineTitles() {
     const { lines, linesMaxCards } = this.props
     let cells = lines.reduce((acc, line) => {
       acc.push(
@@ -599,7 +620,7 @@ class Timeline extends Component {
     return <View style={styles.plotlinesColumn}>{cells}</View>
   }
 
-  renderPlotlineModal () {
+  renderPlotlineModal() {
     const {
       currentLine: { title, color }
     } = this.state
@@ -659,7 +680,7 @@ class Timeline extends Component {
     )
   }
 
-  renderBeatModal () {
+  renderBeatModal() {
     const {
       currentBeat: { title }
     } = this.state
@@ -670,7 +691,7 @@ class Timeline extends Component {
         onHide={this.handleClearCurrentBeat}>
         <View style={styles.row}>
           <Text center fontStyle='semiBold' fontSize='tiny'>
-            {t('Enter Chapter\'s name or enter')}
+            {t("Enter Chapter's name or enter")}
           </Text>
         </View>
         <View style={styles.row}>
@@ -688,10 +709,7 @@ class Timeline extends Component {
         </View>
         <View style={[styles.row, styles.last]}>
           <View style={styles.ctaButtons}>
-            <Button
-              center
-              style={styles.button}
-              onPress={this.handleSaveBeat}>
+            <Button center style={styles.button} onPress={this.handleSaveBeat}>
               {t('Save Chapter')}
             </Button>
             <Button
@@ -707,7 +725,7 @@ class Timeline extends Component {
     )
   }
 
-  renderColorPicker () {
+  renderColorPicker() {
     const {
       showColorPicker,
       currentLine: { color = 'red' }
@@ -722,7 +740,7 @@ class Timeline extends Component {
     )
   }
 
-  renderBody () {
+  renderBody() {
     const { beats } = this.props
     const cells = [...beats, { id: 'new' }] // 'new' is needed to show the + chapter cell
 
@@ -749,15 +767,13 @@ class Timeline extends Component {
     return item.render
   }
 
-  render () {
+  render() {
     const { beats } = this.props
     const cells = [...beats, { id: 'new' }] // 'new' is the + cell
     const { showCardModal } = this.state
     return (
       <View style={styles.container}>
-        <View style={styles.beatTitles}>
-          {this.renderBeatTitles()}
-        </View>
+        <View style={styles.beatTitles}>{this.renderBeatTitles()}</View>
         {/*scroller here */}
         <ScrollerView
           scrollerProps={{
@@ -767,9 +783,7 @@ class Timeline extends Component {
           }}>
           <View style={styles.subContainer}>
             {/*horizontal row*/}
-            <View style={styles.plotlines}>
-              {this.renderLineTitles()}
-            </View>
+            <View style={styles.plotlines}>{this.renderLineTitles()}</View>
             <View style={styles.timelineContainer}>
               {/*scroller here */}
               <ScrollerView
@@ -819,8 +833,8 @@ Timeline.propTypes = {
   hierarchyEnabled: PropTypes.bool
 }
 
-function mapStateToProps (state) {
-   let nextBeatId = -1
+function mapStateToProps(state) {
+  let nextBeatId = -1
   const bookId = selectors.currentTimelineSelector(state)
   nextBeatId = nextId(state.beats)
   return {
@@ -840,7 +854,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.ui, dispatch),
     lineActions: bindActionCreators(actions.line, dispatch),
