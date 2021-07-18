@@ -22,6 +22,7 @@ import HeaderButton from './HeaderButton'
 import HeaderFilter from './HeaderFilter'
 import FloatingInput from './FloatingInput'
 import Title, { RenderTitle } from './Title'
+import HeaderPlotlines from './HeaderPlotlines'
 import WelcomeToPlottr from './WelcomeToPlottr'
 import GoToPlottrDotCom from './GoToPlottrDotCom'
 import AttributesButton from './AttributesButton'
@@ -54,6 +55,7 @@ export {
   HeaderButton,
   HeaderFilter,
   FloatingInput,
+  HeaderPlotlines,
   WelcomeToPlottr,
   GoToPlottrDotCom,
   AttributesButton,
