@@ -162,7 +162,7 @@ class CardModal extends Component {
         key={i}
         style={styles.menuItem}
         onPress={this.changeChapter}>
-        <Text fontStyle={fontStyle} color={color}>
+        <Text style={styles.menuItemText} fontStyle={fontStyle} color={color}>
           <BeatItemTitle beat={beat} />
         </Text>
       </ShellButton>
@@ -180,7 +180,7 @@ class CardModal extends Component {
         key={i}
         style={styles.menuItem}
         onPress={this.changeLine}>
-        <Text fontStyle={fontStyle} color={color}>
+        <Text style={styles.menuItemText} fontStyle={fontStyle} color={color}>
           {line.title}
         </Text>
       </ShellButton>
